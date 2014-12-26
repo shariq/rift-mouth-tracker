@@ -62,7 +62,7 @@ int main (int argc, char** argv) {
 //  Mat image2;
 //  bilateralFilter(image, image2, 6,12,3);
 
-  Mat channel[3];
+/*  Mat channel[3];
   split(image, channel);
   Mat avg;
   avg = (channel[0] + channel[1] + channel[2])/3.0;
@@ -75,6 +75,8 @@ int main (int argc, char** argv) {
   Mat gray;
   merge(channel, 3, gray);
   imshow("yo", gray);
+*/
+
 /*
   //channel[0,1,2] -> b,g,r
   Mat gray;
@@ -82,8 +84,15 @@ int main (int argc, char** argv) {
   //gaah = channel[2] - channel[1];
 */
 //  Mat hsv;
-//  cvtColor(image2, hsv, CV_BGR2HSV);
-//  inRange(hsv, Scalar(0,0,0,0), Scalar(180,255,30,0), image);
+//  cvtColor(image, hsv, CV_BGR2HSV);
+  Mat channel[3];
+  split(image, channel);
+/*
+  equalizeHist(channel[0], channel[0]);
+  equalizeHist(channel[1], channel[1]);
+  equalizeHist(channel[2], channel[2]);
+*/
+  inRange(avg, Scalar(0), Scalar(50), image);
 
 //  cvtColor(hsv, image, CV_HSV2BGR);
 
