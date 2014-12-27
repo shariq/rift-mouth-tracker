@@ -55,6 +55,8 @@ int main (int argc, char** argv) {
 // srand(890);//not interested in good randomness
 
  Mat image;
+ Mat channel[3];
+
  while (keepGoing) {
 
   image = cvQueryFrame(capture);
@@ -63,22 +65,24 @@ int main (int argc, char** argv) {
 
 
 // thresholds on dark regions
+
   Mat black, blurred;
-  Mat channel[3];
   split(image, channel);
-  equalizeHist(channel[0], channel[0]);
-  equalizeHist(channel[1], channel[1]);
-  equalizeHist(channel[2], channel[2]);
+//  equalizeHist(channel[0], channel[0]);
+//  equalizeHist(channel[1], channel[1]);
+//  equalizeHist(channel[2], channel[2]);
   merge(channel, 3, black);
   blur(black, blurred, Size(width/4.5,height/9));
   split(blurred, channel);
   black = (channel[0] + channel[1] + channel[2])/3.0;
   equalizeHist(black, black);
   bitwise_not(black,black);
-  threshold(black, black, 230, 255, THRESH_BINARY + THRESH_OTSU);
+  threshold(black, black, 0, 255, THRESH_BINARY + THRESH_OTSU);
   imshow("black", black);
 
-
+/*
+  Mat stdev;
+  split(image, channel);
 
 /*
   split(image, channel);
