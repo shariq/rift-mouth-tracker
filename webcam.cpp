@@ -72,12 +72,12 @@ int main (int argc, char** argv) {
   black = (channel[0] + channel[1] + channel[2])/3.0;
   equalizeHist(black, black);
   bitwise_not(black,black);
+
+  adaptiveThreshold(black, image, 255, ADAPTIVE_THRESH_GAUSSIAN_C, THRESH_BINARY, 19, 0);
+  imshow("ha", image);
+
   threshold(black, black, 220, 255, THRESH_BINARY);
   imshow("black", black);
-
-  adaptiveThreshold(image, image, 255, ADAPTIVE_THRESH_GAUSSIAN_C, THRESH_BINARY, 19, 0);
-
-  imshow("ha", image);
 
 
 /*
