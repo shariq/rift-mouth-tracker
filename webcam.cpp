@@ -80,13 +80,13 @@ int main (int argc, char** argv) {
 
   add(black, Scalar(2), black);
   Mat fgd, bgd;
-  grabCut(image, black, Rect(1,1), bgd, fgd, 5, GC_INIT_WITH_MASK);
+  grabCut(image, black, Rect(1,1,1,1), bgd, fgd, 5, GC_INIT_WITH_MASK);
   imshow("bgd1", bgd);
   imshow("fgd1", fgd);
-  grabCut(image, black, Rect(1,1), bgd, fgd, 15, GC_INIT_WITH_MASK);
+  grabCut(image, black, Rect(1,1,1,1), bgd, fgd, 15, GC_INIT_WITH_MASK);
   imshow("bgd2", bgd);
   imshow("fgd2", fgd);
-  grabCut(image, black, Rect(1,1), bgd, fgd, 25, GC_INIT_WITH_MASK);
+  grabCut(image, black, Rect(1,1,1,1), bgd, fgd, 25, GC_INIT_WITH_MASK);
   imshow("bgd3", bgd);
   imshow("fgd3", fgd);
 
