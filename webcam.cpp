@@ -78,6 +78,9 @@ int main (int argc, char** argv) {
 
   Mat stdev;
 //  split(image, channel);
+  equalizeHist(channel[0], channel[0]);
+  equalizeHist(channel[1], channel[1]);
+  equalizeHist(channel[2], channel[2]);
   stdev = (channel[0] + channel[1] + channel[2])/3.0;
   pow(channel[0] - stdev, 2.0, channel[0]);
   pow(channel[1] - stdev, 2.0, channel[1]);
