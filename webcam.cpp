@@ -61,7 +61,7 @@ int main (int argc, char** argv) {
 
  Mat background = cvQueryFrame(capture);
  background = background.clone();
- blur(background, background, Size(30,30));
+ blur(background, background, Size(100,100));
  imshow("background", background);
 
  Mat image;
@@ -105,7 +105,7 @@ int main (int argc, char** argv) {
   absdiff(flow, background, flow);
   cvtColor(flow, flow, CV_RGB2GRAY);
   flow = flow.mul(certainBackground);
-  blur(flow, flow, Size(30,30));
+  blur(flow, flow, Size(100,100));
   equalizeHist(flow, flow);
   imshow("flow", flow);
 
