@@ -76,9 +76,10 @@ int main (int argc, char** argv) {
 
   Mat canny;
   Canny(gray, canny, 50, 50, 3);
-
   blur(canny, canny, Size(width/20,height/20));
-  imshow("canny", canny);
+  bitwise_not(canny, canny);
+  threshold(canny, canny, 200, 1, THRESH_BINARY);
+  imshow("canny", canny.mul(image));
 
 /*
   bitwise_not(gray,gray);
