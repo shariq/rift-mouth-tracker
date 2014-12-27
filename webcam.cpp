@@ -70,7 +70,7 @@ int main (int argc, char** argv) {
   equalizeHist(blurred_gray, blurred_gray);
 
   threshold(blurred_gray, threshold_gray, 40, 255, THRESH_BINARY_INV);
-  imshow("threshold", threshold_gray);
+  imshow("threshold", threshold_gray.mul(gray));
 
   keepGoing = (waitKey(25)<0);
 
