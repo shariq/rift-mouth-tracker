@@ -74,8 +74,8 @@ int main (int argc, char** argv) {
   threshold(blurred_gray, threshold_gray, 210, 1, THRESH_BINARY);
   imshow("threshold", threshold_gray);
 
-
   Mat canny;
+  equalizeHist(gray, gray);
   Canny(gray, canny, 50, 200, 3);
   imshow("canny", canny);
   vector<Vec4i> lines;
