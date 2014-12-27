@@ -68,9 +68,9 @@ int main (int argc, char** argv) {
 
   Mat black, blurred;
   split(image, channel);
-//  equalizeHist(channel[0], channel[0]);
-//  equalizeHist(channel[1], channel[1]);
-//  equalizeHist(channel[2], channel[2]);
+  equalizeHist(channel[0], channel[0]);
+  equalizeHist(channel[1], channel[1]);
+  equalizeHist(channel[2], channel[2]);
   merge(channel, 3, black);
   blur(black, blurred, Size(width/4.5,height/9));
   split(blurred, channel);
