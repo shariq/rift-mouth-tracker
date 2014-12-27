@@ -74,10 +74,10 @@ int main (int argc, char** argv) {
   imshow("threshold", threshold_gray);
 
   Mat topHat;
-  Mat kernel(15,15,CV_8UC1,1);
+  Mat kernel(300,150,CV_8UC1,1);
 //  equalizeHist(gray, gray);
   morphologyEx(gray, topHat, MORPH_TOPHAT, kernel);
-  threshold(topHat, topHat, 5,255,THRESH_BINARY_INV);
+  threshold(topHat, topHat, 50,255,THRESH_BINARY_INV);
   imshow("tophat", topHat);
 
 /*
