@@ -99,6 +99,8 @@ int main (int argc, char** argv) {
 // and 1 for no clue what it is
   imshow("image", gray.mul(certainBackground));
 
+  imshow("backgr", background);
+
   Mat flow;
   blur(image, flow, Size(30,30));
   imshow("2", flow);
