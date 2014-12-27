@@ -83,7 +83,7 @@ int main (int argc, char** argv) {
 
   Mat mask;
   bitwise_or(canny, threshold_gray, mask);
-  Mat kernel = ones(15, 15, CV_8UC1);
+  Mat kernel = Mat::ones(15, 15, CV_8UC1);
   morphologyEx(mask, mask, MORPH_CLOSE, kernel, Point(-1,-1), 3);
   imshow("yo",gray.mul(mask));
 
