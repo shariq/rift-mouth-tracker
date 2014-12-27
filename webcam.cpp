@@ -70,7 +70,7 @@ int main (int argc, char** argv) {
 
   equalizeHist(black, black);
   blur(black, blurred, Size(width/9,height/18));
-  bitwise_not(black,black);
+  bitwise_not(blurred, blurred);
   threshold(blurred, blurred, 220, 255, THRESH_BINARY);
   imshow("lol", blurred);
   waitKey(1);
