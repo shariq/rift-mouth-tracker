@@ -77,28 +77,31 @@ int main (int argc, char** argv) {
   threshold(black, black, 210, 1, THRESH_BINARY);
 //  imshow("black", black);
 
+
+  add(black, Scalar(2), black);
+  Mat fgd, bgd;
+  grabCut(image, black, 0, bgd, fgd, 5, GC_INIT_WITH_MASK);
+  imshow("bgd1", bgd);
+  imshow("fgd1", fgd);
+  grabCut(image, black, 0, bgd, fgd, 15, GC_INIT_WITH_MASK);
+  imshow("bgd2", bgd);
+  imshow("fgd2", fgd);
+  grabCut(image, black, 0, bgd, fgd, 25, GC_INIT_WITH_MASK);
+  imshow("bgd3", bgd);
+  imshow("fgd3", fgd);
+
+/*
   split(image, channel);
   channel[0] = channel[0].mul(black);
   channel[1] = channel[1].mul(black);
   channel[2] = channel[2].mul(black);
   merge(channel, 3, image);
-  //image = (image)/(255*255);
-  imshow("yox", image);
+*/
+//  imshow("yox", image);
 
 //do some weird morphological closing thing
 //  Mat channel[3];
-  blur(image, image, Size(width/20, height/20));
-  split(image, channel);
-  image = (channel[0] + channel[1] + channel[2])/3.0;
 
-  Mat smooth;
-  Mat closed;
-  Mat kernel = getStructuringElement(MORPH_ELLIPSE, Size(100,100));
-  morphologyEx(image, closed, MORPH_CLOSE, kernel);
-  divide(image, closed, closed, 1, CV_32F);
-  normalize(closed, image, 0, 255, NORM_MINMAX, CV_8U);
-  threshold(image, image, -1, 255, THRESH_BINARY_INV + THRESH_OTSU);
-  imshow("yo", closed);
 
 /*
   Mat canny;
