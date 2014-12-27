@@ -1,7 +1,6 @@
 #include <opencv2/opencv.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <stdio.h>
-#include <random>
 #include <fstream>
 #include <iostream>
 #include <string>

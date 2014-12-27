@@ -52,73 +52,74 @@ int main (int argc, char** argv) {
 
  bool keepGoing = true;
 
+// srand(890);//not interested in good randomness
+
  Mat image;
  while (keepGoing) {
 
   image = cvQueryFrame(capture);
+  imshow("webcam", image);
 
-  //imshow("webcam", image);
 
-//  Mat image2;
-//  bilateralFilter(image, image2, 6,12,3);
-
-/*  Mat channel[3];
-  split(image, channel);
-  Mat avg;
-  avg = (channel[0] + channel[1] + channel[2])/3.0;
-  equalizeHist(channel[0],channel[0]);
-  equalizeHist(channel[1],channel[1]);
-  equalizeHist(channel[2],channel[2]);
-  pow(channel[0] - avg, 2.0, channel[0]);
-  pow(channel[1] - avg, 2.0, channel[1]);
-  pow(channel[2] - avg, 2.0, channel[2]);
-  Mat gray;
-  merge(channel, 3, gray);
-  imshow("yo", gray);
-*/
-
-/*
-  //channel[0,1,2] -> b,g,r
-  Mat gray;
-  divide(channel[2], channel[1], gray, 50);
-  //gaah = channel[2] - channel[1];
-*/
-//  Mat hsv;
-//  cvtColor(image, hsv, CV_BGR2HSV);
+// thresholds on dark regions
+  Mat black, blurred;
   Mat channel[3];
   split(image, channel);
-/*
   equalizeHist(channel[0], channel[0]);
   equalizeHist(channel[1], channel[1]);
   equalizeHist(channel[2], channel[2]);
-*/
-  inRange(avg, Scalar(0), Scalar(50), image);
+  merge(channel, 3, black);
+  blur(black, blurred, Size(width/4.5,height/9));
+  split(blurred, channel);
+  black = (channel[0] + channel[1] + channel[2])/3.0;
+  equalizeHist(black, black);
+  bitwise_not(black,black);
+  imshow("black", black);
 
-//  cvtColor(hsv, image, CV_HSV2BGR);
+  threshold(black, black, 40);
+  split(image, channel);
+  black = black/255.0;
+  channel[0] = channel[0].mul(black);
+  channel[1] = channel[1].mul(black);
+  channel[2] = channel[2].mul(black);
+  merge(channel, 3, image);
+  //image = (image)/(255*255);
+  imshow("yox", image);
+
+//do some weird morphological closing thing
+//  Mat channel[3];
+  blur(image, image, Size(width/20, height/20));
+  split(image, channel);
+  image = (channel[0] + channel[1] + channel[2])/3.0;
+
+  Mat smooth;
+  Mat closed;
+  Mat kernel = getStructuringElement(MORPH_ELLIPSE, Size(19,19));
+  morphologyEx(image, closed, MORPH_CLOSE, kernel);
+  divide(image, closed, closed, 1, CV_32F);
+  normalize(closed, image, 0, 255, NORM_MINMAX, CV_8U);
+  threshold(image, image, -1, 255, THRESH_BINARY_INV + THRESH_OTSU);
+  imshow("yo", image);
 
 /*
-  Mat gray;
-  cvtColor(image, gray, CV_BGR2GRAY);
-
-  vector<Point2f> corners;
-// maxCorners, qualityLevel, minDistance
-// blockSize, useHarrisDetector, k
-  goodFeaturesToTrack(gray, corners, 30, 0.01, 10, Mat(),\
-   3, false, 0.04);
-
-  for (int i=0; i<corners.size(); i++) {
-   circle(image, corners[i], 4, Scalar(100,100,0), -1, 8, 0);
-  }
+  Mat canny;
+  Canny(image, canny, 0, 50);
+  imshow("canny", canny);
 */
 
-  imshow("webcam", image);
+/*
+  Mat fill = image.clone();
+  Point seed(rand()%width, rand()%height);
+  floodFill(fill, seed, Scalar(200,0,0), 0, Scalar(0,0,0), Scalar(25,25,25));
+  imshow("fill", fill);
+*/
+
 
   keepGoing = (waitKey(25)<0);
 
  }
 
  cvReleaseCapture(&capture);
- cvDestroyWindow("webcam");
 
  return 0;
 }
