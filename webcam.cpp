@@ -88,7 +88,7 @@ int main (int argc, char** argv) {
   morphologyEx(certainBackground, certainBackground, MORPH_CLOSE, kernel, Point(-1,-1), 2);
 // certainBackground has 0 for definitely not rift
 // and 1 for no clue what it is
-
+  imshow("image", image);
   Mat bgd, fgd, mask;
   Mat foreground, uncertain;
   add(threshold_gray, Scalar(2), mask);
@@ -98,27 +98,6 @@ int main (int argc, char** argv) {
   bitwise_and(mask, 1, foreground);
   foreground = foreground - uncertain;
   imshow("yeh",foreground*200+uncertain*100);
-  waitKey(0);
-  grabCut(image, mask, Rect(0,0,0,0), bgd, fgd, 1, GC_INIT_WITH_MASK);
-  bitwise_and(mask, 2, uncertain);
-  uncertain = uncertain/2;
-  bitwise_and(mask, 1, foreground);
-  foreground = foreground - uncertain;
-  imshow("yeh1",foreground*200+uncertain*100);
-  waitKey(0);
-  grabCut(image, mask, Rect(0,0,0,0), bgd, fgd, 1, GC_INIT_WITH_MASK);
-  bitwise_and(mask, 2, uncertain);
-  uncertain = uncertain/2;
-  bitwise_and(mask, 1, foreground);
-  foreground = foreground - uncertain;
-  imshow("yeh2",foreground*200+uncertain*100);
-  waitKey(0);
-  grabCut(image, mask, Rect(0,0,0,0), bgd, fgd, 1, GC_INIT_WITH_MASK);
-  bitwise_and(mask, 2, uncertain);
-  uncertain = uncertain/2;
-  bitwise_and(mask, 1, foreground);
-  foreground = foreground - uncertain;
-  imshow("yeh3",foreground*200+uncertain*100);
 
 /*
   bitwise_not(gray,gray);
