@@ -112,9 +112,9 @@ int main (int argc, char** argv) {
   cvtColor(flow, flow, CV_RGB2GRAY);
   blur(flow, flow, Size(50,50));
   equalizeHist(flow, flow);
-  imshow("FLOW", flow);
   Mat mask;
   threshold(flow, mask, 210, 255, THRESH_BINARY);
+  imshow("FLOW", mask);
 
 /*
   bitwise_not(gray,gray);
