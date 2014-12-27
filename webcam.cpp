@@ -60,6 +60,7 @@ int main (int argc, char** argv) {
  }
 
  Mat background = cvQueryFrame(capture);
+ blur(background, background, Size(30,30));
  imshow("background", background);
 
  Mat image;
@@ -98,9 +99,19 @@ int main (int argc, char** argv) {
 // and 1 for no clue what it is
   imshow("image", gray.mul(certainBackground));
 
-  Mat flow = image - background;
+  Mat flow;
+  blur(image, flow, Size(30,30));
+  imshow("2", flow);
+  waitKey(0);
+  flow = flow - background;
+  imshow("0", flow);
+  waitKey(0);
   pow(flow, 2, flow);
+  imshow("1", flow);
+  waitKey(0);
   cvtColor(flow, flow, CV_RGB2GRAY);
+  imshow("3", flow);
+  waitKey(0);
   equalizeHist(flow, flow);
   imshow("flow", flow);
 
