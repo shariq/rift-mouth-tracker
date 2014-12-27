@@ -61,11 +61,6 @@ int main (int argc, char** argv) {
 
  Mat background = cvQueryFrame(capture);
  background = background.clone();
- background += cvQueryFrame(capture);
- background += cvQueryFrame(capture);
- background += cvQueryFrame(capture);
- background += cvQueryFrame(capture);
- background = background/5;
  blur(background, background, Size(50,50));
  imshow("background", background);
 
@@ -105,24 +100,29 @@ int main (int argc, char** argv) {
 // and 1 for no clue what it is
   imshow("image", gray.mul(certainBackground));
 
+  Mat channels[3];
+  Mat cB;
+  channels[0] = certainBackground;
+  channels[1] = certainBackground;
+  channels[2] = certainBackground;
+  merge(channels, 3, cB);
   Mat flow;
   blur(image, flow, Size(50,50));
-  absdiff(flow.mul(certainBackground), background.mul(certainBackground), flow);
+  absdiff(flow.mul(cB), background.mul(cB), flow);
   cvtColor(flow, flow, CV_RGB2GRAY);
   blur(flow, flow, Size(50,50));
   equalizeHist(flow, flow);
-  imshow("flow", gray.mul(flow)/255);
-
+  Mat mask = flow;
 
 /*
   bitwise_not(gray,gray);
   Mat mask = threshold_gray.mul(gray);
   imshow("mask", mask);
-
+*/
   Moments lol = moments(mask, 1);
   circle(image, Point(lol.m10/lol.m00,lol.m01/lol.m00),20,Scalar(128),30);
   imshow("leimage", image);
-*/
+
 
   keepGoing = (waitKey(25)<0);
 
