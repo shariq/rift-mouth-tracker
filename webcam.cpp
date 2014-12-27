@@ -54,6 +54,14 @@ int main (int argc, char** argv) {
 
 // srand(890);//not interested in good randomness
 
+ for (int i = 0; i < 30; i++) {
+  // capture some frames so exposure correction takes place
+  cvQueryFrame(capture);
+ }
+
+ Mat background = cvQueryFrame(capture);
+ imshow("background", background);
+
  Mat image;
  Mat channel[3];
 
@@ -88,16 +96,13 @@ int main (int argc, char** argv) {
   morphologyEx(certainBackground, certainBackground, MORPH_CLOSE, kernel, Point(-1,-1), 2);
 // certainBackground has 0 for definitely not rift
 // and 1 for no clue what it is
-  imshow("image", image);
-  Mat bgd, fgd, mask;
-  Mat foreground, uncertain;
-  add(threshold_gray, Scalar(2), mask);
-  mask = mask.mul(certainBackground);
-  bitwise_and(mask, 2, uncertain);
-  uncertain = uncertain/2;
-  bitwise_and(mask, 1, foreground);
-  foreground = foreground - uncertain;
-  imshow("yeh",foreground*200+uncertain*100);
+  imshow("image", gray.mul(certainBackground));
+
+  Mat flow;
+  pow((image - background), 2, flow);
+  cvtColor(flow, flow, CV_GBR2GRAY);
+  equalizeHist(flow, flow);
+  imshow("flow", flow);
 
 /*
   bitwise_not(gray,gray);
@@ -108,6 +113,7 @@ int main (int argc, char** argv) {
   circle(image, Point(lol.m10/lol.m00,lol.m01/lol.m00),20,Scalar(128),30);
   imshow("leimage", image);
 */
+
   keepGoing = (waitKey(25)<0);
 
 
