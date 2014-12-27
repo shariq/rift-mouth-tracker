@@ -71,40 +71,7 @@ int main (int argc, char** argv) {
   bitwise_not(blurred_gray, blurred_gray);
 
   threshold(blurred_gray, threshold_gray, 220, 255, THRESH_BINARY);
-//  imshow("threshold", threshold_gray);
-
-  Mat topHat;
-  Mat kernel(150,75,CV_8UC1,1);
-  equalizeHist(gray, gray);
-  morphologyEx(gray, topHat, MORPH_TOPHAT, kernel);
-  threshold(topHat, topHat, 10,255,THRESH_BINARY_INV);
-  imshow("tophat", topHat);//.mul(threshold_gray));
-
-/*
-  split(image, channel);
-  channel[0] = channel[0].mul(black);
-  channel[1] = channel[1].mul(black);
-  channel[2] = channel[2].mul(black);
-  merge(channel, 3, image);
-*/
-//  imshow("yox", image);
-
-//do some weird morphological closing thing
-//  Mat channel[3];
-
-
-/*
-  Mat canny;
-  Canny(image, canny, 0, 50);
-  imshow("canny", canny);
-*/
-
-/*
-  Mat fill = image.clone();
-  Point seed(rand()%width, rand()%height);
-  floodFill(fill, seed, Scalar(200,0,0), 0, Scalar(0,0,0), Scalar(25,25,25));
-  imshow("fill", fill);
-*/
+  imshow("threshold", threshold_gray);
 
 
   keepGoing = (waitKey(25)<0);
