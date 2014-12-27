@@ -68,11 +68,12 @@ int main (int argc, char** argv) {
   cvtColor(image, gray, CV_BGR2GRAY);
   blur(gray, blurred_gray, Size(width/10,height/20));
   equalizeHist(blurred_gray, blurred_gray);
-  threshold(blurred_gray, threshold_gray, 40, 255, THRESH_BINARY_INV);
+  threshold(blurred_gray, threshold_gray, 40, 1, THRESH_BINARY_INV);
   imshow("threshold", threshold_gray);
 
-
-  Moments lol = moments(threshold_gray, 1);
+  Mat inverst;
+  bitwise_not(threshold_gray, inverst);
+  Moments lol = moments(threshold_gray.mul(inverst), 1);
 /*
   printf("m00: %f, m10: %f, m01: %f, m20: %f, m11: %f\n", lol.m00, lol.m10, lol.m01, lol.m20, lol.m11);
   printf("m02: %f, m30: %f, m21: %f, m12: %f, m03: %f\n", lol.m02, lol.m30, lol.m21, lol.m12, lol.m03);
@@ -80,8 +81,8 @@ int main (int argc, char** argv) {
 
   printf("center (x,y) (%f,%f)\n",lol.m10/lol.m00,lol.m01/lol.m00);
 */
-  circle(threshold_gray, Point(lol.m10/lol.m00,lol.m01/lol.m00),20,Scalar(128),30);
-  imshow("threshold", threshold_gray);
+  circle(image, Point(lol.m10/lol.m00,lol.m01/lol.m00),20,Scalar(128),30);
+  imshow("threshold", image);
   keepGoing = (waitKey(25)<0);
 
  }
