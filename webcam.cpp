@@ -59,7 +59,7 @@ int main (int argc, char** argv) {
   cvQueryFrame(capture);
  }
 
- Mat background = cvQueryFrame(capture);
+ Mat background = cvQueryFrame(capture).clone();
  blur(background, background, Size(30,30));
  imshow("background", background);
 
