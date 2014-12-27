@@ -1,4 +1,4 @@
-#include "webcam.hpp"
+m#include "webcam.hpp"
 
 using namespace cv;
 using namespace std;
@@ -64,14 +64,14 @@ int main (int argc, char** argv) {
 
 // thresholds on dark regions
 
-  Mat black, blurred_gray, threshold;
+  Mat black, blurred_gray, threshold_gray;
   cvtColor(image, black, CV_BGR2GRAY);
   blur(black, blurred_gray, Size(width/4.5,height/9));
   equalizeHist(blurred_gray, blurred_gray);
   bitwise_not(blurred_gray, blurred_gray);
 
-  threshold(blurred_gray, threshold, 220, 255, THRESH_BINARY);
-  imshow("threshold", threshold);
+  threshold(blurred_gray, threshold_gray, 220, 255, THRESH_BINARY);
+  imshow("threshold", threshold_gray);
 
   Mat topHat;
   Mat kernel = Mat::ones(15,15,CV_8UC1);
