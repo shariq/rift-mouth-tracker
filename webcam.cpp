@@ -62,15 +62,10 @@ int main (int argc, char** argv) {
   image = cvQueryFrame(capture);
   imshow("webcam", image);
 
-
-
 // thresholds on dark regions
 
   Mat black, blurred;
   split(image, channel);
-//  equalizeHist(channel[0], channel[0]);
-//  equalizeHist(channel[1], channel[1]);
-//  equalizeHist(channel[2], channel[2]);
   merge(channel, 3, black);
   blur(black, blurred, Size(width/4.5,height/9));
   split(blurred, channel);
@@ -80,9 +75,17 @@ int main (int argc, char** argv) {
   threshold(black, black, 220, 255, THRESH_BINARY);
   imshow("black", black);
 
-/*
+
   Mat stdev;
-  split(image, channel);
+//  split(image, channel);
+  stdev = (channel[0] + channel[1] + channel[2])/3.0;
+  channel[0] = pow(channel[0] - stdev, 2.0);
+  channel[1] = pow(channel[1] - stdev, 2.0);
+  channel[2] = pow(channel[2] - stdev, 2.0);
+  stdev = channel[0] + channel[1] + channel[2];
+  stdev = (stdev/3.0);
+  imshow("stdev", stdev);
+
 
 /*
   split(image, channel);
