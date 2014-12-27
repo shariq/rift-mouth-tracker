@@ -75,6 +75,7 @@ int main (int argc, char** argv) {
   imshow("webcam", image);
 
 
+
 // thresholds on dark regions
   Mat black, blurred;
   Mat channel[3];
@@ -88,21 +89,10 @@ int main (int argc, char** argv) {
   black = (channel[0] + channel[1] + channel[2])/3.0;
   equalizeHist(black, black);
   bitwise_not(black,black);
-  threshold(black, black, 210, 1, THRESH_BINARY);
-//  imshow("black", black);
+  threshold(black, black, 210, 1, THRESH_BINARY + THRESH_OTSU);
+  imshow("black", black);
 
 
-  add(black, Scalar(2), black);
-  vector<Point> fgd, bgd;
-  grabCut(image, black, Rect(1,1,1,1), bgd, fgd, 5, GC_INIT_WITH_MASK);
-  showImage(image, black, bgd, fgd);
-  waitKey(0);
-  grabCut(image, black, Rect(1,1,1,1), bgd, fgd, 15, GC_INIT_WITH_MASK);
-  showImage(image, black, bgd, fgd);
-  waitKey(0);
-  grabCut(image, black, Rect(1,1,1,1), bgd, fgd, 25, GC_INIT_WITH_MASK);
-  showImage(image, black, bgd, fgd);
-  waitKey(0);
 
 /*
   split(image, channel);
