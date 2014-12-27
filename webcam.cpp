@@ -73,7 +73,7 @@ int main (int argc, char** argv) {
 
   Mat inverst;
   bitwise_not(threshold_gray, inverst);
-  Mat mask = threshold_gray.mult(inverst);
+  Mat mask = threshold_gray.mul(inverst);
   imshow("mask", mask);
 
   Moments lol = moments(mask, 1);
