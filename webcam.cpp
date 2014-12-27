@@ -78,7 +78,7 @@ int main (int argc, char** argv) {
 //  equalizeHist(gray, gray);
   morphologyEx(blurred_gray, topHat, MORPH_TOPHAT, kernel);
   threshold(topHat, topHat, 50,255,THRESH_BINARY_INV);
-  imshow("tophat", topHat);//.mul(threshold_gray));
+  imshow("tophat", topHat.mul(threshold_gray));
 
 /*
   split(image, channel);
