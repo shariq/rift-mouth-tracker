@@ -93,13 +93,13 @@ int main (int argc, char** argv) {
   Mat certainBackground;
   bitwise_or(canny, threshold_gray, certainBackground);
   Mat kernel = Mat::ones(15, 15, CV_8UC1);
-  morphologyEx(certainBackground, certainBackground, MORPH_CLOSE, kernel, Point(-1,-1), 2);
+  morphologyEx(certainBackground, certainBackground, MORPH_CLOSE, kernel, Point(-1,-1), 3);
 // certainBackground has 0 for definitely not rift
 // and 1 for no clue what it is
   imshow("image", gray.mul(certainBackground));
 
-  Mat flow;
-  pow((image - background), 2, flow);
+  Mat flow = image - background;
+  pow(flow, 2, flow);
   cvtColor(flow, flow, CV_RGB2GRAY);
   equalizeHist(flow, flow);
   imshow("flow", flow);
