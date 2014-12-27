@@ -92,7 +92,7 @@ int main (int argc, char** argv) {
 
   Mat bgd, fgd, mask;
   add(threshold_gray, Scalar(2), mask);
-  Mat mask = mask.mul(certainBackground);
+  mask = mask.mul(certainBackground);
   imshow("prior mask", mask*80);
   grabCut(image, mask, Rect(0,0,0,0), bgd, fgd, 1, GC_INIT_WITH_MASK);
   imshow("heya", mask);
