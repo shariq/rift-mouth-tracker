@@ -76,7 +76,7 @@ int main (int argc, char** argv) {
   bitwise_not(black,black);
   imshow("black", black);
 
-  threshold(black, black, 40, 1, THRESH_BINARY);
+  threshold(black, black, 40, 1, THRESH_BINARY_INV);
   split(image, channel);
   channel[0] = channel[0].mul(black);
   channel[1] = channel[1].mul(black);
