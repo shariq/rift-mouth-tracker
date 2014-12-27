@@ -75,7 +75,7 @@ int main (int argc, char** argv) {
   black = (channel[0] + channel[1] + channel[2])/3.0;
   equalizeHist(black, black);
   bitwise_not(black,black);
-  threshold(black, black, 210, 255, THRESH_BINARY + THRESH_OTSU);
+  threshold(black, black, 0, 255, THRESH_BINARY + THRESH_OTSU);
   imshow("black", black);
 
 
