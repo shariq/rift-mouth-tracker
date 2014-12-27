@@ -90,7 +90,7 @@ int main (int argc, char** argv) {
 // and 1 for no clue what it is
 
   Mat bgd, fgd, mask;
-  Mat foreground, background, uncertain;
+  Mat foreground, uncertain;
   add(threshold_gray, Scalar(2), mask);
   mask = mask.mul(certainBackground);
   bitwise_and(mask, 2, uncertain);
@@ -99,6 +99,23 @@ int main (int argc, char** argv) {
   foreground = foreground - uncertain;
   imshow("yeh",foreground*200+uncertain*100);
   grabCut(image, mask, Rect(0,0,0,0), bgd, fgd, 1, GC_INIT_WITH_MASK);
+  bitwise_and(mask, 2, uncertain);
+  uncertain = uncertain/2;
+  bitwise_and(mask, 1, foreground);
+  foreground = foreground - uncertain;
+  imshow("yeh1",foreground*200+uncertain*100);
+  grabCut(image, mask, Rect(0,0,0,0), bgd, fgd, 1, GC_INIT_WITH_MASK);
+  bitwise_and(mask, 2, uncertain);
+  uncertain = uncertain/2;
+  bitwise_and(mask, 1, foreground);
+  foreground = foreground - uncertain;
+  imshow("yeh2",foreground*200+uncertain*100);
+  grabCut(image, mask, Rect(0,0,0,0), bgd, fgd, 1, GC_INIT_WITH_MASK);
+  bitwise_and(mask, 2, uncertain);
+  uncertain = uncertain/2;
+  bitwise_and(mask, 1, foreground);
+  foreground = foreground - uncertain;
+  imshow("yeh3",foreground*200+uncertain*100);
 
 /*
   bitwise_not(gray,gray);
