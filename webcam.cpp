@@ -74,7 +74,7 @@ int main (int argc, char** argv) {
   imshow("threshold", threshold_gray);
 
   Mat topHat;
-  Mat kernel = Mat::ones(15,15,CV_8UC1);
+  Mat kernel(15,15,CV_8UC1,255);
   morphologyEx(blurred_gray, topHat, MORPH_TOPHAT, kernel);
   imshow("tophat", topHat);
 
