@@ -95,7 +95,7 @@ int main (int argc, char** argv) {
   mask = mask.mul(certainBackground);
   imshow("prior mask", mask*80);
   grabCut(image, mask, Rect(0,0,0,0), bgd, fgd, 1, GC_INIT_WITH_MASK);
-  imshow("heya", mask);
+  imshow("heya", mask*80);
 
 /*
   bitwise_not(gray,gray);
