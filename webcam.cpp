@@ -1,4 +1,4 @@
-#include "webcam.hpp"
+f#include "webcam.hpp"
 
 using namespace cv;
 using namespace std;
@@ -78,9 +78,6 @@ int main (int argc, char** argv) {
   black = (channel[0] + channel[1] + channel[2])/3.0;
   equalizeHist(black, black);
   bitwise_not(black,black);
-
-  adaptiveThreshold(black, black, 255, ADAPTIVE_THRESH_GAUSSIAN_C, THRESH_BINARY, 19, 0);
-  imshow("ha", black);
 
   threshold(black, black, 220, 255, THRESH_BINARY);
   imshow("black", black);
