@@ -75,7 +75,9 @@ int main (int argc, char** argv) {
 
   Mat topHat;
   Mat kernel(15,15,CV_8UC1,255);
-  morphologyEx(blurred_gray, topHat, MORPH_TOPHAT, kernel);
+  equalizeHist(gray, gray);
+  morphologyEx(gray, topHat, MORPH_TOPHAT, kernel);
+  threshold(topHat, topHat, 100,255,THRESH_BINARY);
   imshow("tophat", topHat);
 
 /*
