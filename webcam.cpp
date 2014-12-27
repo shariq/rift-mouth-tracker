@@ -77,6 +77,7 @@ int main (int argc, char** argv) {
 
   Mat canny;
   Canny(gray, canny, 50, 200, 3);
+  imshow("canny", canny);
   vector<Vec4i> lines;
   HoughLinesP(canny, lines, 10, CV_PI/180, 150);
   for (size_t i = 0; i < lines.size(); i++) {
