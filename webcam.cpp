@@ -90,16 +90,15 @@ int main (int argc, char** argv) {
 // and 1 for no clue what it is
 
   Mat bgd, fgd, mask;
-  Mat foreground, background;
+  Mat foreground, background, uncertain;
   add(threshold_gray, Scalar(2), mask);
   mask = mask.mul(certainBackground);
-  bitwise_and(mask,4,foreground);
-  background = mask.clone();
-  background = background * 255;//not sure if this will overflow
-  imshow("YO",background.mul(foreground));
+  bitwise_and(mask, 2, uncertain);
+  uncertain = uncertain/2;
+  bitwise_and(mask, 1, foreground);
+  foreground = foreground - uncertain;
+  imshow("yeh",foreground*200+uncertain*100);
   grabCut(image, mask, Rect(0,0,0,0), bgd, fgd, 1, GC_INIT_WITH_MASK);
-  bitwise_and(mask, Scalar(1), foreground);
-  imshow("FG2",foreground.mul(gray));
 
 /*
   bitwise_not(gray,gray);
