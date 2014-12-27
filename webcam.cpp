@@ -113,7 +113,8 @@ int main (int argc, char** argv) {
   blur(flow, flow, Size(50,50));
   equalizeHist(flow, flow);
   imshow("FLOW", flow);
-  Mat mask = flow;
+  Mat mask;
+  threshold(flow, mask, 210, 255, THRESH_BINARY);
 
 /*
   bitwise_not(gray,gray);
