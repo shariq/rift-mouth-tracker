@@ -107,7 +107,7 @@ int main (int argc, char** argv) {
   flow = flow.mul(certainBackground);
   blur(flow, flow, Size(100,100));
   equalizeHist(flow, flow);
-  imshow("flow", gray.mul(flow/255));
+  imshow("flow", gray.mul(flow)/255);
 
 
 /*
