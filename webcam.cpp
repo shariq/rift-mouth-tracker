@@ -64,8 +64,10 @@ int main (int argc, char** argv) {
 
 // thresholds on dark regions
 
+
   Mat gray, blurred_gray, threshold_gray;
   cvtColor(image, gray, CV_BGR2GRAY);
+
   blur(gray, blurred_gray, Size(width/10,height/20));
   equalizeHist(blurred_gray, blurred_gray);
   bitwise_not(blurred_gray, blurred_gray);
@@ -73,8 +75,10 @@ int main (int argc, char** argv) {
   imshow("threshold", threshold_gray);
 
 
+  Mat canny;
+  Canny(threshold_gray, canny, 50, 200, 3);
   vector<Vec4i> lines;
-  HoughLinesP(blurred_gray, lines, 1, CV_PI/180, 20);
+  HoughLinesP(canny, lines, 10, CV_PI/180, 100);
   for (size_t i = 0; i < lines.size(); i++) {
    line(image, Point(lines[i][0], lines[i][1]),
     Point(lines[i][2], lines[i][3]), Scalar(0,0,255), 3, 8);
@@ -89,8 +93,9 @@ int main (int argc, char** argv) {
   Moments lol = moments(mask, 1);
   circle(image, Point(lol.m10/lol.m00,lol.m01/lol.m00),20,Scalar(128),30);
   imshow("leimage", image);
-  keepGoing = (waitKey(25)<0);
 */
+  keepGoing = (waitKey(25)<0);
+
 
  }
 
