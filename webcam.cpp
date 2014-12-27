@@ -98,7 +98,7 @@ int main (int argc, char** argv) {
   divide(image, closed, closed, 1, CV_32F);
   normalize(closed, image, 0, 255, NORM_MINMAX, CV_8U);
   threshold(image, image, -1, 255, THRESH_BINARY_INV + THRESH_OTSU);
-  imshow("yo", image);
+  imshow("yo", closed);
 
 /*
   Mat canny;
