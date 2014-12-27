@@ -78,7 +78,7 @@ int main (int argc, char** argv) {
   Canny(gray, canny, 50, 50, 3);
   blur(canny, canny, Size(width/20,height/20));
   bitwise_not(canny, canny);
-  threshold(canny, canny, 170, 1, THRESH_BINARY);
+  threshold(canny, canny, 235, 1, THRESH_BINARY);
   imshow("canny", canny.mul(gray));
 
 /*
