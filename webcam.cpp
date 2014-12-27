@@ -64,7 +64,6 @@ int main (int argc, char** argv) {
 
 // thresholds on dark regions
 
-
   Mat gray, blurred_gray, threshold_gray;
   cvtColor(image, gray, CV_BGR2GRAY);
 
@@ -91,11 +90,20 @@ int main (int argc, char** argv) {
 // and 1 for no clue what it is
 
   Mat bgd, fgd, mask;
+  Mat foreground;
   add(threshold_gray, Scalar(2), mask);
   mask = mask.mul(certainBackground);
-  imshow("prior mask", mask*80);
+  bitwise_and(mask, Scalar(1), foreground);
+  imshow("FG",foreground.mul(image));
   grabCut(image, mask, Rect(0,0,0,0), bgd, fgd, 1, GC_INIT_WITH_MASK);
-  imshow("heya", mask*80);
+  bitwise_and(mask, Scalar(1), foreground);
+  imshow("FG2",foreground.mul(image));
+  grabCut(image, mask, Rect(0,0,0,0), bgd, fgd, 1, GC_INIT_WITH_MASK);
+  bitwise_and(mask, Scalar(1), foreground);
+  imshow("FG3",foreground.mul(image));
+  grabCut(image, mask, Rect(0,0,0,0), bgd, fgd, 1, GC_INIT_WITH_MASK);
+  bitwise_and(mask, Scalar(1), foreground);
+  imshow("FG4",foreground.mul(image));
 
 /*
   bitwise_not(gray,gray);
