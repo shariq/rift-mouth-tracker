@@ -68,8 +68,8 @@ int main (int argc, char** argv) {
   cvtColor(image, gray, CV_BGR2GRAY);
   blur(gray, blurred_gray, Size(width/10,height/20));
   equalizeHist(blurred_gray, blurred_gray);
-  threshold(blurred_gray, threshold_gray, 40, 1, THRESH_BINARY_INV);
-  //imshow("threshold", threshold_gray);
+  threshold(blurred_gray, threshold_gray, 210, 1, THRESH_BINARY);
+  imshow("threshold", threshold_gray);
 
   Mat inverst;
   bitwise_not(blurred_gray, inverst);
