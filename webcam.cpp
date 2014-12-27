@@ -71,7 +71,7 @@ int main (int argc, char** argv) {
   blur(black, blurred, Size(width/9,height/18));
   threshold(blurred, blurred, 220, 255, THRESH_BINARY);
   imshow("lol", blurred);
-  waitKey(0);
+  waitKey(1);
   merge(channel, 3, black);
   blur(black, blurred, Size(width/4.5,height/9));
   split(blurred, channel);
