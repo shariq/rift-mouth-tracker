@@ -101,7 +101,7 @@ int main (int argc, char** argv) {
   imshow("image", gray.mul(certainBackground));
 
   Mat flow;
-  blur(image, flow, Size(30,30));
+  blur(image, flow, Size(100,100));
   absdiff(flow, background, flow);
   cvtColor(flow, flow, CV_RGB2GRAY);
   flow = flow.mul(certainBackground);
