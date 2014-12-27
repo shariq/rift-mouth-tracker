@@ -72,7 +72,7 @@ int main (int argc, char** argv) {
   //imshow("threshold", threshold_gray);
 
   Mat inverst;
-  bitwise_not(threshold_gray, inverst);
+  bitwise_not(blurred_gray, inverst);
   Mat mask = threshold_gray.mul(inverst);
   imshow("mask", mask);
 
