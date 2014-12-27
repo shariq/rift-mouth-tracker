@@ -75,8 +75,7 @@ int main (int argc, char** argv) {
   imshow("threshold", threshold_gray);
 
   Mat canny;
-  equalizeHist(gray, gray);
-  Canny(gray, canny, 50, 200, 3);
+  Canny(gray, canny, 30, 40, 3);
   imshow("canny", canny);
   vector<Vec4i> lines;
   HoughLinesP(canny, lines, 10, CV_PI/180, 150);
