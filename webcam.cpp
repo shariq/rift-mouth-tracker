@@ -100,7 +100,7 @@ int main (int argc, char** argv) {
 
   Mat flow;
   pow((image - background), 2, flow);
-  cvtColor(flow, flow, CV_GBR2GRAY);
+  cvtColor(flow, flow, CV_RGB2GRAY);
   equalizeHist(flow, flow);
   imshow("flow", flow);
 
