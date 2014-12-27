@@ -73,11 +73,15 @@ int main (int argc, char** argv) {
 
 
   Moments lol = moments(threshold_gray, 1);
+/*
   printf("m00: %f, m10: %f, m01: %f, m20: %f, m11: %f\n", lol.m00, lol.m10, lol.m01, lol.m20, lol.m11);
   printf("m02: %f, m30: %f, m21: %f, m12: %f, m03: %f\n", lol.m02, lol.m30, lol.m21, lol.m12, lol.m03);
   printf("mu20: %f, mu11: %f, mu02: %f, mu30: %f, mu21: %f, mu12: %f, mu03: %f\n", lol.mu20, lol.mu11, lol.mu02, lol.mu30, lol.mu21, lol.mu12, lol.mu03);
 
   printf("center (x,y) (%f,%f)\n",lol.m10/lol.m00,lol.m01/lol.m00);
+*/
+  circle(threshold_gray, Point(lol.m10/lol.m00,lol.m01/lol.m00),3,Scalar(128));
+  imshow("threshold", threshold_gray);
   keepGoing = (waitKey(25)<0);
 
  }
