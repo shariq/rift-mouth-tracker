@@ -3,20 +3,6 @@
 using namespace cv;
 using namespace std;
 
-void showImage( Mat& _img, Mat& _mask, vector<Point>& _bgdPxls, vector<Point>& _fgdPxls )
-	{
-	    Mat res;
-	    Mat binMask = _mask;
-	
-	    vector<Point>::const_iterator it;
-	    for( it = _bgdPxls.begin(); it != _bgdPxls.end(); ++it )
-	        circle( res, *it, 1, Scalar(255,0,0) );
-	    for( it = _fgdPxls.begin(); it != _fgdPxls.end(); ++it )
-	        circle( res, *it, 1, Scalar(0,255,0) );
-	
-	    imshow( "yo", res );
-	}
-
 int main (int argc, char** argv) {
 
  CvCapture* capture = 0;
@@ -89,7 +75,7 @@ int main (int argc, char** argv) {
   black = (channel[0] + channel[1] + channel[2])/3.0;
   equalizeHist(black, black);
   bitwise_not(black,black);
-  threshold(black, black, 210, 1, THRESH_BINARY + THRESH_OTSU);
+  threshold(black, black, 210, 255, THRESH_BINARY + THRESH_OTSU);
   imshow("black", black);
 
 
