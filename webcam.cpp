@@ -86,7 +86,7 @@ int main (int argc, char** argv) {
   pow(channel[1] - stdev, 2.0, channel[1]);
   pow(channel[2] - stdev, 2.0, channel[2]);
   stdev = channel[0] + channel[1] + channel[2];
-  stdev = (stdev/3.0);
+//  stdev = (stdev/3.0);
   imshow("stdev", stdev);
 
 
