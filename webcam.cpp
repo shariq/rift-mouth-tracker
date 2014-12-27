@@ -75,7 +75,7 @@ int main (int argc, char** argv) {
   equalizeHist(black, black);
   bitwise_not(black,black);
   threshold(black, black, 210, 1, THRESH_BINARY);
-  imshow("black", black);
+//  imshow("black", black);
 
   split(image, channel);
   channel[0] = channel[0].mul(black);
@@ -93,7 +93,7 @@ int main (int argc, char** argv) {
 
   Mat smooth;
   Mat closed;
-  Mat kernel = getStructuringElement(MORPH_ELLIPSE, Size(19,19));
+  Mat kernel = getStructuringElement(MORPH_ELLIPSE, Size(100,100));
   morphologyEx(image, closed, MORPH_CLOSE, kernel);
   divide(image, closed, closed, 1, CV_32F);
   normalize(closed, image, 0, 255, NORM_MINMAX, CV_8U);
