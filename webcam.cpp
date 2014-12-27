@@ -104,8 +104,8 @@ int main (int argc, char** argv) {
   blur(image, flow, Size(30,30));
   absdiff(flow, background, flow);
   cvtColor(flow, flow, CV_RGB2GRAY);
-  equalizeHist(flow, flow);
   flow = flow.mul(certainBackground);
+  equalizeHist(flow, flow);
   imshow("flow", flow);
 
 /*
