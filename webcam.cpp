@@ -92,18 +92,14 @@ int main (int argc, char** argv) {
   Mat bgd, fgd, mask;
   Mat foreground;
   add(threshold_gray, Scalar(2), mask);
+  imshow("1", mask);
+  imshow("2", certainBackground);
   mask = mask.mul(certainBackground);
   bitwise_and(mask, Scalar(1), foreground);
-  imshow("FG",foreground.mul(image));
-  grabCut(image, mask, Rect(0,0,0,0), bgd, fgd, 1, GC_INIT_WITH_MASK);
-  bitwise_and(mask, Scalar(1), foreground);
-  imshow("FG2",foreground.mul(image));
-  grabCut(image, mask, Rect(0,0,0,0), bgd, fgd, 1, GC_INIT_WITH_MASK);
-  bitwise_and(mask, Scalar(1), foreground);
-  imshow("FG3",foreground.mul(image));
-  grabCut(image, mask, Rect(0,0,0,0), bgd, fgd, 1, GC_INIT_WITH_MASK);
-  bitwise_and(mask, Scalar(1), foreground);
-  imshow("FG4",foreground.mul(image));
+  imshow("FG",foreground.mul(gray));
+//  grabCut(image, mask, Rect(0,0,0,0), bgd, fgd, 1, GC_INIT_WITH_MASK);
+//  bitwise_and(mask, Scalar(1), foreground);
+//  imshow("FG2",foreground.mul(gray));
 
 /*
   bitwise_not(gray,gray);
