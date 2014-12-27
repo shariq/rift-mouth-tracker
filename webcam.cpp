@@ -78,7 +78,7 @@ int main (int argc, char** argv) {
   Mat canny;
   Canny(gray, canny, 50, 200, 3);
   vector<Vec4i> lines;
-  HoughLinesP(canny, lines, 10, CV_PI/180, 100);
+  HoughLinesP(canny, lines, 10, CV_PI/180, 150);
   for (size_t i = 0; i < lines.size(); i++) {
    line(image, Point(lines[i][0], lines[i][1]),
     Point(lines[i][2], lines[i][3]), Scalar(0,0,255), 3, 8);
