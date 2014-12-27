@@ -3,6 +3,20 @@
 using namespace cv;
 using namespace std;
 
+void showImage( Mat& _img, Mat& _mask, vector<Point>& _bgdPxls, vector<Point>& _fgdPxls )
+	{
+	    Mat res;
+	    Mat binMask = _mask;
+	
+	    vector<Point>::const_iterator it;
+	    for( it = _bgdPxls.begin(); it != _bgdPxls.end(); ++it )
+	        circle( res, *it, 1, Scalar(255,0,0) );
+	    for( it = _fgdPxls.begin(); it != _fgdPxls.end(); ++it )
+	        circle( res, *it, 1, Scalar(0,255,0) );
+	
+	    imshow( "yo", res );
+	}
+
 int main (int argc, char** argv) {
 
  CvCapture* capture = 0;
@@ -79,16 +93,16 @@ int main (int argc, char** argv) {
 
 
   add(black, Scalar(2), black);
-  Mat fgd, bgd;
+  vector<Point> fgd, bgd;
   grabCut(image, black, Rect(1,1,1,1), bgd, fgd, 5, GC_INIT_WITH_MASK);
-  imshow("bgd1", bgd);
-  imshow("fgd1", fgd);
+  showImage(image, black, bgd, fgd);
+  waitKey(0);
   grabCut(image, black, Rect(1,1,1,1), bgd, fgd, 15, GC_INIT_WITH_MASK);
-  imshow("bgd2", bgd);
-  imshow("fgd2", fgd);
+  showImage(image, black, bgd, fgd);
+  waitKey(0);
   grabCut(image, black, Rect(1,1,1,1), bgd, fgd, 25, GC_INIT_WITH_MASK);
-  imshow("bgd3", bgd);
-  imshow("fgd3", fgd);
+  showImage(image, black, bgd, fgd);
+  waitKey(0);
 
 /*
   split(image, channel);
