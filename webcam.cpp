@@ -64,9 +64,9 @@ int main (int argc, char** argv) {
 
 // thresholds on dark regions
 
-  Mat black, blurred_gray, threshold_gray;
-  cvtColor(image, black, CV_BGR2GRAY);
-  blur(black, blurred_gray, Size(width/4.5,height/9));
+  Mat gray, blurred_gray, threshold_gray;
+  cvtColor(image, gray, CV_BGR2GRAY);
+  blur(gray, blurred_gray, Size(width/4.5,height/9));
   equalizeHist(blurred_gray, blurred_gray);
   bitwise_not(blurred_gray, blurred_gray);
 
@@ -75,7 +75,7 @@ int main (int argc, char** argv) {
 
   Mat topHat;
   Mat kernel = Mat::ones(15,15,CV_8UC1);
-  morphologyEx(black, topHat, MORPH_TOPHAT, kernel);
+  morphologyEx(blurred_gray, topHat, MORPH_TOPHAT, kernel);
   imshow("tophat", topHat);
 
 /*
