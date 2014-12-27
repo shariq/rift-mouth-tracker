@@ -79,7 +79,13 @@ int main (int argc, char** argv) {
   blur(canny, canny, Size(width/20,height/20));
   bitwise_not(canny, canny);
   threshold(canny, canny, 220, 1, THRESH_BINARY);
-  imshow("canny", (canny+threshold_gray).mul(gray));
+  imshow("canny", canny);
+
+  Mat mask;
+  bitwise_or(canny, threshold_gray, mask);
+  Mat kernel = ones(15, 15, CV_8UC1);
+  morphologyEx(mask, mask, MORPH_CLOSE, kernel, Point(-1,-1), 3);
+  imshow("yo",gray.mul(mask));
 
 /*
   bitwise_not(gray,gray);
