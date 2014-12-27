@@ -4,6 +4,6 @@ while true; do
  ./bin/webcam
  nano webcam.cpp
  git add .
- git commit
+ git commit -m "hacking"
  make
 done
