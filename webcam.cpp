@@ -72,6 +72,16 @@ int main (int argc, char** argv) {
   threshold(blurred_gray, threshold_gray, 210, 1, THRESH_BINARY);
   imshow("threshold", threshold_gray);
 
+
+  vector<Vec4i> lines;
+  HoughLinesP(blurred_gray, lines, 1, CV_PI/180, 20);
+  for (size_t i = 0; i < lines.size(); i++) {
+   line(image, Point(lines[i][0], lines[i][1]),
+    Point(lines[i][2], lines[i][3]), Scalar(0,0,255), 3, 8);
+  }
+
+  imshow("lola", image);
+/*
   bitwise_not(gray,gray);
   Mat mask = threshold_gray.mul(gray);
   imshow("mask", mask);
@@ -80,6 +90,7 @@ int main (int argc, char** argv) {
   circle(image, Point(lol.m10/lol.m00,lol.m01/lol.m00),20,Scalar(128),30);
   imshow("leimage", image);
   keepGoing = (waitKey(25)<0);
+*/
 
  }
 
