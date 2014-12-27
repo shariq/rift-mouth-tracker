@@ -67,11 +67,11 @@ int main (int argc, char** argv) {
   Mat black, blurred;
   split(image, channel);
   black = (channel[0] + channel[1] + channel[2])/3.0;
-//  equalizeHist(black, black);
-//  blur(black, blurred, Size(width/9,height/18));
-//  threshold(blurred, blurred, 220, 255, THRESH_BINARY);
-//  imshow("lol", blurred);
-//  waitKey(1);
+  equalizeHist(black, black);
+  blur(black, blurred, Size(width/9,height/18));
+  threshold(blurred, blurred, 220, 255, THRESH_BINARY);
+  imshow("lol", blurred);
+  waitKey(1);
   merge(channel, 3, black);
   blur(black, blurred, Size(width/4.5,height/9));
   split(blurred, channel);
