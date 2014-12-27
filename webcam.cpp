@@ -103,11 +103,8 @@ int main (int argc, char** argv) {
   blur(image, flow, Size(30,30));
   imshow("2", flow);
   waitKey(1);
-  flow = flow - background;
+  absdiff(flow, background, flow);
   imshow("0", flow);
-  waitKey(1);
-  pow(flow, 2, flow);
-  imshow("1", flow);
   waitKey(1);
   cvtColor(flow, flow, CV_RGB2GRAY);
   imshow("3", flow);
