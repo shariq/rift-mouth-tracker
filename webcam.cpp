@@ -66,7 +66,7 @@ int main (int argc, char** argv) {
 
   Mat gray, blurred_gray, threshold_gray;
   cvtColor(image, gray, CV_BGR2GRAY);
-  blur(gray, blurred_gray, Size(width/9,height/18));
+  blur(gray, blurred_gray, Size(width/20,height/20));
   equalizeHist(blurred_gray, blurred_gray);
 
   threshold(blurred_gray, threshold_gray, 40, 1, THRESH_BINARY_INV);
