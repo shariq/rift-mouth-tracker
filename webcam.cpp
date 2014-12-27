@@ -92,8 +92,8 @@ int main (int argc, char** argv) {
   Mat bgd, fgd, mask;
   Mat foreground;
   add(threshold_gray, Scalar(2), mask);
-  imshow("1", mask);
-  imshow("2", certainBackground);
+  imshow("1", mask*200);
+  imshow("2", certainBackground*200);
   mask = mask.mul(certainBackground);
   bitwise_and(mask, Scalar(1), foreground);
   imshow("FG",foreground.mul(gray));
