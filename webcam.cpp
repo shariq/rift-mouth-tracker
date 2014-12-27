@@ -69,7 +69,7 @@ int main (int argc, char** argv) {
   blur(gray, blurred_gray, Size(width/10,height/20));
   equalizeHist(blurred_gray, blurred_gray);
   threshold(blurred_gray, threshold_gray, 40, 1, THRESH_BINARY_INV);
-  imshow("threshold", threshold_gray.mul(gray));
+  imshow("threshold", threshold_gray);
 
 
   Moments lol = moments(threshold_gray, 1);
