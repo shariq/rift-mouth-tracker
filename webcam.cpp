@@ -75,16 +75,11 @@ int main (int argc, char** argv) {
   imshow("threshold", threshold_gray);
 
   Mat canny;
-  Canny(gray, canny, 30, 40, 3);
-  imshow("canny", canny);
-  vector<Vec4i> lines;
-  HoughLinesP(canny, lines, 10, CV_PI/180, 150);
-  for (size_t i = 0; i < lines.size(); i++) {
-   line(image, Point(lines[i][0], lines[i][1]),
-    Point(lines[i][2], lines[i][3]), Scalar(0,0,255), 3, 8);
-  }
+  Canny(gray, canny, 10, 10, 3);
 
-  imshow("lola", image);
+  blur(canny, canny, Size(width/20,height/20));
+  imshow("canny", canny);
+
 /*
   bitwise_not(gray,gray);
   Mat mask = threshold_gray.mul(gray);
