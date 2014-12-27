@@ -64,27 +64,19 @@ int main (int argc, char** argv) {
 
 // thresholds on dark regions
 
-  Mat black, blurred;
-  split(image, channel);
-  black = (channel[0] + channel[1] + channel[2])/3.0;
+  Mat black, blurred_gray, threshold;
+  cvtColor(image, black, CV_BGR2GRAY);
+  blur(black, blurred_gray, Size(width/4.5,height/9));
+  equalizeHist(blurred_gray, blurred_gray);
+  bitwise_not(blurred_gray, blurred_gray);
 
-  equalizeHist(black, black);
-  blur(black, blurred, Size(width/9,height/18));
-  bitwise_not(blurred, blurred);
-  threshold(blurred, blurred, 220, 255, THRESH_BINARY);
-  imshow("lol", blurred);
-  waitKey(1);
+  threshold(blurred_gray, threshold, 220, 255, THRESH_BINARY);
+  imshow("threshold", threshold);
 
-  merge(channel, 3, black);
-  blur(black, blurred, Size(width/4.5,height/9));
-  split(blurred, channel);
-  black = (channel[0] + channel[1] + channel[2])/3.0;
-  equalizeHist(black, black);
-  bitwise_not(black,black);
-
-  threshold(black, black, 220, 255, THRESH_BINARY);
-  imshow("black", black);
-
+  Mat topHat;
+  Mat kernel = ones(15,15);
+  morphologyEx(black, topHat, MORPH_TOPHAT, kernel);
+  imshow("tophat", topHat);
 
 /*
   split(image, channel);
