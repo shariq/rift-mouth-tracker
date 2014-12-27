@@ -77,7 +77,7 @@ int main (int argc, char** argv) {
 
   Moments lol = moments(mask, 1);
   circle(image, Point(lol.m10/lol.m00,lol.m01/lol.m00),20,Scalar(128),30);
-  imshow("threshold", image);
+  imshow("leimage", image);
   keepGoing = (waitKey(25)<0);
 
  }
