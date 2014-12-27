@@ -71,14 +71,14 @@ int main (int argc, char** argv) {
   bitwise_not(blurred_gray, blurred_gray);
 
   threshold(blurred_gray, threshold_gray, 220, 255, THRESH_BINARY);
-  imshow("threshold", threshold_gray);
+//  imshow("threshold", threshold_gray);
 
   Mat topHat;
   Mat kernel(300,150,CV_8UC1,1);
 //  equalizeHist(gray, gray);
   morphologyEx(gray, topHat, MORPH_TOPHAT, kernel);
   threshold(topHat, topHat, 50,255,THRESH_BINARY_INV);
-  imshow("tophat", topHat);
+  imshow("tophat", topHat.mul(threshold_gray);
 
 /*
   split(image, channel);
