@@ -102,16 +102,16 @@ int main (int argc, char** argv) {
   Mat flow;
   blur(image, flow, Size(30,30));
   imshow("2", flow);
-  waitKey(0);
+  waitKey(1);
   flow = flow - background;
   imshow("0", flow);
-  waitKey(0);
+  waitKey(1);
   pow(flow, 2, flow);
   imshow("1", flow);
-  waitKey(0);
+  waitKey(1);
   cvtColor(flow, flow, CV_RGB2GRAY);
   imshow("3", flow);
-  waitKey(0);
+  waitKey(1);
   equalizeHist(flow, flow);
   imshow("flow", flow);
 
