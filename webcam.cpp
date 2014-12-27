@@ -75,19 +75,9 @@ int main (int argc, char** argv) {
   threshold(black, black, 220, 255, THRESH_BINARY);
   imshow("black", black);
 
+  adaptiveThreshold(image, image, 255, ADAPTIVE_THRESH_GAUSSIAN_C, THRESH_BINARY, 19, 0);
 
-  Mat stdev;
-//  split(image, channel);
-  equalizeHist(channel[0], channel[0]);
-  equalizeHist(channel[1], channel[1]);
-  equalizeHist(channel[2], channel[2]);
-  stdev = (channel[0] + channel[1] + channel[2])/3.0;
-  pow(channel[0] - stdev, 2.0, channel[0]);
-  pow(channel[1] - stdev, 2.0, channel[1]);
-  pow(channel[2] - stdev, 2.0, channel[2]);
-  stdev = channel[0] + channel[1] + channel[2];
-//  stdev = (stdev/3.0);
-  imshow("stdev", stdev);
+  imshow("ha", image);
 
 
 /*
