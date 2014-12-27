@@ -73,6 +73,7 @@ int main (int argc, char** argv) {
 
   Mat inverst;
   bitwise_not(blurred_gray, inverst);
+  imshow("inverst", inverst);
   Mat mask = threshold_gray.mul(inverst);
   imshow("mask", mask);
 
