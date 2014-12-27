@@ -112,6 +112,7 @@ int main (int argc, char** argv) {
   cvtColor(flow, flow, CV_RGB2GRAY);
   blur(flow, flow, Size(50,50));
   equalizeHist(flow, flow);
+  imshow("FLOW", flow);
   Mat mask = flow;
 
 /*
