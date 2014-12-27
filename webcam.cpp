@@ -60,7 +60,7 @@ int main (int argc, char** argv) {
  while (keepGoing) {
 
   image = cvQueryFrame(capture);
-  imshow("webcam", image);
+  //imshow("webcam", image);
 
 // thresholds on dark regions
 
@@ -69,11 +69,12 @@ int main (int argc, char** argv) {
   blur(gray, blurred_gray, Size(width/10,height/20));
   equalizeHist(blurred_gray, blurred_gray);
   threshold(blurred_gray, threshold_gray, 40, 1, THRESH_BINARY_INV);
-  imshow("threshold", threshold_gray);
+  //imshow("threshold", threshold_gray);
 
   Mat inverst;
   bitwise_not(threshold_gray, inverst);
   Mat mask = threshold_gray.mult(inverst);
+  imshow("mask", mask);
 
   Moments lol = moments(mask, 1);
   circle(image, Point(lol.m10/lol.m00,lol.m01/lol.m00),20,Scalar(128),30);
