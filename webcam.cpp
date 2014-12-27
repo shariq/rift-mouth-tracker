@@ -71,6 +71,7 @@ int main (int argc, char** argv) {
   bitwise_not(blurred_gray, blurred_gray);
   threshold(blurred_gray, threshold_gray, 210, 1, THRESH_BINARY);
   imshow("threshold", threshold_gray);
+  imshow("lol", blurred_gray);
 
   Mat mask = threshold_gray.mul(blurred_gray/2.0);
   imshow("mask", mask);
