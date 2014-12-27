@@ -77,6 +77,7 @@ int main (int argc, char** argv) {
   printf("m02: %f, m30: %f, m21: %f, m12: %f, m03: %f\n", lol.m02, lol.m30, lol.m21, lol.m12, lol.m03);
   printf("mu20: %f, mu11: %f, mu02: %f, mu30: %f, mu21: %f, mu12: %f, mu03: %f\n", lol.mu20, lol.mu11, lol.mu02, lol.mu30, lol.mu21, lol.mu12, lol.mu03);
 
+  printf("center (x,y) (%f,%f)\n",lol.m10/lol.m00,lol.m01/lol.m00);
   keepGoing = (waitKey(25)<0);
 
  }
