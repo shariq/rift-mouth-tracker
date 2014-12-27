@@ -72,20 +72,30 @@ int main (int argc, char** argv) {
   equalizeHist(blurred_gray, blurred_gray);
   bitwise_not(blurred_gray, blurred_gray);
   threshold(blurred_gray, threshold_gray, 210, 1, THRESH_BINARY);
-  imshow("threshold", threshold_gray);
+//  imshow("threshold", threshold_gray);
+// threshold_gray has 1 for probable foreground
+// has 0 for idkwtf
 
   Mat canny;
   Canny(gray, canny, 50, 50, 3);
   blur(canny, canny, Size(width/20,height/20));
   bitwise_not(canny, canny);
   threshold(canny, canny, 220, 1, THRESH_BINARY);
-  imshow("canny", canny);
+//  imshow("canny", canny);
 
-  Mat mask;
-  bitwise_or(canny, threshold_gray, mask);
+  Mat certainBackground;
+  bitwise_or(canny, threshold_gray, certainBackground);
   Mat kernel = Mat::ones(15, 15, CV_8UC1);
-  morphologyEx(mask, mask, MORPH_CLOSE, kernel, Point(-1,-1), 2);
-  imshow("yo",gray.mul(mask));
+  morphologyEx(certainBackground, certainBackground, MORPH_CLOSE, kernel, Point(-1,-1), 2);
+// certainBackground has 0 for definitely not rift
+// and 1 for no clue what it is
+
+  Mat bgd, fgd, mask;
+  add(threshold_gray, Scalar(2), mask);
+  Mat mask = mask.mul(certainBackground);
+  imshow("prior mask", mask*80);
+  grabCut(image, mask, Rect(0,0,0,0), bgd, fgd, 1, GC_INIT_WITH_MASK);
+  imshow("heya", mask);
 
 /*
   bitwise_not(gray,gray);
