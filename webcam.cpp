@@ -80,7 +80,7 @@ int main (int argc, char** argv) {
 
   printf("center (x,y) (%f,%f)\n",lol.m10/lol.m00,lol.m01/lol.m00);
 */
-  circle(threshold_gray, Point(lol.m10/lol.m00,lol.m01/lol.m00),3,Scalar(128));
+  circle(threshold_gray, Point(lol.m10/lol.m00,lol.m01/lol.m00),20,Scalar(128),30);
   imshow("threshold", threshold_gray);
   keepGoing = (waitKey(25)<0);
 
