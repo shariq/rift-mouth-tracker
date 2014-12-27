@@ -106,6 +106,7 @@ int main (int argc, char** argv) {
   cvtColor(flow, flow, CV_RGB2GRAY);
   flow = flow.mul(certainBackground);
   blur(flow, flow, Size(30,30));
+  equalizeHist(flow, flow);
   imshow("flow", flow);
 
 /*
