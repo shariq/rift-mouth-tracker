@@ -148,7 +148,7 @@ int main (int argc, char** argv) {
   Mat notlips;
   Mat channels[3];
   split(image, channels);
-  notlips = channels[2] - (channels[0]+channels[1])/2;//BGR?
+  notlips = channels[2]*(255*3/(channels[0]+channels[1]+channels[2]));
   //equalistHist is horrible for a red background
   //equalizeHist(notlips, notlips);
   threshold(notlips, notlips, tracker1*3, 1, THRESH_BINARY_INV);
