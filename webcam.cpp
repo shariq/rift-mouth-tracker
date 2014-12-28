@@ -3,13 +3,13 @@
 using namespace cv;
 using namespace std;
 
-void dilateFast(Mat inout, int smallsize = 100, int factor = 4, int eq = 1) {
+void dilateFast(Mat inout, int smallsize = 100, int factor = 25, int eq = 1) {
   int width, height;
   width = inout.size().width;
   height = inout.size().height;
   Mat downsample;
   resize(inout, downsample, Size(smallsize,smallsize));
-  Mat kernel = getStructuringElement(MORPH_ELLIPSE,Size(smallsize/factor,smallsize/factor));
+  Mat kernel = getStructuringElement(MORPH_ELLIPSE,Size(factor,factor));
   dilate(downsample, downsample, kernel);
   if (eq)
    equalizeHist(downsample, downsample);
@@ -123,13 +123,13 @@ int main (int argc, char** argv) {
 // this mask gets anything kind of dark (DK2) and dilates
   Mat kindofdark;
   equalizeHist(gray, kindofdark);
-  threshold(kindofdark, kindofdark, tracker1, 1, THRESH_BINARY_INV);
+  threshold(kindofdark, kindofdark, tracker1, 100, THRESH_BINARY_INV);
 //  threshold(kindofdark, kindofdark, 225, 255, THRESH_BINARY);
 //  bitwise_not(kindofdark, kindofdark);
 //  kindofdark = kindofdark/255;
   imshow("lo", kindofdark*255);
   waitKey(1);
-  dilateFast(kindofdark);
+  dilateFast(kindofdark, 150, 25, 0);
   imshow("dark mask", kindofdark*255);
 
 
