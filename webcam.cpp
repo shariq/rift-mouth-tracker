@@ -129,7 +129,7 @@ int main (int argc, char** argv) {
 //  kindofdark = kindofdark/255;
   imshow("lo", kindofdark*255);
   waitKey(1);
-  dilateFast(kindofdark, 150, 25, 0);
+  dilateFast(kindofdark, 150, 20, 0);
   imshow("dark mask", kindofdark*255);
 
 
