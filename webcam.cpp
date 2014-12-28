@@ -121,7 +121,8 @@ int main (int argc, char** argv) {
   Mat mask;
   threshold(flow, mask, 210, 1, THRESH_BINARY);
   bitwise_and(mask, threshold_gray, mask);
-
+  dilate(mask, mask, kernel);
+  dilate(mask, mask, kernel);
   imshow("FLOW", mask*255);
 
 /*
@@ -133,6 +134,11 @@ int main (int argc, char** argv) {
   circle(image, Point(lol.m10/lol.m00,lol.m01/lol.m00),20,Scalar(128),30);
   imshow("leimage", image);
 
+  CascadeClassifier mouth_cascade;
+  RNG rng(1234);
+  mouth_cascade.load("Mouth.xml");
+  vector<Rect> mouths;
+  
 
   keepGoing = (waitKey(25)<0);
 
