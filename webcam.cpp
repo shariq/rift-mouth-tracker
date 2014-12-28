@@ -3,16 +3,21 @@
 using namespace cv;
 using namespace std;
 
-void dilateFast(Mat inout, int smallsize = 100, int factor = 25, int eq = 1) {
+void morphFast(Mat inout, int smallsize = 100, int factor = 25, int eq = 1, int diler = 0) {
   int width, height;
   width = inout.size().width;
   height = inout.size().height;
   Mat downsample;
   resize(inout, downsample, Size(smallsize,smallsize));
   Mat kernel = getStructuringElement(MORPH_ELLIPSE,Size(factor,factor));
-  dilate(downsample, downsample, kernel);
-  if (eq)
+  if (diler) {
+   dilate(downsample, downsample, kernel);
+  } else {
+   erode(downsample, downsample, kernel);
+  }
+  if (eq) {
    equalizeHist(downsample, downsample);
+  }
   resize(downsample, inout, Size(width, height));
 }
 
@@ -116,7 +121,7 @@ int main (int argc, char** argv) {
   blur(image, flow, Size(50,50));
   absdiff(flow, background, flow);
   cvtColor(flow, flow, CV_RGB2GRAY);
-  dilateFast(flow);
+  morphFast(flow);
   threshold(flow, flow, 60, 1, THRESH_BINARY);
 //  imshow("flow mask", gray.mul(flow));
 
@@ -126,11 +131,14 @@ int main (int argc, char** argv) {
   threshold(kindofdark, kindofdark, 100, 1, THRESH_BINARY_INV);
   imshow("lo", kindofdark*255);
   waitKey(1);
-  dilateFast(kindofdark, 100, 17, 0);
+  morphFast(kindofdark, 100, 17, 0);
 //  imshow("dark mask", gray.mul(kindofdark));
 
+  Mat mask = flow.mul(kindofdark).mul(canny);
+  morphFast(mask, 150, tracker1+1, 0, 1);
+  morphFast(mask, 150, tracker2+1, 0, 0);
 
-  imshow("mask", gray.mul(flow).mul(kindofdark).mul(canny));
+  imshow("mask", gray.mul(mask));
 
 //  Moments lol = moments(mask, 1);
 //  circle(image, Point(lol.m10/lol.m00,lol.m01/lol.m00),20,Scalar(128),30);
