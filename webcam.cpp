@@ -121,8 +121,9 @@ int main (int argc, char** argv) {
   Mat mask;
   threshold(flow, mask, 170, 1, THRESH_BINARY);
 //  bitwise_and(mask, threshold_gray, mask);
-/*
+
   dilate(mask, mask, kernel);
+/*
   dilate(mask, mask, kernel);
   dilate(mask, mask, kernel);
 */
