@@ -136,10 +136,10 @@ int main (int argc, char** argv) {
   Mat mask = flow.mul(kindofdark).mul(canny);
   imshow("premask", gray.mul(mask));
   waitKey(1);
-  morphFast(mask, 100, tracker1+1-(tracker1%2), 0, 1);
+  morphFast(mask, 100, tracker1+5-(tracker1%2), 0, 1);
   imshow("erode mask", gray.mul(mask));
   waitKey(1);
-  morphFast(mask, 100, tracker2+1-(tracker2%2), 0, 0);
+  morphFast(mask, 100, tracker2+5-(tracker2%2), 0, 0);
   imshow("mask", gray.mul(mask));
 
 //  Moments lol = moments(mask, 1);
