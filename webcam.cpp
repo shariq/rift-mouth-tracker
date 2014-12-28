@@ -144,8 +144,14 @@ int main (int argc, char** argv) {
 //  imshow("dark mask", gray.mul(kindofdark));
 
 // this mask gets rid of anything far away from red stuff
+// lips have a lot of red
+  Mat notlips;
   split(image, channel);
-  
+  notlips = channels[2].clone();//BGR?
+  //will do terrible with a red background
+  equalizeHist(notlips, notlips);
+  threshold(notlips, notlips, 150, 1, THRESH_BINARY);
+  imshow("lip mask", notlips);
 
 
   Mat mask = flow.mul(kindofdark);
@@ -191,7 +197,7 @@ int main (int argc, char** argv) {
   circle(image, Point(lol.m10/lol.m00,lol.m01/lol.m00),20,Scalar(128),30);
   imshow("leimage", image);
 */
-
+/*
   CascadeClassifier mouth_cascade;
   mouth_cascade.load("Mouth.xml");
   vector<Rect> mouths;
@@ -206,6 +212,7 @@ int main (int argc, char** argv) {
    rectangle(image, scaled, Scalar(255,0,0));
   }
   imshow("MOUTH", image);
+*/
 
   keepGoing = (waitKey(25)<0);
 
