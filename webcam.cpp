@@ -144,15 +144,14 @@ int main (int argc, char** argv) {
   imshow("dark mask", gray.mul(kindofdark));
 
   Mat mask = flow.mul(kindofdark);
-// close the mask
-/*
+// open the mask
   Mat smallMask;
   resize(mask, smallMask, Size(150,150));
   int t1 = tracker1+1-(tracker1%2);
-  if (t1>50) t1=51;
+  if (t1>90) t1=91;
   if (t1<3) t1=3;
   int t2 = tracker2+1-(tracker2%2);
-  if (t2>50) t2=51;
+  if (t2>90) t2=91;
   if (t2<3) t2=3;
   Mat erodeKernel = ellipticKernel(t1,t2);
   erode(smallMask, smallMask, erodeKernel);
@@ -160,14 +159,13 @@ int main (int argc, char** argv) {
   dilate(smallMask, smallMask, dilateKernel);
   resize(smallMask, smallMask, Size(width, height));
   bitwise_and(smallMask,mask,mask);
-*/
   imshow("morph mask", gray.mul(mask));
 
 // update background with new morph mask
 // average what we know is background with prior background
 // erode it first since we really want to be sure it's bg
 
-  Mat erodeKernel = ellipticKernel(21);
+//  Mat erodeKernel = ellipticKernel(21);
   erode(mask, mask, erodeKernel);
   Mat mask_;
   subtract(1,mask,mask_);
