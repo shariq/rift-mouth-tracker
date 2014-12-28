@@ -85,11 +85,13 @@ int main (int argc, char** argv) {
   Canny(gray, canny, 50, 50, 3);
   blur(canny, canny, Size(width/20,height/20));
   bitwise_not(canny, canny);
-  threshold(canny, canny, tracker1, 1, THRESH_BINARY);
+  threshold(canny, canny, tracker1*3, 1, THRESH_BINARY);
+  imshow("canny0", canny.mul(gray));
+  waitKey(1);
 //  threshold(canny, canny, 210, 1, THRESH_BINARY);
   blur(canny*255, canny, Size(width/10, height/10));
 //  threshold(canny, canny, 200, 1, THRESH_BINARY);
-  threshold(canny, canny, tracker2, 1, THRESH_BINARY);
+  threshold(canny, canny, tracker2*3, 1, THRESH_BINARY);
   imshow("canny1", canny.mul(gray));
   waitKey(1);
 
