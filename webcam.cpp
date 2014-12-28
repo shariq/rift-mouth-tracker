@@ -145,7 +145,8 @@ int main (int argc, char** argv) {
 
 // this mask gets rid of anything far away from red stuff
 // lips have a lot of red
-  Mat notlips, channels;
+  Mat notlips;
+  Mat channels[3];
   split(image, channels);
   notlips = channels[2] - (channels[0]+channels[1])/2;//BGR?
   imshow("0", channels[0]);
