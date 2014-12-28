@@ -14,7 +14,7 @@ void morphFast(Mat inout, int smallsize = 100, int factor = 25, int eq = 1, int 
   if (diler) {
    dilate(downsample, downsample, kernel);
   } else {
-   erode(downsample, kernel, downsample);
+//   erode(downsample, downsample, kernel);
   }
   if (eq) {
    equalizeHist(downsample, downsample);
