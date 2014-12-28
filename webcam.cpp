@@ -102,7 +102,7 @@ int main (int argc, char** argv) {
   blur(image, flow, Size(50,50));
   absdiff(flow, background, flow);
   cvtColor(flow, flow, CV_RGB2GRAY);
-  blur(flow, flow, Size(tracker1,tracker1));
+  blur(flow, flow, Size(tracker1+1,tracker1+1));
   equalizeHist(flow, flow);
   imshow("FLOW1", gray.mul(flow));
   threshold(flow, flow, tracker2*3, 1, THRESH_BINARY);
