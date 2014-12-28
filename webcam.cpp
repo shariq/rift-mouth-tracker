@@ -135,9 +135,9 @@ int main (int argc, char** argv) {
   morphFast(kindofdark, 100, 17, 0);
 //  imshow("dark mask", gray.mul(kindofdark));
 
-//  Mat mask = flow.mul(kindofdark).mul(canny);
-//  morphFast(mask, 150, tracker1+5, 0, 1);
-//  morphFast(mask, 150, tracker2+5, 0, 0);
+  Mat mask = flow.mul(kindofdark).mul(canny);
+  morphFast(mask, 100, tracker1+11-(tracker1%2), 0, 1);
+  morphFast(mask, 100, tracker2+11-(tracker2%2), 0, 0);
 
 //  imshow("mask", gray.mul(mask));
 
