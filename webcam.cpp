@@ -121,7 +121,7 @@ int main (int argc, char** argv) {
   threshold(canny, canny, 200, 1, THRESH_BINARY);
   blur(canny*255, canny, Size(width/10, height/10));
   threshold(canny, canny, 220, 1, THRESH_BINARY);
-//  imshow("canny mask", gray.mul(canny));
+  imshow("canny mask", gray.mul(canny));
 
 // this mask filters out areas which have not changed much
 // background needs to be updated when person is not in frame
@@ -131,14 +131,14 @@ int main (int argc, char** argv) {
   cvtColor(flow, flow, CV_RGB2GRAY);
   morphFast(flow);
   threshold(flow, flow, 60, 1, THRESH_BINARY);
-//  imshow("flow mask", gray.mul(flow));
+  imshow("flow mask", gray.mul(flow));
 
 // this mask gets anything kind of dark (DK2) and dilates
   Mat kindofdark;
   equalizeHist(gray, kindofdark);
   threshold(kindofdark, kindofdark, 100, 1, THRESH_BINARY_INV);
   morphFast(kindofdark, 100, 17, 0);
-//  imshow("dark mask", gray.mul(kindofdark));
+  imshow("dark mask", gray.mul(kindofdark));
 
   Mat mask = flow.mul(kindofdark).mul(canny);
 // close the mask
