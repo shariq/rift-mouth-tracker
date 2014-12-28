@@ -211,8 +211,8 @@ int main (int argc, char** argv) {
 // erode it first since we really want to be sure it's bg
 
 //  Mat erodeKernel = ellipticKernel(21);
-  Mat erodedMask;
-  erode(mask, erodedMask, erodeKernel);
+  Mat erodedMask = mask.clone();
+//  erode(mask, erodedMask, erodeKernel);
   Mat mask_;
   subtract(1,erodedMask,mask_);
   Mat mask3, mask3_;
