@@ -92,6 +92,12 @@ int main (int argc, char** argv) {
   morphologyEx(canny, canny, MORPH_OPEN, kernel);
   imshow("canny3", canny*255);
   waitKey(1);
+  dilate(canny, canny, kernel);
+  imshow("canny4", canny*255);
+  waitKey(1);
+  dilate(canny, canny, kernel);
+  imshow("canny5", canny*255);
+  waitKey(1);
 
   Mat flow;
   blur(image, flow, Size(50,50));
