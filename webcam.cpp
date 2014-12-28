@@ -129,10 +129,9 @@ int main (int argc, char** argv) {
 // this mask filters out areas which have not changed much
 // background needs to be updated when person is not in frame
 // use OVR SDK to do this later
-  Mat flow_gray, flow;
-  absdiff(blurred_img, background, flow_gray);
-  cvtColor(flow_gray, flow_gray, CV_RGB2GRAY);
-  flow = flow_gray.clone();//inefficient but convenient
+  Mat flow;
+  absdiff(blurred_img, background, flow);
+  cvtColor(flow, flow, CV_RGB2GRAY);
   morphFast(flow);
   threshold(flow, flow, 60, 1, THRESH_BINARY);
 //  imshow("flow mask", gray.mul(flow));
@@ -145,8 +144,6 @@ int main (int argc, char** argv) {
 //  imshow("dark mask", gray.mul(kindofdark));
 
   Mat mask = flow.mul(kindofdark);
-  imshow("premask", gray.mul(mask));
-  waitKey(1);
 // open the mask
   Mat smallMask;
   resize(mask, smallMask, Size(150,150));
@@ -156,7 +153,7 @@ int main (int argc, char** argv) {
   dilate(smallMask, smallMask, dilateKernel);
   resize(smallMask, smallMask, Size(width, height));
   bitwise_and(smallMask,mask,mask);
-  imshow("morph mask", gray.mul(mask));
+//  imshow("morph mask", gray.mul(mask));
 
 // update background with new morph mask
 // average what we know is background with prior background
@@ -181,18 +178,15 @@ int main (int argc, char** argv) {
 
   imshow("background", background);
 
-  Mat xkcd;
-  pow(flow_gray, 4, xkcd);
-  Moments lol = moments(xkcd, 1);
+  Moments lol = moments(gray, 1);
   circle(image, Point(lol.m10/lol.m00,lol.m01/lol.m00),20,Scalar(128),30);
   imshow("leimage", image);
 
-/*
   CascadeClassifier mouth_cascade;
   mouth_cascade.load("Mouth.xml");
   vector<Rect> mouths;
   Mat classifyThis;
-  blur(gray, classifyThis, Size(10,10));
+  resize(gray, classifyThis, Size(width/(tracker1+1),height/(tracker2+1));
 //  bilateralFilter(gray, classifyThis, 15, 10, 1);
   equalizeHist(classifyThis, classifyThis);
   classifyThis = classifyThis.mul(mask);
@@ -202,7 +196,6 @@ int main (int argc, char** argv) {
    ellipse( image, center, Size( mouths[i].width*0.5, mouths[i].height*0.5), 0, 0, 360, Scalar( 255, 0, 255 ), 4, 8, 0 );
   }
   imshow("MOUTH", image);
-*/
 
   keepGoing = (waitKey(25)<0);
 
