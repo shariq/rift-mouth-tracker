@@ -98,6 +98,13 @@ int main (int argc, char** argv) {
   morphologyEx(certainBackground, certainBackground, MORPH_CLOSE, kernel, Point(-1,-1), 3);
 // certainBackground has 0 for definitely not rift
 // and 1 for no clue what it is
+  if (width/2 > height) {
+   kernel = Mat::ones(height/2,height/4);
+  } else {
+   kernel = Mat::ones(width/4, width/8);
+  }
+  morphologyEx(certainBackground, certainBackground, MORPH_OPEN, kernel);
+  imshow("MORPHOLOGY", certainBackground);
   imshow("image", gray.mul(certainBackground));
 
   Mat channels[3];
@@ -115,6 +122,7 @@ int main (int argc, char** argv) {
   Mat mask;
   threshold(flow, mask, 210, 1, THRESH_BINARY);
   bitwise_and(mask, threshold_gray, mask);
+  
   imshow("FLOW", mask*255);
 
 /*
