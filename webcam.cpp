@@ -213,6 +213,7 @@ int main (int argc, char** argv) {
   Mat erodedMask;
   erode(smallMask1, erodedMask, erodeKernel);
   resize(erodedMask, erodedMask, Size(width, height));
+  imshow("erosion", erodedMask);
   Mat mask_;
   subtract(1,erodedMask,mask_);
   Mat mask3, mask3_;
