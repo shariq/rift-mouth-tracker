@@ -134,9 +134,12 @@ int main (int argc, char** argv) {
 //  imshow("dark mask", gray.mul(kindofdark));
 
   Mat mask = flow.mul(kindofdark).mul(canny);
+  imshow("premask", gray.mul(mask));
+  waitKey(1);
   morphFast(mask, 250, tracker1+1-(tracker1%2), 0, 1);
+  imshow("erode mask", gray.mul(mask));
+  waitKey(1);
   morphFast(mask, 250, tracker2+1-(tracker2%2), 0, 0);
-
   imshow("mask", gray.mul(mask));
 
 //  Moments lol = moments(mask, 1);
