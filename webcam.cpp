@@ -124,7 +124,7 @@ int main (int argc, char** argv) {
   dilate(mask, mask, kernel);
   dilate(mask, mask, kernel);
   dilate(mask, mask, kernel);
-  imshow("FLOW", gray.mul(mask));
+//  imshow("FLOW", gray.mul(mask));
 
 /*
   bitwise_not(gray,gray);
@@ -133,7 +133,7 @@ int main (int argc, char** argv) {
 */
   Moments lol = moments(mask, 1);
   circle(image, Point(lol.m10/lol.m00,lol.m01/lol.m00),20,Scalar(128),30);
-  imshow("leimage", image);
+//  imshow("leimage", image);
   waitKey(1);
 
   CascadeClassifier mouth_cascade;
@@ -144,8 +144,10 @@ int main (int argc, char** argv) {
   equalizeHist(classifyThis, classifyThis);
   mouth_cascade.detectMultiScale(classifyThis, mouths, 1.1, 2, CV_HAAR_SCALE_IMAGE, Size(30,30));
   for (size_t i=0; i<mouths.size(); i++) {
-   
+   Point center( mouths[i].x + mouths[i].width*0.5, mouths[i].y + mouths[i].height*0.5 );
+   ellipse( image, center, Size( mouths[i].width*0.5, mouths[i].height*0.5), 0, 0, 360, Scalar( 255, 0, 255 ), 4, 8, 0 );
   }
+  imshow("MOUTH", image);
   keepGoing = (waitKey(25)<0);
 
 
