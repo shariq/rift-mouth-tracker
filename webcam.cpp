@@ -157,7 +157,7 @@ int main (int argc, char** argv) {
   imshow("2-1", channels[2] - channels[1]);
   //equalistHist is horrible for a red background
   //equalizeHist(notlips, notlips);
-  threshold(notlips, notlips, tracker1*3, 1, THRESH_BINARY);
+  threshold(notlips, notlips, tracker1*3, 1, THRESH_BINARY_INV);
   imshow("lip mask", notlips*255);
   waitKey(1);
 
