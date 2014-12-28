@@ -167,6 +167,7 @@ int main (int argc, char** argv) {
 // average what we know is background with prior background
 // erode it first since we really want to be sure it's bg
 
+  Mat erodeKernel = ellipticKernel(21);
   erode(mask, mask, erodeKernel);
   Mat mask_;
   subtract(1,mask,mask_);
@@ -188,7 +189,6 @@ int main (int argc, char** argv) {
 //  Moments lol = moments(mask, 1);
 //  circle(image, Point(lol.m10/lol.m00,lol.m01/lol.m00),20,Scalar(128),30);
 //  imshow("leimage", image);
-
 
   CascadeClassifier mouth_cascade;
   mouth_cascade.load("Mouth.xml");
