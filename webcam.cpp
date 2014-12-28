@@ -100,7 +100,7 @@ int main (int argc, char** argv) {
   morphologyEx(canny, canny, MORPH_OPEN, kernel);
   imshow("canny2", canny*255);
   waitKey(1);
-  Mat kernalSmall = getStructuringElement(MORPH_ELLIPSE, Size((kwidth/2)+(1-((kwidth/2)%2)),(kheight/2)+(1-((kheight/2)%2))));
+  Mat kernelSmall = getStructuringElement(MORPH_ELLIPSE, Size((kwidth/2)+(1-((kwidth/2)%2)),(kheight/2)+(1-((kheight/2)%2))));
   morphologyEx(canny, canny, MORPH_CLOSE, kernelSmall);
   imshow("canny3", canny*255);
   waitKey(1);
