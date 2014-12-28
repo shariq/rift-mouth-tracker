@@ -194,13 +194,14 @@ int main (int argc, char** argv) {
 // open the mask
   Mat smallMask0, smallMask1;
   resize(mask, smallMask0, Size(width/5,height/5));
-  Mat erodeKernel = ellipticKernel(69,79);
+  Mat erodeKernel = ellipticKernel(79,79);
   erode(smallMask0, smallMask1, erodeKernel);
-  Mat dilateKernel = ellipticKernel(69,79);
+  Mat dilateKernel = ellipticKernel(69,69);
+//69,79
   dilate(smallMask1, smallMask1, dilateKernel);
   bitwise_and(smallMask0, smallMask1, smallMask1);
   resize(smallMask1, mask, Size(width, height));
-//  imshow("morph mask", gray.mul(mask));
+  imshow("morph mask", gray.mul(mask));
   times[4] += getMilliseconds() - timenow;
   timenow = getMilliseconds();
 
