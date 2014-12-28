@@ -109,8 +109,9 @@ int main (int argc, char** argv) {
 // then multiply them together and multiply that with image
 // and run haar classifier on image
 
-  Mat gray;
+  Mat gray, blurred_img;
   cvtColor(image, gray, CV_RGB2GRAY);
+  blur(image, blurred_img, Size(50,50));
 
 // this mask filters out areas with too many edges
   Mat canny;
@@ -126,8 +127,7 @@ int main (int argc, char** argv) {
 // background needs to be updated when person is not in frame
 // use OVR SDK to do this later
   Mat flow;
-  blur(image, flow, Size(50,50));
-  absdiff(flow, background, flow);
+  absdiff(blurred_img, background, flow);
   cvtColor(flow, flow, CV_RGB2GRAY);
   morphFast(flow);
   threshold(flow, flow, 60, 1, THRESH_BINARY);
@@ -153,6 +153,25 @@ int main (int argc, char** argv) {
   resize(smallMask, smallMask, Size(width, height));
   bitwise_and(smallMask,mask,mask);
   imshow("morph mask", gray.mul(mask));
+
+// update background with new morph mask
+// average what we know is background with prior background
+  Mat mask_;
+  subtract(1,mask,mask_);
+  Mat mask3, mask3_;
+  channel[0] = mask;
+  channel[1] = mask;
+  channel[2] = mask;
+  merge(channel, 3, mask3);
+  channel[0] = mask_;
+  channel[1] = mask_;
+  channel[2] = mask_;
+  merge(channel, 3, mask3_);
+
+  background = background.mul(mask3) +
+   (background.mul(mask3_) + blurred_img.mul(mask3_))/2;
+
+  imshow("background", background);
 
 //  Moments lol = moments(mask, 1);
 //  circle(image, Point(lol.m10/lol.m00,lol.m01/lol.m00),20,Scalar(128),30);
