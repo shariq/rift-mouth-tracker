@@ -88,14 +88,13 @@ int main (int argc, char** argv) {
    kwidth = height/4;
    kheight = height/8;
   } else {
-   int kwidth = width/8;
-   int kheight = width/16;
+   kwidth = width/8;
+   kheight = width/16;
   }
 
   kwidth += (1-(kwidth%2));//round up to nearest odd
   kheight += (1-(kheight%2));//round up to nearest odd
-  Size kernelSize;
-  kernelSize = Size(kwidth, kheight);
+  Size kernelSize(kwidth, kheight);
   Mat kernel = getStructuringElement(MORPH_ELLIPSE, kernelSize);
 
   morphologyEx(canny, canny, MORPH_OPEN, kernel);
