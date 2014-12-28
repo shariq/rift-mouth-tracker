@@ -153,7 +153,7 @@ int main (int argc, char** argv) {
   notlips = notlips.mul(255.0);
   //equalistHist is horrible for a red background
   //equalizeHist(notlips, notlips);
-  threshold(notlips, notlips, tracker1*3, 1, THRESH_BINARY_INV);
+  threshold(notlips, notlips, tracker1*3, 1, THRESH_BINARY);
   imshow("lip mask", notlips*255);
   waitKey(1);
 
