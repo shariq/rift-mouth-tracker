@@ -82,7 +82,7 @@ int main (int argc, char** argv) {
   threshold(canny, canny, 210, 1, THRESH_BINARY);
   blur(canny*255, canny, Size(width/10, height/10));
   threshold(canny, canny, 200, 1, THRESH_BINARY);
-  imshow("canny1", canny*255);
+  imshow("canny1", canny.mul(gray));
   waitKey(1);
 
 /*
