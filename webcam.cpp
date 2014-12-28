@@ -79,6 +79,8 @@ int main (int argc, char** argv) {
   Canny(gray, canny, 50, 50, 3);
   blur(canny, canny, Size(width/20,height/20));
   bitwise_not(canny, canny);
+  threshold(canny, canny, 210, 1, THRESH_BINARY);
+  blur(canny*255, canny, Size(width/10, height/10));
   threshold(canny, canny, 200, 1, THRESH_BINARY);
   imshow("canny1", canny*255);
   waitKey(1);
@@ -92,6 +94,7 @@ int main (int argc, char** argv) {
    kheight = width/16;
   }
 
+  
   kwidth += (1-(kwidth%2));//round up to nearest odd
   kheight += (1-(kheight%2));//round up to nearest odd
   Size kernelSize(kwidth, kheight);
