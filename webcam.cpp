@@ -99,9 +99,9 @@ int main (int argc, char** argv) {
 // certainBackground has 0 for definitely not rift
 // and 1 for no clue what it is
   if (width/2 > height) {
-   kernel = Mat::ones(height/2,height/4);
+   kernel = Mat::ones(height/2, height/4, CV_8UC1);
   } else {
-   kernel = Mat::ones(width/4, width/8);
+   kernel = Mat::ones(width/4, width/8, CV_8UC1);
   }
   morphologyEx(certainBackground, certainBackground, MORPH_OPEN, kernel);
   imshow("MORPHOLOGY", certainBackground);
