@@ -124,16 +124,13 @@ int main (int argc, char** argv) {
   Mat kindofdark;
   equalizeHist(gray, kindofdark);
   threshold(kindofdark, kindofdark, 100, 1, THRESH_BINARY_INV);
-//  threshold(kindofdark, kindofdark, 225, 255, THRESH_BINARY);
-//  bitwise_not(kindofdark, kindofdark);
-//  kindofdark = kindofdark/255;
   imshow("lo", kindofdark*255);
   waitKey(1);
   dilateFast(kindofdark, 100, 17, 0);
-  imshow("dark mask", kindofdark*255);
+//  imshow("dark mask", gray.mul(kindofdark));
 
 
-//  imshow("mask", gray.mul(flow.mul(canny)));
+  imshow("mask", gray.mul(flow).mul(kindofdark).mul(canny));
 
 //  Moments lol = moments(mask, 1);
 //  circle(image, Point(lol.m10/lol.m00,lol.m01/lol.m00),20,Scalar(128),30);
