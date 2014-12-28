@@ -123,8 +123,10 @@ int main (int argc, char** argv) {
 // this mask gets anything kind of dark (DK2) and dilates
   Mat kindofdark;
   equalizeHist(gray, kindofdark);
-  threshold(kindofdark, kindofdark, 225, 1, THRESH_BINARY);
-  bitwise_not(kindofdark, kindofdark);
+  threshold(kindofdark, kindofdark, 30, 1, THRESH_BINARY_INV);
+//  threshold(kindofdark, kindofdark, 225, 255, THRESH_BINARY);
+//  bitwise_not(kindofdark, kindofdark);
+//  kindofdark = kindofdark/255;
   imshow("lo", kindofdark*255);
   waitKey(1);
   dilateFast(kindofdark);
