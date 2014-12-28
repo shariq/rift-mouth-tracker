@@ -3,6 +3,19 @@
 using namespace cv;
 using namespace std;
 
+void dilateFast(Mat inout, int smallsize = 100, int factor = 4, int eq = 1) {
+  int width, height;
+  width = inout.size.width;
+  height = inout.size.height;
+  Mat downsample;
+  resize(inout, downsample, Size(smallsize,smallsize));
+  Mat kernel = getStructuringElement(MORPH_ELLIPSE,Size(smallsize/factor,smallsize/factor));
+  dilate(downsample, downsample, kernel);
+  if (eq)
+   equalizeHist(downsample, downsample);
+  resize(downsample, inout, Size(width, height));
+}
+
 int main (int argc, char** argv) {
 
  int tracker1, tracker2, tracker3;
@@ -94,7 +107,7 @@ int main (int argc, char** argv) {
   threshold(canny, canny, 200, 1, THRESH_BINARY);
   blur(canny*255, canny, Size(width/10, height/10));
   threshold(canny, canny, 220, 1, THRESH_BINARY);
-  imshow("canny mask", gray.mul(canny));
+//  imshow("canny mask", gray.mul(canny));
 
 // this mask filters out areas which have not changed much
 // background needs to be updated when person is not in frame
@@ -103,16 +116,20 @@ int main (int argc, char** argv) {
   blur(image, flow, Size(50,50));
   absdiff(flow, background, flow);
   cvtColor(flow, flow, CV_RGB2GRAY);
-  Mat downsample; // dilate is slow on large images
-  resize(flow, downsample, Size(100,100));
-  Mat flowKernel = getStructuringElement(MORPH_ELLIPSE,Size(25,25));
-  dilate(downsample, downsample, flowKernel);
-  equalizeHist(downsample, downsample);
-  resize(downsample, flow, Size(width, height));
+  dilateFast(flow);
   threshold(flow, flow, 60, 1, THRESH_BINARY);
-  imshow("flow mask", gray.mul(flow));
+//  imshow("flow mask", gray.mul(flow));
 
-  imshow("mask", gray.mul(flow.mul(canny)));
+// this mask gets anything kind of dark (DK2) and dilates
+  Mat kindofdark;
+  threshold(gray, kindofdark, tracker1*3, THRESH_BINARY);
+  imshow("lo", kindofdark);
+  waitKey(1);
+  dilateFast(kindofdark);
+  imshow("dark mask", kindofdark);
+
+
+//  imshow("mask", gray.mul(flow.mul(canny)));
 
 //  Moments lol = moments(mask, 1);
 //  circle(image, Point(lol.m10/lol.m00,lol.m01/lol.m00),20,Scalar(128),30);
