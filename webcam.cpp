@@ -103,11 +103,8 @@ int main (int argc, char** argv) {
   } else {
    kernel = Mat::ones(width/8, width/16, CV_8UC1);
   }
-  imshow("MORPHOLOGYp", certainBackground*255);
-  waitKey(1);
   morphologyEx(certainBackground, certainBackground, MORPH_OPEN, kernel);
-  imshow("MORPHOLOGYa", certainBackground*255);
-  imshow("image", gray.mul(certainBackground));
+//  imshow("image", gray.mul(certainBackground));
 
   Mat channels[3];
   Mat cB;
@@ -124,7 +121,7 @@ int main (int argc, char** argv) {
   Mat mask;
   threshold(flow, mask, 210, 1, THRESH_BINARY);
   bitwise_and(mask, threshold_gray, mask);
-  
+
   imshow("FLOW", mask*255);
 
 /*
