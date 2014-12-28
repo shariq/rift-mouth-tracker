@@ -149,7 +149,7 @@ int main (int argc, char** argv) {
   Mat channels[3];
   split(image, channels);
   channels[2].convertTo(notlips, CV_32FC1);
-  divide(notlips, gray, notlips);
+  divide(notlips, gray, notlips, 1, CV_32FC1);
   notlips = notlips.mul(255.0);
   //equalistHist is horrible for a red background
   //equalizeHist(notlips, notlips);
