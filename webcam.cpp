@@ -145,14 +145,14 @@ int main (int argc, char** argv) {
 
   Mat mask = flow.mul(kindofdark);
 // open the mask
-  Mat smallMask;
-  resize(mask, smallMask, Size(width/5,height/5));
-  Mat erodeKernel = ellipticKernel(,81);
-  erode(smallMask, smallMask, erodeKernel);
-  Mat dilateKernel = ellipticKernel(41,81);
-  dilate(smallMask, smallMask, dilateKernel);
-  resize(smallMask, smallMask, Size(width, height));
-  bitwise_and(smallMask,mask,mask);
+  Mat smallMask0, smallMask1;
+  resize(mask, smallMask0, Size(width/5,height/5));
+  Mat erodeKernel = ellipticKernel(69,79);
+  erode(smallMask0, smallMask1, erodeKernel);
+  Mat dilateKernel = ellipticKernel(69,79);
+  dilate(smallMask1, smallMask1, dilateKernel);
+  bitwise_and(smallMask0, smallMask1, smallMask1);
+  resize(smallMask1, mask, Size(width, height));
 //  imshow("morph mask", gray.mul(mask));
 
 // update background with new morph mask
@@ -160,13 +160,14 @@ int main (int argc, char** argv) {
 // erode it first since we really want to be sure it's bg
 
 //  Mat erodeKernel = ellipticKernel(21);
-  erode(mask, mask, erodeKernel);
+  Mat erodedMask;
+  erode(mask, erodedMask, erodeKernel);
   Mat mask_;
-  subtract(1,mask,mask_);
+  subtract(1,erodedMask,mask_);
   Mat mask3, mask3_;
-  channel[0] = mask;
-  channel[1] = mask;
-  channel[2] = mask;
+  channel[0] = erodedMask;
+  channel[1] = erodedMask;
+  channel[2] = erodedMask;
   merge(channel, 3, mask3);
   channel[0] = mask_;
   channel[1] = mask_;
@@ -187,14 +188,13 @@ int main (int argc, char** argv) {
   vector<Rect> mouths;
   int scale = tracker1+1;
   Mat classifyThis;
-  resize(gray, classifyThis, Size(width/(tracker1+1),height/(tracker2+1));
+  equalizeHist(gray, gray);//ew; watch out not to use this later
+  resize(gray.mul(mask), classifyThis, Size(width/scale,height/scale));
 //  bilateralFilter(gray, classifyThis, 15, 10, 1);
-  equalizeHist(classifyThis, classifyThis);
-  classifyThis = classifyThis.mul(mask);
   mouth_cascade.detectMultiScale(classifyThis, mouths, 1.1, 5, CV_HAAR_SCALE_IMAGE);
   for (size_t i=0; i<mouths.size(); i++) {
-   Point center( mouths[i].x + mouths[i].width*0.5, mouths[i].y + mouths[i].height*0.5 );
-   ellipse( image, center, Size( mouths[i].width*0.5, mouths[i].height*0.5), 0, 0, 360, Scalar( 255, 0, 255 ), 4, 8, 0 );
+   Rect scaled(mouths[i].x*scale, mouths[i].y*scale, mouths[i].width*scale,mouths[i].height*scale);
+   rectangle(image, scaled, Scalar(255,0,0));
   }
   imshow("MOUTH", image);
 
