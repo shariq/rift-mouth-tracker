@@ -186,9 +186,9 @@ int main (int argc, char** argv) {
 
   imshow("background", background);
 
-//  Moments lol = moments(mask, 1);
-//  circle(image, Point(lol.m10/lol.m00,lol.m01/lol.m00),20,Scalar(128),30);
-//  imshow("leimage", image);
+  Moments lol = moments(mask, 1);
+  circle(image, Point(lol.m10/lol.m00,lol.m01/lol.m00),20,Scalar(128),30);
+  imshow("leimage", image);
 
   CascadeClassifier mouth_cascade;
   mouth_cascade.load("Mouth.xml");
