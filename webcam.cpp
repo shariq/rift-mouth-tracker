@@ -152,7 +152,7 @@ int main (int argc, char** argv) {
   divide(notlips, gray, notlips, 1, CV_32FC1);
   //equalistHist is horrible for a red background
   //equalizeHist(notlips, notlips);
-  threshold(notlips, notlips, 0.35, 1, THRESH_BINARY);
+  threshold(notlips, notlips, 1.2, 1, THRESH_BINARY);
   imshow("lip mask", notlips*255);
   int tx = tracker1+1-(tracker1%2);
   if (tx<3) tx=3;
