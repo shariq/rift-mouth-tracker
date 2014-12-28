@@ -145,15 +145,15 @@ int main (int argc, char** argv) {
 
 // this mask gets rid of anything far away from red stuff
 // lips have a lot of red
-  Mat notlips;
-  split(image, channel);
-  notlips = channel[2] - (channel[0]+channel[1])/2;//BGR?
-  imshow("0", channel[0]);
-  imshow("1", channel[1]);
-  imshow("2", channel[2]);
-  imshow("0+1", (channel[0]+channel[1])/2);
-  imshow("2-0", channel[2] - channel[0]);
-  imshow("2-1", channel[2] - channel[1]);
+  Mat notlips, channels;
+  split(image, channels);
+  notlips = channels[2] - (channels[0]+channels[1])/2;//BGR?
+  imshow("0", channels[0]);
+  imshow("1", channels[1]);
+  imshow("2", channels[2]);
+  imshow("0+1", (channels[0]+channels[1])/2);
+  imshow("2-0", channels[2] - channels[0]);
+  imshow("2-1", channels[2] - channels[1]);
   //equalistHist is horrible for a red background
   //equalizeHist(notlips, notlips);
   threshold(notlips, notlips, tracker1*3, 1, THRESH_BINARY);
