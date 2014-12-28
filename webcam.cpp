@@ -124,7 +124,7 @@ int main (int argc, char** argv) {
   dilate(mask, mask, kernel);
   dilate(mask, mask, kernel);
   dilate(mask, mask, kernel);
-  imshow("FLOW", gray.mul(mask).mul(certain_background));
+  imshow("FLOW", gray.mul(mask).mul(certainBackground));
 
 /*
   bitwise_not(gray,gray);
