@@ -252,7 +252,7 @@ int main (int argc, char** argv) {
 */
 
   for (int i=0; i<5; i++) {
-   printf("%.f, ", times[i]);
+   printf("%l, ", times[i]);
    times[i] = 0;
   }
 
