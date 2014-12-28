@@ -105,7 +105,7 @@ int main (int argc, char** argv) {
   cvtColor(flow, flow, CV_RGB2GRAY);
 //  blur(flow, flow, Size(tracker1+1,tracker1+1));
 //  equalizeHist(flow, flow);
-  int factor = ((tracker1)+1)/5;
+  int factor = (tracker1/5) + 1;
   Mat flowKernel = getStructuringElement(MORPH_ELLIPSE,
    Size(
     width/factor+(1-(width/factor)%2),
