@@ -144,7 +144,8 @@ int main (int argc, char** argv) {
 //  imshow("dark mask", gray.mul(kindofdark));
 
 // this mask gets rid of anything far away from red stuff
-// lips have a lot of red
+// did not work well and was slow
+/*
   Mat notlips;
   Mat channels[3];
   split(image, channels);
@@ -169,6 +170,7 @@ int main (int argc, char** argv) {
   morphFast(otherMorph, 100, tx, 0, 0);
   imshow("lips3", otherMorph.mul(gray));
   waitKey(1);
+*/
 
   Mat mask = flow.mul(kindofdark);
 // open the mask
