@@ -143,6 +143,11 @@ int main (int argc, char** argv) {
   morphFast(kindofdark, 100, 17, 0);
 //  imshow("dark mask", gray.mul(kindofdark));
 
+// this mask gets rid of anything far away from red stuff
+  split(image, channel);
+  
+
+
   Mat mask = flow.mul(kindofdark);
 // open the mask
   Mat smallMask0, smallMask1;
@@ -154,6 +159,8 @@ int main (int argc, char** argv) {
   bitwise_and(smallMask0, smallMask1, smallMask1);
   resize(smallMask1, mask, Size(width, height));
 //  imshow("morph mask", gray.mul(mask));
+
+
 
 // update background with new morph mask
 // average what we know is background with prior background
@@ -189,7 +196,7 @@ int main (int argc, char** argv) {
   mouth_cascade.load("Mouth.xml");
   vector<Rect> mouths;
   int scale = tracker1+1;
-  Mat classifyThis;
+  Mat classifyThis = image.clone();
   equalizeHist(gray, gray);//ew; watch out not to use this later
   resize(gray.mul(mask), classifyThis, Size(width/scale,height/scale));
 //  bilateralFilter(gray, classifyThis, 15, 10, 1);
