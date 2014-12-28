@@ -132,7 +132,7 @@ int main (int argc, char** argv) {
   Mat flow_gray, flow;
   absdiff(blurred_img, background, flow_gray);
   cvtColor(flow_gray, flow_gray, CV_RGB2GRAY);
-  flow = flow_gray.copy();//inefficient but convenient
+  flow = flow_gray.clone();//inefficient but convenient
   morphFast(flow);
   threshold(flow, flow, 60, 1, THRESH_BINARY);
 //  imshow("flow mask", gray.mul(flow));
