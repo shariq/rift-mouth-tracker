@@ -76,6 +76,7 @@ int main (int argc, char** argv) {
  while (keepGoing) {
 
   image = cvQueryFrame(capture);
+// preprocess by rotating according to OVR roll
   imshow("webcam", image);
 
 // let's make multiple masks where 0=not mouth, 1=uncertain
@@ -96,15 +97,21 @@ int main (int argc, char** argv) {
   threshold(canny, canny, 220, 1, THRESH_BINARY);
 
 // this mask filters out areas which have not changed much
-// background needs to be updated to person outside of frame
-// use OVR SDK to do this
+// background needs to be updated when person is not in frame
+// use OVR SDK to do this later
   Mat flow;
   blur(image, flow, Size(50,50));
   absdiff(flow, background, flow);
   cvtColor(flow, flow, CV_RGB2GRAY);
-  blur(flow, flow, Size(tracker1+1,tracker1+1));
+//  blur(flow, flow, Size(tracker1+1,tracker1+1));
 //  equalizeHist(flow, flow);
+  int factor = ((tracker1)+1)/5;
+  Mat flowKernel = getStructuringElement(MORPH_ELLIPSE, Size( width/factor+(1-(width/factor)%2),height/factor+(1-height/factor)%2) ));
   imshow("FLOW1", flow);
+  waitKey(1);
+  dilate(flow, flow, flowKernel);
+  imshow("FLOW1.5", flow);
+  waitKey(1);
   threshold(flow, flow, tracker2*3, 1, THRESH_BINARY);
   imshow("FLOW2", gray.mul(flow));
 
