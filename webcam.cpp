@@ -7,6 +7,7 @@ void morphFast(Mat inout, int smallsize = 100, int factor = 25, int eq = 1, int 
   int width, height;
   width = inout.size().width;
   height = inout.size().height;
+  factor = factor + (1-(factor%2));
   Mat downsample;
   resize(inout, downsample, Size(smallsize,smallsize));
   Mat kernel = getStructuringElement(MORPH_ELLIPSE,Size(factor,factor));
@@ -134,11 +135,11 @@ int main (int argc, char** argv) {
   morphFast(kindofdark, 100, 17, 0);
 //  imshow("dark mask", gray.mul(kindofdark));
 
-  Mat mask = flow.mul(kindofdark).mul(canny);
-  morphFast(mask, 150, tracker1+1, 0, 1);
-  morphFast(mask, 150, tracker2+1, 0, 0);
+//  Mat mask = flow.mul(kindofdark).mul(canny);
+//  morphFast(mask, 150, tracker1+5, 0, 1);
+//  morphFast(mask, 150, tracker2+5, 0, 0);
 
-  imshow("mask", gray.mul(mask));
+//  imshow("mask", gray.mul(mask));
 
 //  Moments lol = moments(mask, 1);
 //  circle(image, Point(lol.m10/lol.m00,lol.m01/lol.m00),20,Scalar(128),30);
