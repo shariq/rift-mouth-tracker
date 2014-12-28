@@ -118,6 +118,7 @@ int main (int argc, char** argv) {
   resize(downsample, flow, Size(width, height));
   imshow("FLOW1.5", flow);
   waitKey(1);
+  equalizeHist(flow, flow);
   threshold(flow, flow, tracker2*3, 1, THRESH_BINARY);
   imshow("FLOW2", gray.mul(flow));
 
