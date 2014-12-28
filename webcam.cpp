@@ -145,18 +145,19 @@ int main (int argc, char** argv) {
 
   Mat mask = flow.mul(kindofdark);
 // close the mask
+
   Mat smallMask;
   resize(mask, smallMask, Size(150,150));
-  Mat erodeKernel = ellipticKernel(51);
-  erode(smallMask, smallMask, erodeKernel);
-/*
+  int t1 = tracker1+1-(tracker1%2);
+  if (t1>50) t1=51;
+  if (t1<3) t1=3;
   int t2 = tracker2+1-(tracker2%2);
   if (t2>50) t2=51;
   if (t2<3) t2=3;
-  Mat dilateKernel = ellipticKernel(t2);
-//31
+  Mat erodeKernel = ellipticKernel(t1,t2);
+  erode(smallMask, smallMask, erodeKernel);
+  Mat dilateKernel = ellipticKernel(t1,t2);
   dilate(smallMask, smallMask, dilateKernel);
-*/
   resize(smallMask, smallMask, Size(width, height));
   bitwise_and(smallMask,mask,mask);
   imshow("morph mask", gray.mul(mask));
