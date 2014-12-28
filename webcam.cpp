@@ -85,11 +85,11 @@ int main (int argc, char** argv) {
 
   int kwidth, kheight;
   if (width/2 > height) {
-   kwidth = height/8;
-   kheight = height/16;
+   kwidth = height/4;
+   kheight = height/8;
   } else {
-   int kwidth = width/16;
-   int kheight = width/32;
+   int kwidth = width/8;
+   int kheight = width/16;
   }
 
   kwidth += (1-(kwidth%2));//round up to nearest odd
