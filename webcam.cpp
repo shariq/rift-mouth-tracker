@@ -163,10 +163,10 @@ int main (int argc, char** argv) {
   if (ty<3) ty=1;
   if (ty>90) ty=91;
   morphFast(notlips, 100, ty, 0, 1);
-  imshow("lips2", notlips*255);
+  imshow("lips2", notlips.mul(gray));
   morphFast(otherMorph, 100, tx, 0, 1);
   morphFast(otherMorph, 100, tx, 0, 0);
-  imshow("lips3", otherMorph*255);
+  imshow("lips3", otherMorph.mul(gray));
   waitKey(1);
 
   Mat mask = flow.mul(kindofdark);
