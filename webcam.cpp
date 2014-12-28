@@ -147,10 +147,10 @@ int main (int argc, char** argv) {
 // lips have a lot of red
   Mat notlips;
   split(image, channel);
-  notlips = channel[2].clone();//BGR?
-  //will do terrible with a red background
+  notlips = channel[2] - (channel[0]+channel[1])/2;//BGR?
+  //equalistHist is horrible for a red background
   equalizeHist(notlips, notlips);
-  threshold(notlips, notlips, 150, 1, THRESH_BINARY);
+  threshold(notlips, notlips, tracker1, 1, THRESH_BINARY);
   imshow("lip mask", notlips*255);
 
 
