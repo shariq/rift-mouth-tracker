@@ -149,8 +149,8 @@ int main (int argc, char** argv) {
   split(image, channel);
   notlips = channel[2] - (channel[0]+channel[1])/2;//BGR?
   //equalistHist is horrible for a red background
-  equalizeHist(notlips, notlips);
-  threshold(notlips, notlips, tracker1, 1, THRESH_BINARY);
+  //equalizeHist(notlips, notlips);
+  threshold(notlips, notlips, tracker1*3, 1, THRESH_BINARY);
   imshow("lip mask", notlips*255);
 
 
