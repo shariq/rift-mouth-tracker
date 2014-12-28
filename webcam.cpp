@@ -188,6 +188,7 @@ int main (int argc, char** argv) {
 //  circle(image, Point(lol.m10/lol.m00,lol.m01/lol.m00),20,Scalar(128),30);
 //  imshow("leimage", image);
 
+/*
   CascadeClassifier mouth_cascade;
   mouth_cascade.load("Mouth.xml");
   vector<Rect> mouths;
@@ -202,6 +203,7 @@ int main (int argc, char** argv) {
    ellipse( image, center, Size( mouths[i].width*0.5, mouths[i].height*0.5), 0, 0, 360, Scalar( 255, 0, 255 ), 4, 8, 0 );
   }
   imshow("MOUTH", image);
+*/
 
   keepGoing = (waitKey(25)<0);
 
