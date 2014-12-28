@@ -3,22 +3,30 @@
 using namespace cv;
 using namespace std;
 
+Mat ellipticKernel(int width, int height = -1) {
+ if (height==-1) {
+  return getStructuringElement(MORPH_ELLIPSE,Size(width,width), Point(width/2, width/2));
+ } else {
+  return getStructuringElement(MORPH_ELLIPSE,Size(width,height), Point(width/2, height/2));
+ }
+}
+
 void morphFast(Mat inout, int smallsize = 100, int factor = 25, int eq = 1, int diler = 0) {
-  int width, height;
-  width = inout.size().width;
-  height = inout.size().height;
-  Mat downsample;
-  resize(inout, downsample, Size(smallsize,smallsize));
-  Mat kernel = getStructuringElement(MORPH_ELLIPSE,Size(factor,factor));
-  if (diler) {
-   erode(downsample, downsample, kernel);
-  } else {
-   dilate(downsample, downsample, kernel);
-  }
-  if (eq) {
-   equalizeHist(downsample, downsample);
-  }
-  resize(downsample, inout, Size(width, height));
+ int width, height;
+ width = inout.size().width;
+ height = inout.size().height;
+ Mat downsample;
+ resize(inout, downsample, Size(smallsize,smallsize));
+ Mat kernel = ellipticKernel(factor);
+ if (diler) {
+  erode(downsample, downsample, kernel);
+ } else {
+  dilate(downsample, downsample, kernel);
+ }
+ if (eq) {
+  equalizeHist(downsample, downsample);
+ }
+ resize(downsample, inout, Size(width, height));
 }
 
 int main (int argc, char** argv) {
@@ -134,14 +142,10 @@ int main (int argc, char** argv) {
 
   Mat mask = flow.mul(kindofdark).mul(canny);
   imshow("premask", gray.mul(mask));
-  waitKey(1);
-  morphFast(mask, 100, tracker1+21-(tracker1%2), 0, 1);
-  imshow("erode mask", gray.mul(mask));
-  waitKey(1);
-  morphFast(mask, 100, tracker2+21-(tracker2%2), 0, 0);
-  imshow("mask", gray.mul(mask));
-
-
+// close the mask
+  Mat kernel = ellipticKernel(tracker1+1-(tracker1%2));
+  morphologyEx(mask, mask, MORPH_CLOSE, kernel);
+  imshow("postclose", gray.mul(mask));
 //  Moments lol = moments(mask, 1);
 //  circle(image, Point(lol.m10/lol.m00,lol.m01/lol.m00),20,Scalar(128),30);
 //  imshow("leimage", image);
