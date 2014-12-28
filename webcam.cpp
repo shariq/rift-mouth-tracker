@@ -1,5 +1,5 @@
 #include "webcam.hpp"
-#include <time.h>
+#include <chrono>
 
 using namespace cv;
 using namespace std;
@@ -255,7 +255,7 @@ int main (int argc, char** argv) {
   imshow("MOUTH", image);
 */
 
-  for (int i=0; i<5; i++) {
+  for (int i=0; i<6; i++) {
    printf("%llu , ", times[i]);
    times[i] = 0;
   }
