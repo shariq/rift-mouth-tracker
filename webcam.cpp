@@ -95,7 +95,7 @@ int main (int argc, char** argv) {
 
   image = cvQueryFrame(capture);
 // preprocess by rotating according to OVR roll
-  imshow("webcam", image);
+//  imshow("webcam", image);
 
 // let's make multiple masks where 0=not mouth, 1=uncertain
 
@@ -130,8 +130,6 @@ int main (int argc, char** argv) {
   Mat kindofdark;
   equalizeHist(gray, kindofdark);
   threshold(kindofdark, kindofdark, 100, 1, THRESH_BINARY_INV);
-  imshow("lo", kindofdark*255);
-  waitKey(1);
   morphFast(kindofdark, 100, 17, 0);
 //  imshow("dark mask", gray.mul(kindofdark));
 
@@ -139,7 +137,7 @@ int main (int argc, char** argv) {
   morphFast(mask, 100, tracker1+11-(tracker1%2), 0, 1);
   morphFast(mask, 100, tracker2+11-(tracker2%2), 0, 0);
 
-//  imshow("mask", gray.mul(mask));
+  imshow("mask", gray.mul(mask));
 
 //  Moments lol = moments(mask, 1);
 //  circle(image, Point(lol.m10/lol.m00,lol.m01/lol.m00),20,Scalar(128),30);
