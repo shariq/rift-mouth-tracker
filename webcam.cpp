@@ -134,6 +134,7 @@ int main (int argc, char** argv) {
   Moments lol = moments(mask, 1);
   circle(image, Point(lol.m10/lol.m00,lol.m01/lol.m00),20,Scalar(128),30);
   imshow("leimage", image);
+  waitKey(1);
 
   CascadeClassifier mouth_cascade;
   RNG rng(1234);
