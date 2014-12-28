@@ -152,13 +152,13 @@ int main (int argc, char** argv) {
   divide(notlips, gray, notlips, 1, CV_32FC1);
   //equalistHist is horrible for a red background
   //equalizeHist(notlips, notlips);
-  threshold(notlips, notlips, 1.2, 1, THRESH_BINARY);
+  threshold(notlips, notlips, tracker2/30.0, 1, THRESH_BINARY);
   imshow("lip mask", notlips*255);
   int tx = tracker1+1-(tracker1%2);
   if (tx<3) tx=3;
   if (tx>90) tx=91;
-  morphFast(notlips, 100, tx, 0, 0);
   morphFast(notlips, 100, tx, 0, 1);
+  morphFast(notlips, 100, tx, 0, 0);
   imshow("lips2", notlips*255);
   waitKey(1);
 
