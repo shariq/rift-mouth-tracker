@@ -140,7 +140,7 @@ int main (int argc, char** argv) {
   RNG rng(1234);
   mouth_cascade.load("Mouth.xml");
   vector<Rect> mouths;
-  Mat classifyThis = gray.mul(mask);
+  Mat classifyThis = blurred_gray.mul(mask);
   equalizeHist(classifyThis, classifyThis);
   mouth_cascade.detectMultiScale(classifyThis, mouths, 1.1, 2, CV_HAAR_SCALE_IMAGE, Size(30,30));
   for (size_t i=0; i<mouths.size(); i++) {
