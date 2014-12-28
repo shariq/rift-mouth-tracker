@@ -141,16 +141,18 @@ int main (int argc, char** argv) {
 //  imshow("dark mask", gray.mul(kindofdark));
 
   Mat mask = flow.mul(kindofdark).mul(canny);
-  imshow("premask", gray.mul(mask));
 // close the mask
   Mat smallMask;
-  resize(mask, smallMask, Size(100,100));
-  Mat erodeKernel = ellipticKernel(tracker1+1-(tracker1%2));
+  resize(mask, smallMask, Size(150,150));
+  int t1 = 21;
+  Mat erodeKernel = ellipticKernel(21);
   erode(smallMask, smallMask, erodeKernel);
-  Mat dilateKernel = ellipticKernel(tracker2+1-(tracker2%2));
+  int t2 = tracker2+1-(tracker2%2);
+  Mat dilateKernel = ellipticKernel(31);
   dilate(smallMask, smallMask, dilateKernel);
-  resize(smallMask, mask, Size(width, height));
-  imshow("postclose", gray.mul(mask));
+  resize(smallMask, smallMask, Size(width, height));
+  bitwise_and(smallMask,mask,mask);
+  imshow("morph mask", gray.mul(mask));
 
 //  Moments lol = moments(mask, 1);
 //  circle(image, Point(lol.m10/lol.m00,lol.m01/lol.m00),20,Scalar(128),30);
