@@ -1,4 +1,5 @@
 #include "webcam.hpp"
+#include <time.h>
 
 using namespace cv;
 using namespace std;
@@ -46,6 +47,11 @@ int main (int argc, char** argv) {
   printf("No camera detected!");
   return -1;
  }
+
+ time_t times[100];
+ int f = 0;
+ for (int i=0; i<100; i++)
+  times[i] = 0;
 
  ifstream configFile (".config");
 
@@ -97,10 +103,12 @@ int main (int argc, char** argv) {
 
  Mat image;
  Mat channel[3];
+ time_t timenow = time(NULL);
 
  while (keepGoing) {
-
   image = cvQueryFrame(capture);
+  times[0] += time(NULL) - timenow;
+  timenow = time(NULL);
 // preprocess by rotating according to OVR roll
 //  imshow("webcam", image);
 
@@ -112,6 +120,8 @@ int main (int argc, char** argv) {
   Mat gray, blurred_img;
   cvtColor(image, gray, CV_RGB2GRAY);
   blur(image, blurred_img, Size(50,50));
+  times[1] += time(NULL) - timenow;
+  timenow = time(NULL);
 
 // this mask filters out areas with too many edges
 // removed for now; it didn't generalize well
@@ -133,9 +143,10 @@ int main (int argc, char** argv) {
   absdiff(blurred_img, background, flow);
   cvtColor(flow, flow, CV_RGB2GRAY);
   morphFast(flow);
-//60
   threshold(flow, flow, 60, 1, THRESH_BINARY);
 //  imshow("flow mask", gray.mul(flow));
+  times[2] += time(NULL) - timenow;
+  timenow = time(NULL);
 
 // this mask gets anything kind of dark (DK2) and dilates
   Mat kindofdark;
@@ -143,6 +154,8 @@ int main (int argc, char** argv) {
   threshold(kindofdark, kindofdark, 100, 1, THRESH_BINARY_INV);
   morphFast(kindofdark, 100, 17, 0);
 //  imshow("dark mask", gray.mul(kindofdark));
+  times[3] += time(NULL) - timenow;
+  timenow = time(NULL);
 
 // this mask gets rid of anything far away from red stuff
 // did not work well and was slow
@@ -183,7 +196,9 @@ int main (int argc, char** argv) {
   dilate(smallMask1, smallMask1, dilateKernel);
   bitwise_and(smallMask0, smallMask1, smallMask1);
   resize(smallMask1, mask, Size(width, height));
-  imshow("morph mask", gray.mul(mask));
+//  imshow("morph mask", gray.mul(mask));
+  times[4] += time(NULL) - timenow;
+  timenow = time(NULL);
 
 
 
@@ -207,9 +222,11 @@ int main (int argc, char** argv) {
   merge(channel, 3, mask3_);
 
   background = background.mul(mask3) +
-   (background.mul(mask3_) + blurred_img.mul(mask3_))/2;
+   (background.mul(mask3_)/2 + blurred_img.mul(mask3_)/2);
+  times[4] += time(NULL) - timenow;
+  timenow = time(NULL);
 
-  imshow("background", background);
+//  imshow("background", background);
 
 /*
   Moments lol = moments(gray, 1);
@@ -217,20 +234,29 @@ int main (int argc, char** argv) {
   imshow("leimage", image);
 */
 
+/*
   CascadeClassifier mouth_cascade;
-  mouth_cascade.load("HS.xml");
+  mouth_cascade.load("Mouth.xml");
   vector<Rect> mouths;
-  int scale = tracker1+1;
-  Mat classifyThis = image.clone();
+  int scale = 3;
+  Mat classifyThis;
   equalizeHist(gray, gray);//ew; watch out not to use this later
   resize(gray.mul(mask), classifyThis, Size(width/scale,height/scale));
 //  bilateralFilter(gray, classifyThis, 15, 10, 1);
-  mouth_cascade.detectMultiScale(classifyThis, mouths, 1.1, tracker2, CV_HAAR_SCALE_IMAGE);
+  mouth_cascade.detectMultiScale(classifyThis, mouths, 1.1, 0, CV_HAAR_SCALE_IMAGE);
   for (size_t i=0; i<mouths.size(); i++) {
    Rect scaled(mouths[i].x*scale, mouths[i].y*scale, mouths[i].width*scale,mouths[i].height*scale);
    rectangle(image, scaled, Scalar(255,0,0));
   }
   imshow("MOUTH", image);
+*/
+
+  for (int i=0; i<5; i++) {
+   printf("%.f, ", times[i]);
+   times[i] = 0;
+  }
+
+  printf("\n");
 
   keepGoing = (waitKey(25)<0);
 
