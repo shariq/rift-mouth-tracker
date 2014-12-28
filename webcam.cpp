@@ -83,20 +83,29 @@ int main (int argc, char** argv) {
   imshow("canny1", canny*255);
   waitKey(1);
 
-  Mat kernel;
+  int kwidth, kheight;
   if (width/2 > height) {
-   kernel = Mat::ones(height/8, height/16, CV_8UC1);
+   kwidth = height/8;
+   kheight = height/16;
   } else {
-   kernel = Mat::ones(width/16, width/32, CV_8UC1);
+   int kwidth = width/16;
+   int kheight = width/32;
   }
+
+  kwidth += (1-(kwidth%2));//round up to nearest odd
+  kheight += (1-(kheight%2));//round up to nearest odd
+  Size kernelSize;
+  kernelSize = Size(kwidth, kheight);
+  Mat kernel = getStructuringElement(MORPH_ELLIPSE, kernelSize);
+
   morphologyEx(canny, canny, MORPH_OPEN, kernel);
+  imshow("canny2", canny*255);
+  waitKey(1);
+  morphologyEx(canny, canny, MORPH_CLOSE, kernel);
   imshow("canny3", canny*255);
   waitKey(1);
-  dilate(canny, canny, kernel);
+  erode(canny, canny, kernel);
   imshow("canny4", canny*255);
-  waitKey(1);
-  dilate(canny, canny, kernel);
-  imshow("canny5", canny*255);
   waitKey(1);
 
   Mat flow;
@@ -115,6 +124,7 @@ int main (int argc, char** argv) {
 //  circle(image, Point(lol.m10/lol.m00,lol.m01/lol.m00),20,Scalar(128),30);
 //  imshow("leimage", image);
 
+/*
   CascadeClassifier mouth_cascade;
   mouth_cascade.load("Mouth.xml");
   vector<Rect> mouths;
@@ -128,6 +138,7 @@ int main (int argc, char** argv) {
    ellipse( image, center, Size( mouths[i].width*0.5, mouths[i].height*0.5), 0, 0, 360, Scalar( 255, 0, 255 ), 4, 8, 0 );
   }
   imshow("MOUTH", image);
+*/
   keepGoing = (waitKey(25)<0);
 
 
