@@ -210,9 +210,9 @@ int main (int argc, char** argv) {
 // average what we know is background with prior background
 // erode it first since we really want to be sure it's bg
 
-//  Mat erodeKernel = ellipticKernel(21);
-  Mat erodedMask = mask.clone();
-//  erode(mask, erodedMask, erodeKernel);
+  Mat erodedMask;
+  erode(smallMask1, erodedMask, erodeKernel);
+  resize(erodedMask, erodedMask, Size(width, height));
   Mat mask_;
   subtract(1,erodedMask,mask_);
   Mat mask3, mask3_;
@@ -225,8 +225,8 @@ int main (int argc, char** argv) {
   channel[2] = mask_;
   merge(channel, 3, mask3_);
 
-//  background = background.mul(mask3) +
-//   (background.mul(mask3_)/2 + blurred_img.mul(mask3_)/2);
+  background = background.mul(mask3) +
+   (background.mul(mask3_)/2 + blurred_img.mul(mask3_)/2);
   times[5] += getMilliseconds() - timenow;
   timenow = getMilliseconds();
 
