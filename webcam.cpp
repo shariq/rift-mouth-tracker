@@ -5,8 +5,8 @@ using namespace std;
 
 void dilateFast(Mat inout, int smallsize = 100, int factor = 4, int eq = 1) {
   int width, height;
-  width = inout.size.width;
-  height = inout.size.height;
+  width = inout.size().width;
+  height = inout.size().height;
   Mat downsample;
   resize(inout, downsample, Size(smallsize,smallsize));
   Mat kernel = getStructuringElement(MORPH_ELLIPSE,Size(smallsize/factor,smallsize/factor));
