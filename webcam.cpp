@@ -83,10 +83,7 @@ int main (int argc, char** argv) {
   imshow("canny1", canny*255);
   waitKey(1);
 
-  Mat kernel = Mat::ones(15, 15, CV_8UC1);
-  morphologyEx(canny, canny, MORPH_CLOSE, kernel, Point(-1,-1), 3);
-  imshow("canny2", canny*255);
-  waitKey(1);
+  Mat kernel;
   if (width/2 > height) {
    kernel = Mat::ones(height/8, height/16, CV_8UC1);
   } else {
