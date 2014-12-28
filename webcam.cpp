@@ -133,7 +133,8 @@ int main (int argc, char** argv) {
   absdiff(blurred_img, background, flow);
   cvtColor(flow, flow, CV_RGB2GRAY);
   morphFast(flow);
-  threshold(flow, flow, 60, 1, THRESH_BINARY);
+//60
+  threshold(flow, flow, tracker1, 1, THRESH_BINARY);
 //  imshow("flow mask", gray.mul(flow));
 
 // this mask gets anything kind of dark (DK2) and dilates
