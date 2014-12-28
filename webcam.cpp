@@ -132,9 +132,9 @@ int main (int argc, char** argv) {
   Mat flow;
   absdiff(blurred_img, background, flow);
   cvtColor(flow, flow, CV_RGB2GRAY);
-//  morphFast(flow);
+  morphFast(flow);
 //60
-  threshold(flow, flow, tracker1*3, 1, THRESH_BINARY);
+  threshold(flow, flow, 60, 1, THRESH_BINARY);
 //  imshow("flow mask", gray.mul(flow));
 
 // this mask gets anything kind of dark (DK2) and dilates
@@ -216,9 +216,9 @@ int main (int argc, char** argv) {
   circle(image, Point(lol.m10/lol.m00,lol.m01/lol.m00),20,Scalar(128),30);
   imshow("leimage", image);
 */
-/*
+
   CascadeClassifier mouth_cascade;
-  mouth_cascade.load("Mouth.xml");
+  mouth_cascade.load("HS.xml");
   vector<Rect> mouths;
   int scale = tracker1+1;
   Mat classifyThis = image.clone();
@@ -231,7 +231,6 @@ int main (int argc, char** argv) {
    rectangle(image, scaled, Scalar(255,0,0));
   }
   imshow("MOUTH", image);
-*/
 
   keepGoing = (waitKey(25)<0);
 
