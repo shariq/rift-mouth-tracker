@@ -114,6 +114,8 @@ int main (int argc, char** argv) {
   blur(image, blurred_img, Size(50,50));
 
 // this mask filters out areas with too many edges
+// removed for now; it didn't generalize well
+/*
   Mat canny;
   Canny(gray, canny, 50, 50, 3);
   blur(canny, canny, Size(width/20,height/20));
@@ -122,6 +124,7 @@ int main (int argc, char** argv) {
   blur(canny*255, canny, Size(width/10, height/10));
   threshold(canny, canny, 220, 1, THRESH_BINARY);
   imshow("canny mask", gray.mul(canny));
+*/
 
 // this mask filters out areas which have not changed much
 // background needs to be updated when person is not in frame
@@ -140,15 +143,17 @@ int main (int argc, char** argv) {
   morphFast(kindofdark, 100, 17, 0);
   imshow("dark mask", gray.mul(kindofdark));
 
-  Mat mask = flow.mul(kindofdark).mul(canny);
+  Mat mask = flow.mul(kindofdark);
 // close the mask
   Mat smallMask;
   resize(mask, smallMask, Size(150,150));
-  int t1 = 21;
-  Mat erodeKernel = ellipticKernel(21);
+  int t1 = tracker1+1-(tracker1%2);
+  Mat erodeKernel = ellipticKernel(t1);
+//21
   erode(smallMask, smallMask, erodeKernel);
   int t2 = tracker2+1-(tracker2%2);
-  Mat dilateKernel = ellipticKernel(31);
+  Mat dilateKernel = ellipticKernel(t2);
+//31
   dilate(smallMask, smallMask, dilateKernel);
   resize(smallMask, smallMask, Size(width, height));
   bitwise_and(smallMask,mask,mask);
