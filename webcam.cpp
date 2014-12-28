@@ -194,11 +194,9 @@ int main (int argc, char** argv) {
 // open the mask
   Mat smallMask0, smallMask1;
   resize(mask, smallMask0, Size(width/5,height/5));
-  Mat erodeKernel = ellipticKernel(79,79);
-  erode(smallMask0, smallMask1, erodeKernel);
-  Mat dilateKernel = ellipticKernel(69,69);
-//69,79
-  dilate(smallMask1, smallMask1, dilateKernel);
+  Mat smallKernel = ellipticKernel(69,79);
+  erode(smallMask0, smallMask1, smallKernel);
+  dilate(smallMask1, smallMask1, smallKernel);
   bitwise_and(smallMask0, smallMask1, smallMask1);
   resize(smallMask1, mask, Size(width, height));
   imshow("morph mask", gray.mul(mask));
@@ -211,16 +209,16 @@ int main (int argc, char** argv) {
 // average what we know is background with prior background
 // erode it first since we really want to be sure it's bg
 
-  Mat erodedMask;
-  dilate(smallMask1, erodedMask, erodeKernel);
-  resize(erodedMask, erodedMask, Size(width, height));
-  imshow("erosion", erodedMask.mul(gray));
+  Mat dilatedMask;
+  dilate(smallMask1, dilatedMask, smallKernel);
+  resize(dilatedMask, dilatedMask, Size(width, height));
+  imshow("erosion", dilatedMask.mul(gray));
   Mat mask_;
-  subtract(1,erodedMask,mask_);
+  subtract(1, dilatedMask,mask_);
   Mat mask3, mask3_;
-  channel[0] = erodedMask;
-  channel[1] = erodedMask;
-  channel[2] = erodedMask;
+  channel[0] = dilatedMask;
+  channel[1] = dilatedMask;
+  channel[2] = dilatedMask;
   merge(channel, 3, mask3);
   channel[0] = mask_;
   channel[1] = mask_;
