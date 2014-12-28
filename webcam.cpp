@@ -148,11 +148,17 @@ int main (int argc, char** argv) {
   Mat notlips;
   split(image, channel);
   notlips = channel[2] - (channel[0]+channel[1])/2;//BGR?
+  imshow("0", channel[0]);
+  imshow("1", channel[1]);
+  imshow("2", channel[2]);
+  imshow("0+1", (channel[0]+channel[1])/2);
+  imshow("2-0", channel[2] - channel[0]);
+  imshow("2-1", channel[2] - channel[1]);
   //equalistHist is horrible for a red background
   //equalizeHist(notlips, notlips);
   threshold(notlips, notlips, tracker1*3, 1, THRESH_BINARY);
   imshow("lip mask", notlips*255);
-
+  waitKey(1);
 
   Mat mask = flow.mul(kindofdark);
 // open the mask
