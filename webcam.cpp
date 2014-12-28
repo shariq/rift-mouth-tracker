@@ -207,18 +207,22 @@ int main (int argc, char** argv) {
 
 // update background with new morph mask
 // average what we know is background with prior background
-// erode it first since we really want to be sure it's bg
+// dilate it first since we really want to be sure it's bg
 
+/*
+// actually dilation is slow and our current mask is already
+// really nice :)
   Mat dilatedMask;
   dilate(smallMask1, dilatedMask, smallKernel);
   resize(dilatedMask, dilatedMask, Size(width, height));
   imshow("erosion", dilatedMask.mul(gray));
+*/
   Mat mask_;
-  subtract(1, dilatedMask,mask_);
+  subtract(1, mask ,mask_);
   Mat mask3, mask3_;
-  channel[0] = dilatedMask;
-  channel[1] = dilatedMask;
-  channel[2] = dilatedMask;
+  channel[0] = mask;
+  channel[1] = mask;
+  channel[2] = mask;
   merge(channel, 3, mask3);
   channel[0] = mask_;
   channel[1] = mask_;
