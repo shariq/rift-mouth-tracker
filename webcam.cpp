@@ -103,8 +103,10 @@ int main (int argc, char** argv) {
   } else {
    kernel = Mat::ones(width/4, width/8, CV_8UC1);
   }
+  imshow("MORPHOLOGYp", certainBackground*255);
+  waitKey(1);
   morphologyEx(certainBackground, certainBackground, MORPH_OPEN, kernel);
-  imshow("MORPHOLOGY", certainBackground);
+  imshow("MORPHOLOGYa", certainBackground*255);
   imshow("image", gray.mul(certainBackground));
 
   Mat channels[3];
