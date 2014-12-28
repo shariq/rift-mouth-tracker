@@ -234,7 +234,7 @@ int main (int argc, char** argv) {
   times[5] += getMilliseconds() - timenow;
   timenow = getMilliseconds();
 
-  imshow("background", background);
+//  imshow("background", background);
 
 /*
   Moments lol = moments(gray, 1);
@@ -242,7 +242,6 @@ int main (int argc, char** argv) {
   imshow("leimage", image);
 */
 
-/*
   CascadeClassifier mouth_cascade;
   mouth_cascade.load("Mouth.xml");
   vector<Rect> mouths;
@@ -256,10 +255,12 @@ int main (int argc, char** argv) {
    Rect scaled(mouths[i].x*scale, mouths[i].y*scale, mouths[i].width*scale,mouths[i].height*scale);
    rectangle(image, scaled, Scalar(255,0,0));
   }
+  times[6] += getMilliseconds() - timenow;
+  timenow = getMilliseconds();
   imshow("MOUTH", image);
-*/
 
-  for (int i=0; i<6; i++) {
+
+  for (int i=0; i<7; i++) {
    printf("%llu , ", times[i]);
    times[i] = 0;
   }
