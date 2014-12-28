@@ -154,15 +154,19 @@ int main (int argc, char** argv) {
   //equalizeHist(notlips, notlips);
   threshold(notlips, notlips, tracker3/30.0, 1, THRESH_BINARY);
   imshow("lip mask", notlips*255);
+  Mat otherMorph = notlips.copy();
   int tx = tracker1+1-(tracker1%2);
   if (tx<3) tx=1;
   if (tx>90) tx=91;
   morphFast(notlips, 100, tx, 0, 0);
-  tx = tracker2+1-(tracker2%2);
-  if (tx<3) tx=1;
-  if (tx>90) tx=91;
-  morphFast(notlips, 100, tx, 0, 1);
+  int ty = tracker2+1-(tracker2%2);
+  if (ty<3) ty=1;
+  if (ty>90) ty=91;
+  morphFast(notlips, 100, ty, 0, 1);
   imshow("lips2", notlips*255);
+  morphFast(otherMorph, 100, tx, 0, 1);
+  morphFast(otherMorph, 100, tx, 0, 0);
+  imshow("lips3", otherMorph*255);
   waitKey(1);
 
   Mat mask = flow.mul(kindofdark);
