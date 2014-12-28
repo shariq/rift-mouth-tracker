@@ -158,10 +158,10 @@ int main (int argc, char** argv) {
   if (tx<3) tx=1;
   if (tx>90) tx=91;
   morphFast(notlips, 100, tx, 0, 0);
-  ty = tracker2+1-(tracker2%2);
+  tx = tracker2+1-(tracker2%2);
   if (tx<3) tx=1;
   if (tx>90) tx=91;
-  morphFast(notlips, 100, ty, 0, 1);
+  morphFast(notlips, 100, tx, 0, 1);
   imshow("lips2", notlips*255);
   waitKey(1);
 
