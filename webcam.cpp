@@ -148,7 +148,7 @@ int main (int argc, char** argv) {
   cvtColor(flow, flow, CV_RGB2GRAY);
   morphFast(flow);
   threshold(flow, flow, 60, 1, THRESH_BINARY);
-//  imshow("flow mask", gray.mul(flow));
+  imshow("flow mask", gray.mul(flow));
   times[2] += getMilliseconds() - timenow;
   timenow = getMilliseconds();
 
@@ -157,7 +157,7 @@ int main (int argc, char** argv) {
   equalizeHist(gray, kindofdark);
   threshold(kindofdark, kindofdark, 100, 1, THRESH_BINARY_INV);
   morphFast(kindofdark, 100, 17, 0);
-//  imshow("dark mask", gray.mul(kindofdark));
+  imshow("dark mask", gray.mul(kindofdark));
   times[3] += getMilliseconds() - timenow;
   timenow = getMilliseconds();
 
@@ -231,7 +231,7 @@ int main (int argc, char** argv) {
   times[5] += getMilliseconds() - timenow;
   timenow = getMilliseconds();
 
-//  imshow("background", background);
+  imshow("background", background);
 
 /*
   Moments lol = moments(gray, 1);
