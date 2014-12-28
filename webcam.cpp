@@ -156,6 +156,9 @@ int main (int argc, char** argv) {
 
 // update background with new morph mask
 // average what we know is background with prior background
+// erode it first since we really want to be sure it's bg
+
+  erode(mask, mask, erodeKernel);
   Mat mask_;
   subtract(1,mask,mask_);
   Mat mask3, mask3_;
