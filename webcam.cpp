@@ -142,7 +142,7 @@ int main (int argc, char** argv) {
   vector<Rect> mouths;
   Mat classifyThis = blurred_gray.mul(mask);
   equalizeHist(classifyThis, classifyThis);
-  mouth_cascade.detectMultiScale(classifyThis, mouths, 1.1, 2, CV_HAAR_SCALE_IMAGE, Size(30,30));
+  mouth_cascade.detectMultiScale(classifyThis, mouths, 1.1, 2, CV_HAAR_SCALE_IMAGE);
   for (size_t i=0; i<mouths.size(); i++) {
    Point center( mouths[i].x + mouths[i].width*0.5, mouths[i].y + mouths[i].height*0.5 );
    ellipse( image, center, Size( mouths[i].width*0.5, mouths[i].height*0.5), 0, 0, 360, Scalar( 255, 0, 255 ), 4, 8, 0 );
