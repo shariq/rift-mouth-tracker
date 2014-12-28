@@ -147,7 +147,7 @@ int main (int argc, char** argv) {
 // lips have a lot of red
   Mat notlips;
   split(image, channel);
-  notlips = channels[2].clone();//BGR?
+  notlips = channel[2].clone();//BGR?
   //will do terrible with a red background
   equalizeHist(notlips, notlips);
   threshold(notlips, notlips, 150, 1, THRESH_BINARY);
