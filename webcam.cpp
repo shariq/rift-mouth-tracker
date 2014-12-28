@@ -212,7 +212,7 @@ int main (int argc, char** argv) {
 // erode it first since we really want to be sure it's bg
 
   Mat erodedMask;
-  erode(smallMask1, erodedMask, erodeKernel);
+  dilate(smallMask1, erodedMask, erodeKernel);
   resize(erodedMask, erodedMask, Size(width, height));
   imshow("erosion", erodedMask.mul(gray));
   Mat mask_;
