@@ -134,28 +134,24 @@ int main (int argc, char** argv) {
   cvtColor(flow, flow, CV_RGB2GRAY);
   morphFast(flow);
   threshold(flow, flow, 60, 1, THRESH_BINARY);
-  imshow("flow mask", gray.mul(flow));
+//  imshow("flow mask", gray.mul(flow));
 
 // this mask gets anything kind of dark (DK2) and dilates
   Mat kindofdark;
   equalizeHist(gray, kindofdark);
   threshold(kindofdark, kindofdark, 100, 1, THRESH_BINARY_INV);
   morphFast(kindofdark, 100, 17, 0);
-  imshow("dark mask", gray.mul(kindofdark));
+//  imshow("dark mask", gray.mul(kindofdark));
 
   Mat mask = flow.mul(kindofdark);
+  imshow("premask", gray.mul(mask));
+  waitKey(1);
 // open the mask
   Mat smallMask;
   resize(mask, smallMask, Size(150,150));
-  int t1 = tracker1+1-(tracker1%2);
-  if (t1>90) t1=91;
-  if (t1<3) t1=3;
-  int t2 = tracker2+1-(tracker2%2);
-  if (t2>90) t2=91;
-  if (t2<3) t2=3;
-  Mat erodeKernel = ellipticKernel(t1,t2);
+  Mat erodeKernel = ellipticKernel(41,81);
   erode(smallMask, smallMask, erodeKernel);
-  Mat dilateKernel = ellipticKernel(t1,t2);
+  Mat dilateKernel = ellipticKernel(41,81);
   dilate(smallMask, smallMask, dilateKernel);
   resize(smallMask, smallMask, Size(width, height));
   bitwise_and(smallMask,mask,mask);
