@@ -146,8 +146,8 @@ int main (int argc, char** argv) {
   Mat mask = flow.mul(kindofdark);
 // open the mask
   Mat smallMask;
-  resize(mask, smallMask, Size(150,150));
-  Mat erodeKernel = ellipticKernel(41,81);
+  resize(mask, smallMask, Size(width/5,height/5));
+  Mat erodeKernel = ellipticKernel(,81);
   erode(smallMask, smallMask, erodeKernel);
   Mat dilateKernel = ellipticKernel(41,81);
   dilate(smallMask, smallMask, dilateKernel);
@@ -185,6 +185,7 @@ int main (int argc, char** argv) {
   CascadeClassifier mouth_cascade;
   mouth_cascade.load("Mouth.xml");
   vector<Rect> mouths;
+  int scale = tracker1+1;
   Mat classifyThis;
   resize(gray, classifyThis, Size(width/(tracker1+1),height/(tracker2+1));
 //  bilateralFilter(gray, classifyThis, 15, 10, 1);
