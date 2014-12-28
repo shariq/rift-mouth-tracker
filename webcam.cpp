@@ -252,13 +252,13 @@ int main (int argc, char** argv) {
 */
 
   for (int i=0; i<5; i++) {
-   printf("%l, ", times[i]);
+   printf("%l , ", times[i]);
    times[i] = 0;
   }
 
   printf("\n");
 
-  keepGoing = (waitKey(25)<0);
+  keepGoing = (waitKey(1)<0);
 
 
  }
