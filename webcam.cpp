@@ -122,6 +122,7 @@ int main (int argc, char** argv) {
 
 // this mask gets anything kind of dark (DK2) and dilates
   Mat kindofdark;
+  equalizeHist(gray,gray);
   threshold(gray, kindofdark, tracker1*3, 255, THRESH_BINARY);
   imshow("lo", kindofdark);
   waitKey(1);
