@@ -103,18 +103,16 @@ int main (int argc, char** argv) {
   blur(image, flow, Size(50,50));
   absdiff(flow, background, flow);
   cvtColor(flow, flow, CV_RGB2GRAY);
-//  blur(flow, flow, Size(tracker1+1,tracker1+1));
-//  equalizeHist(flow, flow);
-  Mat downsample;
-  resize(flow, downsample, Size(250,250));
-  Mat flowKernel = getStructuringElement(MORPH_ELLIPSE,
-   Size(55,55)
-  );
+  Mat downsample; // dilate is slow on large images
+  resize(flow, downsample, Size(100,100));
+  Mat flowKernel = getStructuringElement(MORPH_ELLIPSE,Size(25,25));
   dilate(downsample, downsample, flowKernel);
+  equalizeHist(downsample, downsample);
   resize(downsample, flow, Size(width, height));
-  equalizeHist(flow, flow);
   threshold(flow, flow, 60, 1, THRESH_BINARY);
   imshow("flow mask", gray.mul(flow));
+
+  imshow("mask", gray.mul(flow.mul(canny)));
 
 //  Moments lol = moments(mask, 1);
 //  circle(image, Point(lol.m10/lol.m00,lol.m01/lol.m00),20,Scalar(128),30);
