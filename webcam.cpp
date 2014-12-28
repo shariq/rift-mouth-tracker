@@ -114,7 +114,7 @@ int main (int argc, char** argv) {
   mouth_cascade.load("Mouth.xml");
   vector<Rect> mouths;
   Mat classifyThis;
-  bilateralFilter(gray, clsasifyThis, 15, 10, 1);
+  bilateralFilter(gray, classifyThis, 15, 10, 1);
   equalizeHist(classifyThis, classifyThis);
   classifyThis = classifyThis.mul(mask);
   mouth_cascade.detectMultiScale(classifyThis, mouths, 1.1, 2, CV_HAAR_SCALE_IMAGE);
