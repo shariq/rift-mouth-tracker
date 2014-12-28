@@ -14,7 +14,7 @@ void morphFast(Mat inout, int smallsize = 100, int factor = 25, int eq = 1, int 
   if (diler) {
    dilate(downsample, downsample, kernel);
   } else {
-//   erode(downsample, downsample, kernel);
+   erode(downsample, downsample, kernel);
   }
   if (eq) {
    equalizeHist(downsample, downsample);
@@ -135,12 +135,14 @@ int main (int argc, char** argv) {
 
   Mat mask = flow.mul(kindofdark).mul(canny);
   imshow("premask", gray.mul(mask));
+/*
   waitKey(1);
   morphFast(mask, 100, tracker1+21-(tracker1%2), 0, 1);
   imshow("erode mask", gray.mul(mask));
   waitKey(1);
   morphFast(mask, 100, tracker2+21-(tracker2%2), 0, 0);
   imshow("mask", gray.mul(mask));
+*/
 
 //  Moments lol = moments(mask, 1);
 //  circle(image, Point(lol.m10/lol.m00,lol.m01/lol.m00),20,Scalar(128),30);
