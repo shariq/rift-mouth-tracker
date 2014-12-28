@@ -150,10 +150,9 @@ int main (int argc, char** argv) {
   split(image, channels);
   channels[2].convertTo(notlips, CV_32FC1);
   divide(notlips, gray, notlips, 1, CV_32FC1);
-  notlips = notlips.mul(255.0);
   //equalistHist is horrible for a red background
   //equalizeHist(notlips, notlips);
-  threshold(notlips, notlips, 300, 1, THRESH_BINARY);
+  threshold(notlips, notlips, 0.35, 1, THRESH_BINARY);
   imshow("lip mask", notlips*255);
   int tx = tracker1+1-(tracker1%2);
   if (tx<3) tx=3;
