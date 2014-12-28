@@ -68,7 +68,6 @@ int main (int argc, char** argv) {
  Mat background = cvQueryFrame(capture);
  background = background.clone();
  blur(background, background, Size(50,50));
- imshow("background", background);
 
  Mat image;
  Mat channel[3];
@@ -95,6 +94,7 @@ int main (int argc, char** argv) {
   threshold(canny, canny, 200, 1, THRESH_BINARY);
   blur(canny*255, canny, Size(width/10, height/10));
   threshold(canny, canny, 220, 1, THRESH_BINARY);
+  imshow("canny mask", gray.mul(canny));
 
 // this mask filters out areas which have not changed much
 // background needs to be updated when person is not in frame
@@ -107,20 +107,14 @@ int main (int argc, char** argv) {
 //  equalizeHist(flow, flow);
   Mat downsample;
   resize(flow, downsample, Size(250,250));
-  int kerSize = tracker1+3-(tracker1%2);
   Mat flowKernel = getStructuringElement(MORPH_ELLIPSE,
-   Size(kerSize,kerSize)
+   Size(55,55)
   );
-  imshow("FLOW1", flow);
-  imshow("RESIZE", downsample);
-  waitKey(1);
   dilate(downsample, downsample, flowKernel);
   resize(downsample, flow, Size(width, height));
-  imshow("FLOW1.5", flow);
-  waitKey(1);
   equalizeHist(flow, flow);
-  threshold(flow, flow, tracker2*3, 1, THRESH_BINARY);
-  imshow("FLOW2", gray.mul(flow));
+  threshold(flow, flow, 60, 1, THRESH_BINARY);
+  imshow("flow mask", gray.mul(flow));
 
 //  Moments lol = moments(mask, 1);
 //  circle(image, Point(lol.m10/lol.m00,lol.m01/lol.m00),20,Scalar(128),30);
