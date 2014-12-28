@@ -179,9 +179,11 @@ int main (int argc, char** argv) {
 
   imshow("background", background);
 
+/*
   Moments lol = moments(gray, 1);
   circle(image, Point(lol.m10/lol.m00,lol.m01/lol.m00),20,Scalar(128),30);
   imshow("leimage", image);
+*/
 
   CascadeClassifier mouth_cascade;
   mouth_cascade.load("Mouth.xml");
@@ -191,7 +193,7 @@ int main (int argc, char** argv) {
   equalizeHist(gray, gray);//ew; watch out not to use this later
   resize(gray.mul(mask), classifyThis, Size(width/scale,height/scale));
 //  bilateralFilter(gray, classifyThis, 15, 10, 1);
-  mouth_cascade.detectMultiScale(classifyThis, mouths, 1.1, 5, CV_HAAR_SCALE_IMAGE);
+  mouth_cascade.detectMultiScale(classifyThis, mouths, 1.1, tracker2, CV_HAAR_SCALE_IMAGE);
   for (size_t i=0; i<mouths.size(); i++) {
    Rect scaled(mouths[i].x*scale, mouths[i].y*scale, mouths[i].width*scale,mouths[i].height*scale);
    rectangle(image, scaled, Scalar(255,0,0));
