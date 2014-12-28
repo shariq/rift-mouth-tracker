@@ -151,7 +151,7 @@ int main (int argc, char** argv) {
   //will do terrible with a red background
   equalizeHist(notlips, notlips);
   threshold(notlips, notlips, 150, 1, THRESH_BINARY);
-  imshow("lip mask", notlips);
+  imshow("lip mask", notlips*255);
 
 
   Mat mask = flow.mul(kindofdark);
