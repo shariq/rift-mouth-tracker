@@ -79,7 +79,7 @@ int main (int argc, char** argv) {
   Canny(gray, canny, 50, 50, 3);
   blur(canny, canny, Size(width/20,height/20));
   bitwise_not(canny, canny);
-  threshold(canny, canny, 220, 1, THRESH_BINARY);
+  threshold(canny, canny, 200, 1, THRESH_BINARY);
   imshow("canny1", canny*255);
   waitKey(1);
 
@@ -104,10 +104,8 @@ int main (int argc, char** argv) {
   morphologyEx(canny, canny, MORPH_CLOSE, kernelSmall);
   imshow("canny3", canny*255);
   waitKey(1);
-  erode(canny, canny, kernel);
-  imshow("canny4", canny*255);
-  waitKey(1);
 
+/*
   Mat flow;
   blur(image, flow, Size(50,50));
   absdiff(flow, background, flow);
@@ -119,6 +117,7 @@ int main (int argc, char** argv) {
   mask = mask.mul(canny);
   dilate(mask, mask, kernel); // maybe repeat some more
   imshow("FLOW", gray.mul(mask));
+*/
 
 //  Moments lol = moments(mask, 1);
 //  circle(image, Point(lol.m10/lol.m00,lol.m01/lol.m00),20,Scalar(128),30);
