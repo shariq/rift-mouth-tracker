@@ -129,9 +129,10 @@ int main (int argc, char** argv) {
 // this mask filters out areas which have not changed much
 // background needs to be updated when person is not in frame
 // use OVR SDK to do this later
-  Mat flow;
-  absdiff(blurred_img, background, flow);
-  cvtColor(flow, flow, CV_RGB2GRAY);
+  Mat flow_gray, flow;
+  absdiff(blurred_img, background, flow_gray);
+  cvtColor(flow_gray, flow_gray, CV_RGB2GRAY);
+  flow = flow_gray.copy();//inefficient but convenient
   morphFast(flow);
   threshold(flow, flow, 60, 1, THRESH_BINARY);
 //  imshow("flow mask", gray.mul(flow));
@@ -180,7 +181,7 @@ int main (int argc, char** argv) {
 
   imshow("background", background);
 
-  Moments lol = moments(mask, 1);
+  Moments lol = moments(flow_gray, 1);
   circle(image, Point(lol.m10/lol.m00,lol.m01/lol.m00),20,Scalar(128),30);
   imshow("leimage", image);
 
