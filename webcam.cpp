@@ -12,6 +12,10 @@ Mat ellipticKernel(int width, int height = -1) {
  }
 }
 
+unsigned long long getMilliseconds() {
+ return chrono::system_clock::now().time_since_epoch()/chrono::milliseconds(1);
+}
+
 void morphFast(Mat inout, int smallsize = 100, int factor = 25, int eq = 1, int diler = 0) {
  int width, height;
  width = inout.size().width;
@@ -48,7 +52,7 @@ int main (int argc, char** argv) {
   return -1;
  }
 
- time_t times[100];
+ unsigned long long times[100];
  int f = 0;
  for (int i=0; i<100; i++)
   times[i] = 0;
@@ -103,12 +107,12 @@ int main (int argc, char** argv) {
 
  Mat image;
  Mat channel[3];
- time_t timenow = time(NULL);
+ unsigned long long timenow = getMilliseconds();
 
  while (keepGoing) {
   image = cvQueryFrame(capture);
-  times[0] += time(NULL) - timenow;
-  timenow = time(NULL);
+  times[0] += getMilliseconds() - timenow;
+  timenow = getMilliseconds;
 // preprocess by rotating according to OVR roll
 //  imshow("webcam", image);
 
@@ -120,8 +124,8 @@ int main (int argc, char** argv) {
   Mat gray, blurred_img;
   cvtColor(image, gray, CV_RGB2GRAY);
   blur(image, blurred_img, Size(50,50));
-  times[1] += time(NULL) - timenow;
-  timenow = time(NULL);
+  times[1] += getMilliseconds() - timenow;
+  timenow = getMilliseconds;
 
 // this mask filters out areas with too many edges
 // removed for now; it didn't generalize well
@@ -145,8 +149,8 @@ int main (int argc, char** argv) {
   morphFast(flow);
   threshold(flow, flow, 60, 1, THRESH_BINARY);
 //  imshow("flow mask", gray.mul(flow));
-  times[2] += time(NULL) - timenow;
-  timenow = time(NULL);
+  times[2] += getMilliseconds() - timenow;
+  timenow = getMilliseconds;
 
 // this mask gets anything kind of dark (DK2) and dilates
   Mat kindofdark;
@@ -154,8 +158,8 @@ int main (int argc, char** argv) {
   threshold(kindofdark, kindofdark, 100, 1, THRESH_BINARY_INV);
   morphFast(kindofdark, 100, 17, 0);
 //  imshow("dark mask", gray.mul(kindofdark));
-  times[3] += time(NULL) - timenow;
-  timenow = time(NULL);
+  times[3] += getMilliseconds() - timenow;
+  timenow = getMilliseconds;
 
 // this mask gets rid of anything far away from red stuff
 // did not work well and was slow
@@ -197,8 +201,8 @@ int main (int argc, char** argv) {
   bitwise_and(smallMask0, smallMask1, smallMask1);
   resize(smallMask1, mask, Size(width, height));
 //  imshow("morph mask", gray.mul(mask));
-  times[4] += time(NULL) - timenow;
-  timenow = time(NULL);
+  times[4] += getMilliseconds() - timenow;
+  timenow = getMilliseconds;
 
 
 
@@ -223,8 +227,8 @@ int main (int argc, char** argv) {
 
   background = background.mul(mask3) +
    (background.mul(mask3_)/2 + blurred_img.mul(mask3_)/2);
-  times[4] += time(NULL) - timenow;
-  timenow = time(NULL);
+  times[5] += getMilliseconds() - timenow;
+  timenow = getMilliseconds;
 
 //  imshow("background", background);
 
