@@ -154,7 +154,7 @@ int main (int argc, char** argv) {
   //equalizeHist(notlips, notlips);
   threshold(notlips, notlips, tracker3/30.0, 1, THRESH_BINARY);
   imshow("lip mask", notlips*255);
-  Mat otherMorph = notlips.copy();
+  Mat otherMorph = notlips.clone();
   int tx = tracker1+1-(tracker1%2);
   if (tx<3) tx=1;
   if (tx>90) tx=91;
