@@ -182,7 +182,7 @@ int main (int argc, char** argv) {
   dilate(smallMask1, smallMask1, dilateKernel);
   bitwise_and(smallMask0, smallMask1, smallMask1);
   resize(smallMask1, mask, Size(width, height));
-//  imshow("morph mask", gray.mul(mask));
+  imshow("morph mask", gray.mul(mask));
 
 
 
