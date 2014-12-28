@@ -5,6 +5,11 @@ using namespace std;
 
 int main (int argc, char** argv) {
 
+ int tracker1, tracker2, tracker3;
+ createTrackbar("1","set",&tracker1,100);
+ createTrackbar("2","set",&tracker2,100);
+ createTrackbar("3","set",&tracker3,100);
+
  CvCapture* capture = 0;
  int width, height, fps;
 
@@ -79,9 +84,11 @@ int main (int argc, char** argv) {
   Canny(gray, canny, 50, 50, 3);
   blur(canny, canny, Size(width/20,height/20));
   bitwise_not(canny, canny);
-  threshold(canny, canny, 210, 1, THRESH_BINARY);
+  threshold(canny, canny, tracker1, 1, THRESH_BINARY);
+//  threshold(canny, canny, 210, 1, THRESH_BINARY);
   blur(canny*255, canny, Size(width/10, height/10));
-  threshold(canny, canny, 200, 1, THRESH_BINARY);
+//  threshold(canny, canny, 200, 1, THRESH_BINARY);
+  threshold(canny, canny, tracker2, 1, THRESH_BINARY);
   imshow("canny1", canny.mul(gray));
   waitKey(1);
 
