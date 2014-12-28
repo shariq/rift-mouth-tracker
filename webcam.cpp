@@ -147,18 +147,16 @@ int main (int argc, char** argv) {
 // close the mask
   Mat smallMask;
   resize(mask, smallMask, Size(150,150));
-  int t1 = tracker1+1-(tracker1%2);
-  if (t1>50) t1=51;
-  if (t1<3) t1=3;
-  Mat erodeKernel = ellipticKernel(t1);
-//21
+  Mat erodeKernel = ellipticKernel(51);
   erode(smallMask, smallMask, erodeKernel);
+/*
   int t2 = tracker2+1-(tracker2%2);
   if (t2>50) t2=51;
   if (t2<3) t2=3;
   Mat dilateKernel = ellipticKernel(t2);
 //31
   dilate(smallMask, smallMask, dilateKernel);
+*/
   resize(smallMask, smallMask, Size(width, height));
   bitwise_and(smallMask,mask,mask);
   imshow("morph mask", gray.mul(mask));
@@ -189,12 +187,11 @@ int main (int argc, char** argv) {
 //  circle(image, Point(lol.m10/lol.m00,lol.m01/lol.m00),20,Scalar(128),30);
 //  imshow("leimage", image);
 
-/*
   CascadeClassifier mouth_cascade;
   mouth_cascade.load("Mouth.xml");
   vector<Rect> mouths;
-  Mat classifyThis;
-  bilateralFilter(gray, classifyThis, 15, 10, 1);
+  Mat classifyThis = gray;
+//  bilateralFilter(gray, classifyThis, 15, 10, 1);
   equalizeHist(classifyThis, classifyThis);
   classifyThis = classifyThis.mul(mask);
   mouth_cascade.detectMultiScale(classifyThis, mouths, 1.1, 2, CV_HAAR_SCALE_IMAGE);
@@ -203,7 +200,7 @@ int main (int argc, char** argv) {
    ellipse( image, center, Size( mouths[i].width*0.5, mouths[i].height*0.5), 0, 0, 360, Scalar( 255, 0, 255 ), 4, 8, 0 );
   }
   imshow("MOUTH", image);
-*/
+
   keepGoing = (waitKey(25)<0);
 
 
