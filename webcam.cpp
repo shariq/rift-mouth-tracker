@@ -103,8 +103,8 @@ int main (int argc, char** argv) {
   absdiff(flow, background, flow);
   cvtColor(flow, flow, CV_RGB2GRAY);
   blur(flow, flow, Size(tracker1+1,tracker1+1));
-  equalizeHist(flow, flow);
-  imshow("FLOW1", gray.mul(flow));
+//  equalizeHist(flow, flow);
+  imshow("FLOW1", flow);
   threshold(flow, flow, tracker2*3, 1, THRESH_BINARY);
   imshow("FLOW2", gray.mul(flow));
 
