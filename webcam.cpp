@@ -129,7 +129,7 @@ int main (int argc, char** argv) {
   Mat kindofdark;
   equalizeHist(gray, kindofdark);
   threshold(kindofdark, kindofdark, 100, 1, THRESH_BINARY_INV);
-  morphFast(kindofdark, 100, 17, 0);
+  morphFast(kindofdark, 100, 10, 0);
   imshow("dark mask", gray.mul(kindofdark));
 
   Mat mask = flow.mul(kindofdark).mul(canny);
