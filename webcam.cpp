@@ -181,7 +181,9 @@ int main (int argc, char** argv) {
 
   imshow("background", background);
 
-  Moments lol = moments(flow_gray, 1);
+  Mat xkcd;
+  pow(flow_gray, 4, xkcd);
+  Moments lol = moments(xkcd, 1);
   circle(image, Point(lol.m10/lol.m00,lol.m01/lol.m00),20,Scalar(128),30);
   imshow("leimage", image);
 
