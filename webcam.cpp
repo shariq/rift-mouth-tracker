@@ -250,7 +250,7 @@ int main (int argc, char** argv) {
   equalizeHist(gray, gray);//ew; watch out not to use this later
   resize(gray.mul(mask), classifyThis, Size(width/scale,height/scale));
 //  bilateralFilter(gray, classifyThis, 15, 10, 1);
-  mouth_cascade.detectMultiScale(classifyThis, mouths, 1.1, 0, CV_HAAR_SCALE_IMAGE);
+  mouth_cascade.detectMultiScale(classifyThis, mouths, 1.1, 8, CV_HAAR_SCALE_IMAGE);
   for (size_t i=0; i<mouths.size(); i++) {
    Rect scaled(mouths[i].x*scale, mouths[i].y*scale, mouths[i].width*scale,mouths[i].height*scale);
    rectangle(image, scaled, Scalar(255,0,0));
