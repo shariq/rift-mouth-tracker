@@ -72,78 +72,51 @@ int main (int argc, char** argv) {
   image = cvQueryFrame(capture);
   //imshow("webcam", image);
 
-// thresholds on dark regions
-
-  Mat gray, blurred_gray, threshold_gray;
-  cvtColor(image, gray, CV_BGR2GRAY);
-
-  blur(gray, blurred_gray, Size(width/10,height/20));
-  equalizeHist(blurred_gray, blurred_gray);
-  bitwise_not(blurred_gray, blurred_gray);
-  threshold(blurred_gray, threshold_gray, 210, 1, THRESH_BINARY);
-//  imshow("threshold", threshold_gray);
-// threshold_gray has 1 for probable foreground
-// has 0 for idkwtf
+  Mat gray;
+  cvtColor(image, gray, CV_RGB2GRAY);
 
   Mat canny;
   Canny(gray, canny, 50, 50, 3);
   blur(canny, canny, Size(width/20,height/20));
   bitwise_not(canny, canny);
   threshold(canny, canny, 220, 1, THRESH_BINARY);
-//  imshow("canny", canny);
+  imshow("canny1", canny);
+  waitKey(1);
 
-  Mat certainBackground;
-  bitwise_or(canny, threshold_gray, certainBackground);
   Mat kernel = Mat::ones(15, 15, CV_8UC1);
-  morphologyEx(certainBackground, certainBackground, MORPH_CLOSE, kernel, Point(-1,-1), 3);
-// certainBackground has 0 for definitely not rift
-// and 1 for no clue what it is
+  morphologyEx(canny, canny, MORPH_CLOSE, kernel, Point(-1,-1), 3);
+  imshow("canny2", canny);
   if (width/2 > height) {
-   kernel = Mat::ones(height/4, height/8, CV_8UC1);
+   kernel = Mat::ones(height/8, height/16, CV_8UC1);
   } else {
-   kernel = Mat::ones(width/8, width/16, CV_8UC1);
+   kernel = Mat::ones(width/16, width/32, CV_8UC1);
   }
-  morphologyEx(certainBackground, certainBackground, MORPH_OPEN, kernel);
-//  imshow("image", gray.mul(certainBackground));
+  morphologyEx(canny, canny, MORPH_OPEN, kernel);
+  imshow("canny3", canny);
 
-  Mat channels[3];
-  Mat cB;
-  channels[0] = certainBackground;
-  channels[1] = certainBackground;
-  channels[2] = certainBackground;
-  merge(channels, 3, cB);
   Mat flow;
   blur(image, flow, Size(50,50));
-  absdiff(flow.mul(cB), background.mul(cB), flow);
+  absdiff(flow, background, flow);
   cvtColor(flow, flow, CV_RGB2GRAY);
   blur(flow, flow, Size(50,50));
   equalizeHist(flow, flow);
   Mat mask;
   threshold(flow, mask, 170, 1, THRESH_BINARY);
-//  bitwise_and(mask, threshold_gray, mask);
-
-  dilate(mask, mask, kernel);
-/*
-  dilate(mask, mask, kernel);
-  dilate(mask, mask, kernel);
-*/
+  dilate(mask, mask, kernel); // maybe repeat some more
+  mask = mask.mul(canny);
   imshow("FLOW", gray.mul(mask));
 
-/*
-  bitwise_not(gray,gray);
-  Mat mask = threshold_gray.mul(gray);
-  imshow("mask", mask);
-*/
-  Moments lol = moments(mask, 1);
-  circle(image, Point(lol.m10/lol.m00,lol.m01/lol.m00),20,Scalar(128),30);
+//  Moments lol = moments(mask, 1);
+//  circle(image, Point(lol.m10/lol.m00,lol.m01/lol.m00),20,Scalar(128),30);
 //  imshow("leimage", image);
 
   CascadeClassifier mouth_cascade;
-  RNG rng(1234);
   mouth_cascade.load("Mouth.xml");
   vector<Rect> mouths;
-  Mat classifyThis = blurred_gray.mul(mask);
+  Mat classifyThis;
+  bilateralFilter(gray, clsasifyThis, 15, 10, 1);
   equalizeHist(classifyThis, classifyThis);
+  classifyThis = classifyThis.mul(mask);
   mouth_cascade.detectMultiScale(classifyThis, mouths, 1.1, 2, CV_HAAR_SCALE_IMAGE);
   for (size_t i=0; i<mouths.size(); i++) {
    Point center( mouths[i].x + mouths[i].width*0.5, mouths[i].y + mouths[i].height*0.5 );
