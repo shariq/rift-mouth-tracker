@@ -105,16 +105,17 @@ int main (int argc, char** argv) {
   cvtColor(flow, flow, CV_RGB2GRAY);
 //  blur(flow, flow, Size(tracker1+1,tracker1+1));
 //  equalizeHist(flow, flow);
-  int factor = (tracker1/5) + 1;
+  Mat downsample;
+  resize(flow, downsample, Size(250,250));
+  int kerSize = tracker1+3-(tracker1%2);
   Mat flowKernel = getStructuringElement(MORPH_ELLIPSE,
-   Size(
-    width/factor+(1-(width/factor)%2),
-    height/factor+(1-(height/factor)%2)
-   )
+   Size(kerSize,kerSize)
   );
   imshow("FLOW1", flow);
+  imshow("RESIZE", downsample);
   waitKey(1);
-  dilate(flow, flow, flowKernel);
+  dilate(downsample, downsample, flowKernel);
+  resize(downsample, flow, Size(width, height));
   imshow("FLOW1.5", flow);
   waitKey(1);
   threshold(flow, flow, tracker2*3, 1, THRESH_BINARY);
