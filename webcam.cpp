@@ -106,7 +106,12 @@ int main (int argc, char** argv) {
 //  blur(flow, flow, Size(tracker1+1,tracker1+1));
 //  equalizeHist(flow, flow);
   int factor = ((tracker1)+1)/5;
-  Mat flowKernel = getStructuringElement(MORPH_ELLIPSE, Size( width/factor+(1-(width/factor)%2),height/factor+(1-height/factor)%2) ));
+  Mat flowKernel = getStructuringElement(MORPH_ELLIPSE,
+   Size(
+    width/factor+(1-(width/factor)%2),
+    height/factor+(1-(height/factor)%2)
+   )
+  );
   imshow("FLOW1", flow);
   waitKey(1);
   dilate(flow, flow, flowKernel);
