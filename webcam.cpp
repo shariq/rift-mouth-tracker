@@ -70,7 +70,7 @@ int main (int argc, char** argv) {
  while (keepGoing) {
 
   image = cvQueryFrame(capture);
-  //imshow("webcam", image);
+  imshow("webcam", image);
 
   Mat gray;
   cvtColor(image, gray, CV_RGB2GRAY);
@@ -85,6 +85,7 @@ int main (int argc, char** argv) {
   imshow("canny1", canny*255);
   waitKey(1);
 
+/*
   int kwidth, kheight;
   if (width/2 > height) {
    kwidth = height/4;
@@ -107,6 +108,7 @@ int main (int argc, char** argv) {
   morphologyEx(canny, canny, MORPH_CLOSE, kernelSmall);
   imshow("canny3", canny*255);
   waitKey(1);
+*/
 
 /*
   Mat flow;
