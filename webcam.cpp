@@ -80,19 +80,21 @@ int main (int argc, char** argv) {
   blur(canny, canny, Size(width/20,height/20));
   bitwise_not(canny, canny);
   threshold(canny, canny, 220, 1, THRESH_BINARY);
-  imshow("canny1", canny);
+  imshow("canny1", canny*255);
   waitKey(1);
 
   Mat kernel = Mat::ones(15, 15, CV_8UC1);
   morphologyEx(canny, canny, MORPH_CLOSE, kernel, Point(-1,-1), 3);
-  imshow("canny2", canny);
+  imshow("canny2", canny*255);
+  waitKey(1);
   if (width/2 > height) {
    kernel = Mat::ones(height/8, height/16, CV_8UC1);
   } else {
    kernel = Mat::ones(width/16, width/32, CV_8UC1);
   }
   morphologyEx(canny, canny, MORPH_OPEN, kernel);
-  imshow("canny3", canny);
+  imshow("canny3", canny*255);
+  waitKey(1);
 
   Mat flow;
   blur(image, flow, Size(50,50));
@@ -102,8 +104,8 @@ int main (int argc, char** argv) {
   equalizeHist(flow, flow);
   Mat mask;
   threshold(flow, mask, 170, 1, THRESH_BINARY);
-  dilate(mask, mask, kernel); // maybe repeat some more
   mask = mask.mul(canny);
+  dilate(mask, mask, kernel); // maybe repeat some more
   imshow("FLOW", gray.mul(mask));
 
 //  Moments lol = moments(mask, 1);
