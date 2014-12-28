@@ -78,61 +78,35 @@ int main (int argc, char** argv) {
   image = cvQueryFrame(capture);
   imshow("webcam", image);
 
+// let's make multiple masks where 0=not mouth, 1=uncertain
+
+// then multiply them together and multiply that with image
+// and run haar classifier on image
+
   Mat gray;
   cvtColor(image, gray, CV_RGB2GRAY);
 
+// this mask filters out areas with too many edges
   Mat canny;
   Canny(gray, canny, 50, 50, 3);
   blur(canny, canny, Size(width/20,height/20));
   bitwise_not(canny, canny);
-  threshold(canny, canny, tracker1*3, 1, THRESH_BINARY);
-  imshow("canny0", canny.mul(gray));
-  waitKey(1);
-//  threshold(canny, canny, 210, 1, THRESH_BINARY);
+  threshold(canny, canny, 200, 1, THRESH_BINARY);
   blur(canny*255, canny, Size(width/10, height/10));
-//  threshold(canny, canny, 200, 1, THRESH_BINARY);
-  threshold(canny, canny, tracker2*3, 1, THRESH_BINARY);
-  imshow("canny1", canny.mul(gray));
-  waitKey(1);
+  threshold(canny, canny, 220, 1, THRESH_BINARY);
 
-/*
-  int kwidth, kheight;
-  if (width/2 > height) {
-   kwidth = height/4;
-   kheight = height/8;
-  } else {
-   kwidth = width/8;
-   kheight = width/16;
-  }
-
-  
-  kwidth += (1-(kwidth%2));//round up to nearest odd
-  kheight += (1-(kheight%2));//round up to nearest odd
-  Size kernelSize(kwidth, kheight);
-  Mat kernel = getStructuringElement(MORPH_ELLIPSE, kernelSize);
-
-  morphologyEx(canny, canny, MORPH_OPEN, kernel);
-  imshow("canny2", canny*255);
-  waitKey(1);
-  Mat kernelSmall = getStructuringElement(MORPH_ELLIPSE, Size((kwidth/2)+(1-((kwidth/2)%2)),(kheight/2)+(1-((kheight/2)%2))));
-  morphologyEx(canny, canny, MORPH_CLOSE, kernelSmall);
-  imshow("canny3", canny*255);
-  waitKey(1);
-*/
-
-/*
+// this mask filters out areas which have not changed much
+// background needs to be updated to person outside of frame
+// use OVR SDK to do this
   Mat flow;
   blur(image, flow, Size(50,50));
   absdiff(flow, background, flow);
   cvtColor(flow, flow, CV_RGB2GRAY);
-  blur(flow, flow, Size(50,50));
+  blur(flow, flow, Size(tracker1,tracker1));
   equalizeHist(flow, flow);
-  Mat mask;
-  threshold(flow, mask, 170, 1, THRESH_BINARY);
-  mask = mask.mul(canny);
-  dilate(mask, mask, kernel); // maybe repeat some more
-  imshow("FLOW", gray.mul(mask));
-*/
+  imshow("FLOW1", gray.mul(flow));
+  threshold(flow, flow, tracker2*3, 1, THRESH_BINARY);
+  imshow("FLOW2", gray.mul(flow));
 
 //  Moments lol = moments(mask, 1);
 //  circle(image, Point(lol.m10/lol.m00,lol.m01/lol.m00),20,Scalar(128),30);
