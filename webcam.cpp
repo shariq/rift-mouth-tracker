@@ -6,9 +6,9 @@ using namespace std;
 int main (int argc, char** argv) {
 
  int tracker1, tracker2, tracker3;
- createTrackbar("1","set",&tracker1,100);
- createTrackbar("2","set",&tracker2,100);
- createTrackbar("3","set",&tracker3,100);
+ createTrackbar("1",0,&tracker1,100);
+ createTrackbar("2",0,&tracker2,100);
+ createTrackbar("3",0,&tracker3,100);
 
  CvCapture* capture = 0;
  int width, height, fps;
