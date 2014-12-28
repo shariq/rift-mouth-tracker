@@ -122,7 +122,9 @@ int main (int argc, char** argv) {
   threshold(flow, mask, 210, 1, THRESH_BINARY);
 //  bitwise_and(mask, threshold_gray, mask);
   dilate(mask, mask, kernel);
-  imshow("FLOW", gray.mul(mask));
+  dilate(mask, mask, kernel);
+  dilate(mask, mask, kernel);
+  imshow("FLOW", gray.mul(mask).mul(threshold_gray));
 
 /*
   bitwise_not(gray,gray);
