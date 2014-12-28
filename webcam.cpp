@@ -112,7 +112,7 @@ int main (int argc, char** argv) {
  while (keepGoing) {
   image = cvQueryFrame(capture);
   times[0] += getMilliseconds() - timenow;
-  timenow = getMilliseconds;
+  timenow = getMilliseconds();
 // preprocess by rotating according to OVR roll
 //  imshow("webcam", image);
 
@@ -125,7 +125,7 @@ int main (int argc, char** argv) {
   cvtColor(image, gray, CV_RGB2GRAY);
   blur(image, blurred_img, Size(50,50));
   times[1] += getMilliseconds() - timenow;
-  timenow = getMilliseconds;
+  timenow = getMilliseconds();
 
 // this mask filters out areas with too many edges
 // removed for now; it didn't generalize well
@@ -150,7 +150,7 @@ int main (int argc, char** argv) {
   threshold(flow, flow, 60, 1, THRESH_BINARY);
 //  imshow("flow mask", gray.mul(flow));
   times[2] += getMilliseconds() - timenow;
-  timenow = getMilliseconds;
+  timenow = getMilliseconds();
 
 // this mask gets anything kind of dark (DK2) and dilates
   Mat kindofdark;
@@ -159,7 +159,7 @@ int main (int argc, char** argv) {
   morphFast(kindofdark, 100, 17, 0);
 //  imshow("dark mask", gray.mul(kindofdark));
   times[3] += getMilliseconds() - timenow;
-  timenow = getMilliseconds;
+  timenow = getMilliseconds();
 
 // this mask gets rid of anything far away from red stuff
 // did not work well and was slow
@@ -202,7 +202,7 @@ int main (int argc, char** argv) {
   resize(smallMask1, mask, Size(width, height));
 //  imshow("morph mask", gray.mul(mask));
   times[4] += getMilliseconds() - timenow;
-  timenow = getMilliseconds;
+  timenow = getMilliseconds();
 
 
 
@@ -228,7 +228,7 @@ int main (int argc, char** argv) {
   background = background.mul(mask3) +
    (background.mul(mask3_)/2 + blurred_img.mul(mask3_)/2);
   times[5] += getMilliseconds() - timenow;
-  timenow = getMilliseconds;
+  timenow = getMilliseconds();
 
 //  imshow("background", background);
 
@@ -256,7 +256,7 @@ int main (int argc, char** argv) {
 */
 
   for (int i=0; i<5; i++) {
-   printf("%lu , ", times[i]);
+   printf("%llu , ", times[i]);
    times[i] = 0;
   }
 
