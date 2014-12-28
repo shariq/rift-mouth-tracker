@@ -144,7 +144,10 @@ int main (int argc, char** argv) {
   imshow("premask", gray.mul(mask));
 // close the mask
   Mat kernel = ellipticKernel(tracker1+1-(tracker1%2));
-  morphologyEx(mask, mask, MORPH_CLOSE, kernel);
+  Mat smallMask;
+  resize(mask, smallMask, Size(100,100));
+  morphologyEx(smallMask, smallMask, MORPH_CLOSE, kernel);
+  resize(smallMask, mask, Size(width, height));
   imshow("postclose", gray.mul(mask));
 //  Moments lol = moments(mask, 1);
 //  circle(image, Point(lol.m10/lol.m00,lol.m01/lol.m00),20,Scalar(128),30);
