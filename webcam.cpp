@@ -153,6 +153,7 @@ int main (int argc, char** argv) {
   //equalistHist is horrible for a red background
   //equalizeHist(notlips, notlips);
   threshold(notlips, notlips, tracker3/30.0, 1, THRESH_BINARY);
+  notlips.convertTo(notlips, CV_8UC1);
   imshow("lip mask", notlips*255);
   Mat otherMorph = notlips.clone();
   int tx = tracker1+1-(tracker1%2);
