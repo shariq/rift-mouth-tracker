@@ -237,7 +237,7 @@ int main (int argc, char** argv) {
   Mat rectImage(height, width, CV_8UC1, Scalar(0));
   for (size_t i=0; i<mouths.size(); i++) {
    Rect scaled(mouths[i].x*scale, mouths[i].y*scale, mouths[i].width*scale,mouths[i].height*scale);
-   Mat newRect(height, width; CV_8UC1, Scalar(0));
+   Mat newRect(height, width, CV_8UC1, Scalar(0));
    rectangle(newRect, scaled, Scalar(1), CV_FILLED);
    rectImage += newRect;
   }
