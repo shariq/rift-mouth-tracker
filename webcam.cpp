@@ -193,8 +193,8 @@ int main (int argc, char** argv) {
   minMaxLoc(rectImage, &minVal, &maxVal);
   Mat recThresh, recBinary;
   threshold(rectImage, recThresh, maxVal*0.9, 1, THRESH_BINARY);
-// what's the point of this v ?
   threshold(rectImage, recBinary, 1, 1, THRESH_BINARY);
+  imshow("recbin", recBinary*255);
   bitwise_and(recBinary, mask, mask);
   times[5] = getMilliseconds() - timenow;
   timenow = getMilliseconds();
