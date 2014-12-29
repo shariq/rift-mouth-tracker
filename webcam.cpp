@@ -254,14 +254,14 @@ int main (int argc, char** argv) {
   Mat rectImage(width, height, CV_8UC1, Scalar(0));
   for (size_t i=0; i<mouths.size(); i++) {
    Rect scaled(mouths[i].x*scale, mouths[i].y*scale, mouths[i].width*scale,mouths[i].height*scale);
-//   rectangle(image, scaled, Scalar(255,0,0));
-//   rectangle(rectImage, scaled, Scalar(1), 5);
+   rectangle(image, scaled, Scalar(255,0,0));
+   rectangle(rectImage, scaled, Scalar(1), 5);
   }
 //  blur(rectImage, rectImage, Size(tracker2+1,tracker2+1));
-//  threshold(rectImage, rectImage, tracker1, 1, THRESH_BINARY);
+  threshold(rectImage, rectImage, tracker1, 1, THRESH_BINARY);
   times[6] += getMilliseconds() - timenow;
   timenow = getMilliseconds();
-  imshow("MOUTH", gray.mul(rectImage));
+  imshow("MOUTH", rectImage);
 
 
   for (int i=0; i<7; i++) {
