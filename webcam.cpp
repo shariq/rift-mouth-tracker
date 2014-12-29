@@ -185,7 +185,8 @@ int main (int argc, char** argv) {
   minMaxLoc(rectImage, &minVal, &maxVal);
   Mat recThresh;
   threshold(rectImage, recThresh, maxVal*0.8, 1, THRESH_BINARY);
-  bitwise_and(recThresh, mask, mask);
+// what's the point of this v ?
+//  bitwise_and(recThresh, mask, mask);
   times[5] = getMilliseconds() - timenow;
   timenow = getMilliseconds();
   imshow("mouth", recThresh.mul(gray));
@@ -198,6 +199,10 @@ int main (int argc, char** argv) {
 */
 
 // update background with new morph mask
+
+// either this or no
+//  mask = recThresh;
+
   Mat mask_;
   subtract(1, mask ,mask_);
   Mat mask3, mask3_;
