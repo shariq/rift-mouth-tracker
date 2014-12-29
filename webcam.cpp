@@ -133,6 +133,8 @@ int main (int argc, char** argv) {
 
 // this mask filters out areas which have not changed much
 // this is horrible with new background; redo it
+// the way it works with dk2 is very different from without
+// since eyes are detected by mouth cascade but not dk2
   Mat flow(height, width, CV_8UC1, 1);
 
   absdiff(blurred_img, background, flow);
@@ -142,10 +144,11 @@ int main (int argc, char** argv) {
   imshow("flow mask", gray.mul(flow));
   times[2] = getMilliseconds() - timenow;
   timenow = getMilliseconds();
-//  flow = Mat(height, width, CV_8UC1, 1);
+  flow = Mat(height, width, CV_8UC1, 1);
 
 
 // this mask gets anything kind of dark (DK2) and dilates
+// works *great*
   Mat kindofdark(height, width, CV_8UC1, 1);
   equalizeHist(gray, kindofdark);
   threshold(kindofdark, kindofdark, 100, 1, THRESH_BINARY_INV);
