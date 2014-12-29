@@ -237,14 +237,16 @@ int main (int argc, char** argv) {
   Mat rectImage(height, width, CV_8UC1, Scalar(0));
   for (size_t i=0; i<mouths.size(); i++) {
    Rect scaled(mouths[i].x*scale, mouths[i].y*scale, mouths[i].width*scale,mouths[i].height*scale);
-   rectangle(rectImage, scaled, Scalar(1), CV_FILLED);
+   Mat newRect(height, width; CV_8UC1, Scalar(0));
+   rectangle(newRect, scaled, Scalar(1), CV_FILLED);
+   rectImage += newRect;
   }
+  threshold(rectImage, rectImage, tracker1, 1, THRESH_BINARY);
   times[6] += getMilliseconds() - timenow;
   timenow = getMilliseconds();
   imshow("MOUTH", rectImage*255);
 
-//  if (mouths.size() > 25)
-   bitwise_and(rectImage, mask, mask);
+  bitwise_and(rectImage, mask, mask);
 
   Mat mask_;
   subtract(1, mask ,mask_);
