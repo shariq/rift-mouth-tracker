@@ -138,9 +138,8 @@ int main (int argc, char** argv) {
   cvtColor(flow, flow, CV_RGB2GRAY);
   imshow("pre morph", flow);
 //  morphFast(flow);
-  equalizeHist(flow, flow);
   imshow("post morph", flow);
-  threshold(flow, flow, 60, 1, THRESH_BINARY);
+  threshold(flow, flow, tracker1*3, 1, THRESH_BINARY);
   imshow("flow mask", gray.mul(flow));
   times[2] = getMilliseconds() - timenow;
   timenow = getMilliseconds();
