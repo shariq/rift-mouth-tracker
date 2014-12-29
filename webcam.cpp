@@ -109,10 +109,14 @@ int main (int argc, char** argv) {
  Mat channel[3];
  unsigned long long timenow = getMilliseconds();
 
+ CascadeClassifier mouth_cascade;
+ mouth_cascade.load("Mouth.xml");
+
  while (keepGoing) {
   image = cvQueryFrame(capture);
   times[0] += getMilliseconds() - timenow;
   timenow = getMilliseconds();
+
 // preprocess by rotating according to OVR roll
 //  imshow("webcam", image);
 
@@ -127,28 +131,14 @@ int main (int argc, char** argv) {
   times[1] += getMilliseconds() - timenow;
   timenow = getMilliseconds();
 
-// this mask filters out areas with too many edges
-// removed for now; it didn't generalize well
-/*
-  Mat canny;
-  Canny(gray, canny, 50, 50, 3);
-  blur(canny, canny, Size(width/20,height/20));
-  bitwise_not(canny, canny);
-  threshold(canny, canny, 200, 1, THRESH_BINARY);
-  blur(canny*255, canny, Size(width/10, height/10));
-  threshold(canny, canny, 220, 1, THRESH_BINARY);
-  imshow("canny mask", gray.mul(canny));
-*/
-
 // this mask filters out areas which have not changed much
-// background needs to be updated when person is not in frame
-// use OVR SDK to do this later
+// this is horrible with new background; redo it
   Mat flow;
   absdiff(blurred_img, background, flow);
   cvtColor(flow, flow, CV_RGB2GRAY);
   morphFast(flow);
   threshold(flow, flow, 60, 1, THRESH_BINARY);
-  imshow("flow mask", gray.mul(flow));
+//  imshow("flow mask", gray.mul(flow));
   times[2] += getMilliseconds() - timenow;
   timenow = getMilliseconds();
 
@@ -157,42 +147,12 @@ int main (int argc, char** argv) {
   equalizeHist(gray, kindofdark);
   threshold(kindofdark, kindofdark, 100, 1, THRESH_BINARY_INV);
   morphFast(kindofdark, 100, 17, 0);
-  imshow("dark mask", gray.mul(kindofdark));
+//  imshow("dark mask", gray.mul(kindofdark));
   times[3] += getMilliseconds() - timenow;
   timenow = getMilliseconds();
 
-
-// this mask gets rid of anything far away from red stuff
-// did not work well and was slow
-/*
-  Mat notlips;
-  Mat channels[3];
-  split(image, channels);
-  channels[2].convertTo(notlips, CV_32FC1);
-  divide(notlips, gray, notlips, 1, CV_32FC1);
-  //equalistHist is horrible for a red background
-  //equalizeHist(notlips, notlips);
-  threshold(notlips, notlips, tracker3/30.0, 1, THRESH_BINARY);
-  notlips.convertTo(notlips, CV_8UC1);
-  imshow("lip mask", notlips*255);
-  Mat otherMorph = notlips.clone();
-  int tx = tracker1+1-(tracker1%2);
-  if (tx<3) tx=1;
-  if (tx>90) tx=91;
-  morphFast(notlips, 100, tx, 0, 0);
-  int ty = tracker2+1-(tracker2%2);
-  if (ty<3) ty=1;
-  if (ty>90) ty=91;
-  morphFast(notlips, 100, ty, 0, 1);
-  imshow("lips2", notlips.mul(gray));
-  morphFast(otherMorph, 100, tx, 0, 1);
-  morphFast(otherMorph, 100, tx, 0, 0);
-  imshow("lips3", otherMorph.mul(gray));
-  waitKey(1);
-*/
-
+// combine mask with its opening
   Mat mask = flow.mul(kindofdark);
-// open the mask
   Mat smallMask0, smallMask1;
   resize(mask, smallMask0, Size(width/5,height/5));
   Mat smallKernel = ellipticKernel(69,79);
@@ -204,36 +164,12 @@ int main (int argc, char** argv) {
   times[4] += getMilliseconds() - timenow;
   timenow = getMilliseconds();
 
-
-
-// update background with new morph mask
-// average what we know is background with prior background
-// dilate it first since we really want to be sure it's bg
-
-/*
-// actually dilation is slow and our current mask is already
-// really nice :)
-  Mat dilatedMask;
-  dilate(smallMask1, dilatedMask, smallKernel);
-  resize(dilatedMask, dilatedMask, Size(width, height));
-  imshow("erosion", dilatedMask.mul(gray));
-*/
-//  imshow("background", background);
-
-/*
-  Moments lol = moments(gray, 1);
-  circle(image, Point(lol.m10/lol.m00,lol.m01/lol.m00),20,Scalar(128),30);
-  imshow("leimage", image);
-*/
-
-  CascadeClassifier mouth_cascade;
-  mouth_cascade.load("Mouth.xml");
+// run haar classifier on nonflow parts of image
   vector<Rect> mouths;
   int scale = 3;
   Mat classifyThis;
-  equalizeHist(gray, gray);//ew; watch out not to use this later
+  equalizeHist(gray, gray);
   resize(gray.mul(mask), classifyThis, Size(width/scale,height/scale));
-//  bilateralFilter(gray, classifyThis, 15, 10, 1);
   mouth_cascade.detectMultiScale(classifyThis, mouths, 1.1, 0, CV_HAAR_SCALE_IMAGE);
   Mat rectImage(height, width, CV_8UC1, Scalar(0));
   for (size_t i=0; i<mouths.size(); i++) {
@@ -244,16 +180,21 @@ int main (int argc, char** argv) {
   }
   double minVal, maxVal;//ignore minVal, it'll be 0
   minMaxLoc(rectImage, &minVal, &maxVal);
-  imshow("aaa", rectImage);
-  waitKey(1);
-  threshold(rectImage, rectImage, maxVal*0.9, 1, THRESH_BINARY);
-  printf("max: %.f\n",maxVal);
-  times[6] += getMilliseconds() - timenow;
+  Mat recThresh;
+  threshold(rectImage, recThresh, maxVal*0.8, 1, THRESH_BINARY);
+  bitwise_and(recThresh, mask, mask);
+  times[5] = getMilliseconds() - timenow;
   timenow = getMilliseconds();
-  imshow("MOUTH", rectImage.mul(gray));
+  imshow("mouth", recThresh.mul(gray));
 
-  bitwise_and(rectImage, mask, mask);
 
+/*
+  Moments lol = moments(recThresh, 1);
+  circle(image, Point(lol.m10/lol.m00,lol.m01/lol.m00),20,Scalar(128),30);
+  imshow("leimage", image);
+*/
+
+// update background with new morph mask
   Mat mask_;
   subtract(1, mask ,mask_);
   Mat mask3, mask3_;
@@ -268,18 +209,18 @@ int main (int argc, char** argv) {
 
   background = background.mul(mask3) +
    (background.mul(mask3_)/2 + blurred_img.mul(mask3_)/2);
-  times[5] += getMilliseconds() - timenow;
+  times[6] = getMilliseconds() - timenow;
   timenow = getMilliseconds();
+
+  imshow("bg", background);
 
   for (int i=0; i<7; i++) {
    printf("%llu , ", times[i]);
-   times[i] = 0;
   }
 
   printf("\n");
 
   keepGoing = (waitKey(1)<0);
-
 
  }
 
