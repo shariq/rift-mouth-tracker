@@ -139,7 +139,7 @@ int main (int argc, char** argv) {
   cvtColor(flow, flow, CV_RGB2GRAY);
   imshow("prethresh", flow);
   threshold(flow, flow, 8, 1, THRESH_BINARY);
-  imshow("postthresh", flow);
+  imshow("postthresh", flow*255);
   waitKey(1);
   morphFast(flow);
   imshow("postdilate", flow);
