@@ -241,9 +241,9 @@ int main (int argc, char** argv) {
   }
   times[6] += getMilliseconds() - timenow;
   timenow = getMilliseconds();
-  imshow("MOUTH", rectImage);
+  imshow("MOUTH", rectImage*255);
 
-  if (mouths.size() > 25)
+//  if (mouths.size() > 25)
    bitwise_and(rectImage, mask, mask);
 
   Mat mask_;
