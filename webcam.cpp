@@ -160,7 +160,6 @@ int main (int argc, char** argv) {
    morphFast(kindofdark, 100, 17, 0);
   }
 //  imshow("dark mask", gray.mul(kindofdark));
-*/
   times[3] += getMilliseconds() - timenow;
   timenow = getMilliseconds();
 
