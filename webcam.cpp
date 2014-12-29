@@ -251,7 +251,7 @@ int main (int argc, char** argv) {
   resize(gray.mul(mask), classifyThis, Size(width/scale,height/scale));
 //  bilateralFilter(gray, classifyThis, 15, 10, 1);
   mouth_cascade.detectMultiScale(classifyThis, mouths, 1.1, 0, CV_HAAR_SCALE_IMAGE);
-  Mat rectImage(width, height, CV_8UC1, Scalar(0));
+  Mat rectImage(height, width, CV_8UC1, Scalar(0));
   for (size_t i=0; i<mouths.size(); i++) {
    Rect scaled(mouths[i].x*scale, mouths[i].y*scale, mouths[i].width*scale,mouths[i].height*scale);
    rectangle(image, scaled, Scalar(255,0,0));
@@ -261,7 +261,7 @@ int main (int argc, char** argv) {
   threshold(rectImage, rectImage, tracker1, 1, THRESH_BINARY);
   times[6] += getMilliseconds() - timenow;
   timenow = getMilliseconds();
-  imshow("MOUTH", rectImage);
+  imshow("MOUTH", rectImage*255);
 
 
   for (int i=0; i<7; i++) {
