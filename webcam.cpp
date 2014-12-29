@@ -133,7 +133,8 @@ int main (int argc, char** argv) {
 
 // this mask filters out areas which have not changed much
 // this is horrible with new background; redo it
-  Mat flow;
+  Mat flow(height, width, CV_8UC1, 1);
+/*
   absdiff(blurred_img, background, flow);
   cvtColor(flow, flow, CV_RGB2GRAY);
   imshow("prethresh", flow);
@@ -141,6 +142,8 @@ int main (int argc, char** argv) {
   imshow("flow mask", gray.mul(flow));
   times[2] = getMilliseconds() - timenow;
   timenow = getMilliseconds();
+
+*/
 
 // this mask gets anything kind of dark (DK2) and dilates
   Mat kindofdark(height, width, CV_8UC1, 1);
