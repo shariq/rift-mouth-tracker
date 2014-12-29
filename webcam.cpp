@@ -257,7 +257,7 @@ int main (int argc, char** argv) {
    rectangle(image, scaled, Scalar(255,0,0));
    rectangle(rectImage, scaled, Scalar(1), 5);
   }
-//  blur(rectImage, rectImage, Size(tracker2+1,tracker2+1));
+  blur(rectImage, rectImage, Size(tracker2+3,tracker2+3));
   threshold(rectImage, rectImage, tracker1, 1, THRESH_BINARY);
   times[6] += getMilliseconds() - timenow;
   timenow = getMilliseconds();
