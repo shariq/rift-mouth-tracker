@@ -136,9 +136,11 @@ int main (int argc, char** argv) {
   Mat flow;
   absdiff(blurred_img, background, flow);
   cvtColor(flow, flow, CV_RGB2GRAY);
+  imshow("pre morph", flow);
   morphFast(flow);
+  imshow("post morph", flow);
   threshold(flow, flow, 60, 1, THRESH_BINARY);
-//  imshow("flow mask", gray.mul(flow));
+  imshow("flow mask", gray.mul(flow));
   times[2] = getMilliseconds() - timenow;
   timenow = getMilliseconds();
 
@@ -185,7 +187,7 @@ int main (int argc, char** argv) {
   bitwise_and(recThresh, mask, mask);
   times[5] = getMilliseconds() - timenow;
   timenow = getMilliseconds();
-  imshow("mouth", recThresh.mul(gray));
+//  imshow("mouth", recThresh.mul(gray));
 
 
 /*
@@ -212,7 +214,7 @@ int main (int argc, char** argv) {
   times[6] = getMilliseconds() - timenow;
   timenow = getMilliseconds();
 
-  imshow("bg", background);
+//  imshow("bg", background);
 
   for (int i=0; i<7; i++) {
    printf("%llu , ", times[i]);
