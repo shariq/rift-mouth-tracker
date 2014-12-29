@@ -214,7 +214,7 @@ int main (int argc, char** argv) {
   merge(channel, 3, mask3_);
 
   background = background.mul(mask3) +
-   (background.mul(mask3_)/2 + blurred_img.mul(mask3_)/2);
+   (background.mul(mask3_)*0.75 + blurred_img.mul(mask3_)*0.25);
   times[6] = getMilliseconds() - timenow;
   timenow = getMilliseconds();
 
