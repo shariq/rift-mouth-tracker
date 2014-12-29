@@ -153,11 +153,14 @@ int main (int argc, char** argv) {
   timenow = getMilliseconds();
 
 // this mask gets anything kind of dark (DK2) and dilates
-  Mat kindofdark;
-  equalizeHist(gray, kindofdark);
-  threshold(kindofdark, kindofdark, 100, 1, THRESH_BINARY_INV);
-  morphFast(kindofdark, 100, 17, 0);
+  Mat kindofdark(height, width, CV_8UC1, 1);
+  if (tracker1%2) {
+   equalizeHist(gray, kindofdark);
+   threshold(kindofdark, kindofdark, 100, 1, THRESH_BINARY_INV);
+   morphFast(kindofdark, 100, 17, 0);
+  }
 //  imshow("dark mask", gray.mul(kindofdark));
+*/
   times[3] += getMilliseconds() - timenow;
   timenow = getMilliseconds();
 
