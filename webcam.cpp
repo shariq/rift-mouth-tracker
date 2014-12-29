@@ -134,16 +134,16 @@ int main (int argc, char** argv) {
 // this mask filters out areas which have not changed much
 // this is horrible with new background; redo it
   Mat flow(height, width, CV_8UC1, 1);
-/*
+
   absdiff(blurred_img, background, flow);
   cvtColor(flow, flow, CV_RGB2GRAY);
   imshow("prethresh", flow);
-  threshold(flow, flow, 5, 1, THRESH_BINARY);
+  threshold(flow, flow, tracker1, 1, THRESH_BINARY);
   imshow("flow mask", gray.mul(flow));
   times[2] = getMilliseconds() - timenow;
   timenow = getMilliseconds();
+  flow = Mat(height, width, CV_8UC1, 1);
 
-*/
 
 // this mask gets anything kind of dark (DK2) and dilates
   Mat kindofdark(height, width, CV_8UC1, 1);
@@ -183,10 +183,11 @@ int main (int argc, char** argv) {
   }
   double minVal, maxVal;//ignore minVal, it'll be 0
   minMaxLoc(rectImage, &minVal, &maxVal);
-  Mat recThresh;
+  Mat recThresh, recBinary;
   threshold(rectImage, recThresh, maxVal*0.8, 1, THRESH_BINARY);
 // what's the point of this v ?
-//  bitwise_and(recThresh, mask, mask);
+  threshold(rectImage, recBinary, 1, 1, THRESH_BINARY);
+  bitwise_and(recBinary, mask, mask);
   times[5] = getMilliseconds() - timenow;
   timenow = getMilliseconds();
   imshow("mouth", recThresh.mul(gray));
@@ -199,9 +200,6 @@ int main (int argc, char** argv) {
 */
 
 // update background with new morph mask
-
-// either this or no
-//  mask = recThresh;
 
   Mat mask_;
   subtract(1, mask ,mask_);
@@ -220,7 +218,7 @@ int main (int argc, char** argv) {
   times[6] = getMilliseconds() - timenow;
   timenow = getMilliseconds();
 
-//  imshow("bg", background);
+  imshow("bg", background);
 
   for (int i=0; i<7; i++) {
    printf("%llu , ", times[i]);
