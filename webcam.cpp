@@ -167,12 +167,17 @@ int main (int argc, char** argv) {
   times[4] = getMilliseconds() - timenow;
   timenow = getMilliseconds();
 
+
 // run haar classifier on nonflow parts of image
   vector<Rect> mouths;
   int scale = 3;
   Mat classifyThis;
   equalizeHist(gray, gray);
-  resize(gray.mul(mask), classifyThis, Size(width/scale,height/scale));
+  Mat dilatedMask;
+  dilate(smallMask1, dilatedMask, smallKernel);
+//  dilate(dilatedMask, dilatedMask, smallKernel);
+  resize(dilatedMask, dilatedMask, Size(width, height));
+  resize(gray.mul(dilatedMask), classifyThis, Size(width/scale,height/scale));
   mouth_cascade.detectMultiScale(classifyThis, mouths, 1.1, 0, CV_HAAR_SCALE_IMAGE);
   Mat rectImage(height, width, CV_8UC1, Scalar(0));
   for (size_t i=0; i<mouths.size(); i++) {
