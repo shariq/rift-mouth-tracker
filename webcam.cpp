@@ -137,7 +137,8 @@ int main (int argc, char** argv) {
   absdiff(blurred_img, background, flow);
   cvtColor(flow, flow, CV_RGB2GRAY);
   imshow("pre morph", flow);
-  morphFast(flow);
+//  morphFast(flow);
+  equalizeHist(flow, flow);
   imshow("post morph", flow);
   threshold(flow, flow, 60, 1, THRESH_BINARY);
   imshow("flow mask", gray.mul(flow));
