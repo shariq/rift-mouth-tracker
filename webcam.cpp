@@ -137,16 +137,12 @@ int main (int argc, char** argv) {
 
   absdiff(blurred_img, background, flow);
   cvtColor(flow, flow, CV_RGB2GRAY);
-  imshow("prethresh", flow);
   threshold(flow, flow, 8, 1, THRESH_BINARY);
-  imshow("postthresh", flow*255);
-  waitKey(1);
   morphFast(flow);
-  imshow("postdilate", flow);
   imshow("flow mask", gray.mul(flow));
   times[2] = getMilliseconds() - timenow;
   timenow = getMilliseconds();
-  flow = Mat(height, width, CV_8UC1, 1);
+//  flow = Mat(height, width, CV_8UC1, 1);
 
 
 // this mask gets anything kind of dark (DK2) and dilates
