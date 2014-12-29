@@ -148,7 +148,7 @@ int main (int argc, char** argv) {
   cvtColor(flow, flow, CV_RGB2GRAY);
   morphFast(flow);
   threshold(flow, flow, 60, 1, THRESH_BINARY);
-  imshow("flow mask", gray.mul(flow));
+//  imshow("flow mask", gray.mul(flow));
   times[2] += getMilliseconds() - timenow;
   timenow = getMilliseconds();
 
@@ -157,7 +157,7 @@ int main (int argc, char** argv) {
   equalizeHist(gray, kindofdark);
   threshold(kindofdark, kindofdark, 100, 1, THRESH_BINARY_INV);
   morphFast(kindofdark, 100, 17, 0);
-  imshow("dark mask", gray.mul(kindofdark));
+//  imshow("dark mask", gray.mul(kindofdark));
   times[3] += getMilliseconds() - timenow;
   timenow = getMilliseconds();
 
@@ -199,7 +199,7 @@ int main (int argc, char** argv) {
   dilate(smallMask1, smallMask1, smallKernel);
   bitwise_and(smallMask0, smallMask1, smallMask1);
   resize(smallMask1, mask, Size(width, height));
-  imshow("morph mask", gray.mul(mask));
+//  imshow("morph mask", gray.mul(mask));
   times[4] += getMilliseconds() - timenow;
   timenow = getMilliseconds();
 
@@ -255,10 +255,10 @@ int main (int argc, char** argv) {
   for (size_t i=0; i<mouths.size(); i++) {
    Rect scaled(mouths[i].x*scale, mouths[i].y*scale, mouths[i].width*scale,mouths[i].height*scale);
 //   rectangle(image, scaled, Scalar(255,0,0));
-   rectangle(rectImage, scaled, Scalar(1), 5);
+//   rectangle(rectImage, scaled, Scalar(1), 5);
   }
-  blur(rectImage, rectImage, Size(tracker2+1,tracker2+1));
-  threshold(rectImage, rectImage, tracker1, 1, THRESH_BINARY);
+//  blur(rectImage, rectImage, Size(tracker2+1,tracker2+1));
+//  threshold(rectImage, rectImage, tracker1, 1, THRESH_BINARY);
   times[6] += getMilliseconds() - timenow;
   timenow = getMilliseconds();
   imshow("MOUTH", gray.mul(rectImage));
