@@ -244,7 +244,7 @@ int main (int argc, char** argv) {
   threshold(rectImage, rectImage, tracker1, 1, THRESH_BINARY);
   times[6] += getMilliseconds() - timenow;
   timenow = getMilliseconds();
-  imshow("MOUTH", rectImage*255);
+  imshow("MOUTH", rectImage.mul(gray));
 
   bitwise_and(rectImage, mask, mask);
 
