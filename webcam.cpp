@@ -243,7 +243,8 @@ int main (int argc, char** argv) {
   }
   double minVal, maxVal;//ignore minVal, it'll be 0
   minMaxLoc(rectImage, &minVal, &maxVal);
-  threshold(rectImage, rectImage, maxVal, 1, THRESH_BINARY);
+  threshold(rectImage, rectImage, maxVal-1, 1, THRESH_BINARY);
+  printf("max: %.f\n",maxVal);
   times[6] += getMilliseconds() - timenow;
   timenow = getMilliseconds();
   imshow("MOUTH", rectImage.mul(gray));
