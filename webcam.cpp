@@ -114,7 +114,7 @@ int main (int argc, char** argv) {
 
  while (keepGoing) {
   image = cvQueryFrame(capture);
-  times[0] += getMilliseconds() - timenow;
+  times[0] = getMilliseconds() - timenow;
   timenow = getMilliseconds();
 
 // preprocess by rotating according to OVR roll
@@ -128,7 +128,7 @@ int main (int argc, char** argv) {
   Mat gray, blurred_img;
   cvtColor(image, gray, CV_RGB2GRAY);
   blur(image, blurred_img, Size(50,50));
-  times[1] += getMilliseconds() - timenow;
+  times[1] = getMilliseconds() - timenow;
   timenow = getMilliseconds();
 
 // this mask filters out areas which have not changed much
@@ -139,7 +139,7 @@ int main (int argc, char** argv) {
   morphFast(flow);
   threshold(flow, flow, 60, 1, THRESH_BINARY);
 //  imshow("flow mask", gray.mul(flow));
-  times[2] += getMilliseconds() - timenow;
+  times[2] = getMilliseconds() - timenow;
   timenow = getMilliseconds();
 
 // this mask gets anything kind of dark (DK2) and dilates
@@ -148,7 +148,7 @@ int main (int argc, char** argv) {
   threshold(kindofdark, kindofdark, 100, 1, THRESH_BINARY_INV);
   morphFast(kindofdark, 100, 17, 0);
 //  imshow("dark mask", gray.mul(kindofdark));
-  times[3] += getMilliseconds() - timenow;
+  times[3] = getMilliseconds() - timenow;
   timenow = getMilliseconds();
 
 // combine mask with its opening
@@ -161,7 +161,7 @@ int main (int argc, char** argv) {
   bitwise_and(smallMask0, smallMask1, smallMask1);
   resize(smallMask1, mask, Size(width, height));
 //  imshow("morph mask", gray.mul(mask));
-  times[4] += getMilliseconds() - timenow;
+  times[4] = getMilliseconds() - timenow;
   timenow = getMilliseconds();
 
 // run haar classifier on nonflow parts of image
