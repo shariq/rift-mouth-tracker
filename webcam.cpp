@@ -188,7 +188,7 @@ int main (int argc, char** argv) {
   bitwise_and(recThresh, mask, mask);
   times[5] = getMilliseconds() - timenow;
   timenow = getMilliseconds();
-//  imshow("mouth", recThresh.mul(gray));
+  imshow("mouth", recThresh.mul(gray));
 
 
 /*
