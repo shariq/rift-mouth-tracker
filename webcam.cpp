@@ -140,6 +140,7 @@ int main (int argc, char** argv) {
   imshow("prethresh", flow);
   threshold(flow, flow, 8, 1, THRESH_BINARY);
   imshow("postthresh", flow);
+  waitKey(1);
   morphFast(flow);
   imshow("postdilate", flow);
   imshow("flow mask", gray.mul(flow));
