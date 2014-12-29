@@ -243,7 +243,8 @@ int main (int argc, char** argv) {
   timenow = getMilliseconds();
   imshow("MOUTH", rectImage);
 
-  bitwise_and(rectImage, mask, mask);
+  if (mouths.size() > 25)
+   bitwise_and(rectImage, mask, mask);
 
   Mat mask_;
   subtract(1, mask ,mask_);
