@@ -184,7 +184,7 @@ int main (int argc, char** argv) {
   double minVal, maxVal;//ignore minVal, it'll be 0
   minMaxLoc(rectImage, &minVal, &maxVal);
   Mat recThresh, recBinary;
-  threshold(rectImage, recThresh, maxVal*0.8, 1, THRESH_BINARY);
+  threshold(rectImage, recThresh, maxVal*0.9, 1, THRESH_BINARY);
 // what's the point of this v ?
   threshold(rectImage, recBinary, 1, 1, THRESH_BINARY);
   bitwise_and(recBinary, mask, mask);
