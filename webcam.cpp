@@ -241,7 +241,9 @@ int main (int argc, char** argv) {
    rectangle(newRect, scaled, Scalar(1), CV_FILLED);
    rectImage += newRect;
   }
-  threshold(rectImage, rectImage, tracker1, 1, THRESH_BINARY);
+  int minVal, maxVal;//ignore minVal, it'll be 0
+  minMaxLoc(rectImage, &minVal, &maxVal);
+  threshold(rectImage, rectImage, maxVal, 1, THRESH_BINARY);
   times[6] += getMilliseconds() - timenow;
   timenow = getMilliseconds();
   imshow("MOUTH", rectImage.mul(gray));
