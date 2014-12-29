@@ -137,7 +137,7 @@ int main (int argc, char** argv) {
   absdiff(blurred_img, background, flow);
   cvtColor(flow, flow, CV_RGB2GRAY);
   imshow("prethresh", flow);
-  threshold(flow, flow, 200, 1, THRESH_BINARY);
+  threshold(flow, flow, 50, 1, THRESH_BINARY);
   imshow("flow mask", gray.mul(flow));
   times[2] = getMilliseconds() - timenow;
   timenow = getMilliseconds();
