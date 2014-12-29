@@ -217,23 +217,6 @@ int main (int argc, char** argv) {
   resize(dilatedMask, dilatedMask, Size(width, height));
   imshow("erosion", dilatedMask.mul(gray));
 */
-  Mat mask_;
-  subtract(1, mask ,mask_);
-  Mat mask3, mask3_;
-  channel[0] = mask;
-  channel[1] = mask;
-  channel[2] = mask;
-  merge(channel, 3, mask3);
-  channel[0] = mask_;
-  channel[1] = mask_;
-  channel[2] = mask_;
-  merge(channel, 3, mask3_);
-
-  background = background.mul(mask3) +
-   (background.mul(mask3_)/2 + blurred_img.mul(mask3_)/2);
-  times[5] += getMilliseconds() - timenow;
-  timenow = getMilliseconds();
-
 //  imshow("background", background);
 
 /*
@@ -254,15 +237,30 @@ int main (int argc, char** argv) {
   Mat rectImage(height, width, CV_8UC1, Scalar(0));
   for (size_t i=0; i<mouths.size(); i++) {
    Rect scaled(mouths[i].x*scale, mouths[i].y*scale, mouths[i].width*scale,mouths[i].height*scale);
-   rectangle(image, scaled, Scalar(255,0,0));
-   rectangle(rectImage, scaled, Scalar(1), 5);
+   rectangle(rectImage, scaled, Scalar(1), CV_FILLED);
   }
-  blur(rectImage, rectImage, Size(tracker2+3,tracker2+3));
-  threshold(rectImage, rectImage, tracker1, 1, THRESH_BINARY);
   times[6] += getMilliseconds() - timenow;
   timenow = getMilliseconds();
-  imshow("MOUTH", rectImage*255);
+  imshow("MOUTH", rectImage);
 
+  bitwise_and(rectImage, mask, mask);
+
+  Mat mask_;
+  subtract(1, mask ,mask_);
+  Mat mask3, mask3_;
+  channel[0] = mask;
+  channel[1] = mask;
+  channel[2] = mask;
+  merge(channel, 3, mask3);
+  channel[0] = mask_;
+  channel[1] = mask_;
+  channel[2] = mask_;
+  merge(channel, 3, mask3_);
+
+  background = background.mul(mask3) +
+   (background.mul(mask3_)/2 + blurred_img.mul(mask3_)/2);
+  times[5] += getMilliseconds() - timenow;
+  timenow = getMilliseconds();
 
   for (int i=0; i<7; i++) {
    printf("%llu , ", times[i]);
