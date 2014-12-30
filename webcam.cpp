@@ -146,7 +146,7 @@ int main (int argc, char** argv) {
 //  imshow("gray mask", gray_256.mul(1-gr_m));
 
   bitwise_or(acbg_m, gr_m, acbg_m);
-
+  imshow("acbgm", acbg_m*255);
 //  imshow("accumulated bg mask", gray_256.mul(1-acbg_m));
 
 // this mask watches for flow against accumulated bg
