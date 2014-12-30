@@ -218,9 +218,9 @@ int main (int argc, char** argv) {
   Mat fg_m;
   bitwise_or(haar_t_p, df_m, fg_m);
 
-
   Mat haar_m;
-  bitwise_and(1 - bg_m, fg_m, haar_m);
+//  bitwise_and(1 - bg_m, fg_m, haar_m);
+  haar_m = 1-bg_m;
 
 // run haar classifier
 
@@ -251,6 +251,7 @@ int main (int argc, char** argv) {
 // and nothing was detected last frame, whatever is
 // detected now is more likely to be bogus
 
+  imshow("fg", fg);
   acfg = acfg*0.2 + fg;
 
   double min_val, max_val;
