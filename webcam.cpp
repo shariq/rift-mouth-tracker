@@ -132,7 +132,7 @@ int main (int argc, char** argv) {
   cvtColor(image, gray, CV_RGB2GRAY);
   cvtColor(img_256, gray_256, CV_RGB2GRAY);
 
-/*
+
 // this mask gets anything kind of dark (DK2) and dilates
 // should work *great*
   Mat gr_m;
@@ -145,7 +145,7 @@ int main (int argc, char** argv) {
 // change code later so we don't have to do this
 
   imshow("gray mask", gray_256.mul(gr_m));
-
+/*
 
  bitwise_or(acbg_m, gr_m, acbg_m);
 
