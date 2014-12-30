@@ -150,6 +150,7 @@ int main (int argc, char** argv) {
 //  imshow("accumulated bg mask", gray_256.mul(1-acbg_m));
 
 // this mask watches for flow against accumulated bg
+// this completely doesn't work since acbg is wrong
   Mat fl_m;
 // flow mask
   absdiff(img_256, acbg, fl_m);
@@ -179,11 +180,7 @@ int main (int argc, char** argv) {
   Mat tmp0[3];
   tmp0[0] = tmp0[1] = tmp0[2] = bg_m;
   merge(tmp0, 3, bg_m3);
-
-  Mat tmp1, tmp2;
-  bitwise_and(acbg, 1-bg_m3, tmp1);
-  bitwise_and((acbg + img_256)/2, bg_m3, tmp2);
-  acbg = tmp1 + tmp2;
+  acbg = acbg.mul(1-bg_m3) + ((acbg+img_256)/2).mul(bg_m3);
   imshow("acbg", acbg);
 
 
