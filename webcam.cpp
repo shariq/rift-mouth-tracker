@@ -89,7 +89,10 @@ int main (int argc, char** argv) {
 // accumulated foreground
  Mat acfg_t(256, 256, CV_8UC3, Scalar(0));
 // accumulated foreground threshold
-
+ Mat defacbg(256, 256, CV_8UC3, Scalar(0,0,0));
+ Mat iee(cvQueryFrame(capture));
+ resize(iee, defacbg, Size(256,256));
+ imshow("iee", iee);
 /*****
  end filter setup
 *****/
@@ -138,7 +141,7 @@ int main (int argc, char** argv) {
   Mat gr_m;
 // gray mask
   equalizeHist(gray_256, gr_m);
-  threshold(gr_m, gr_m, tracker3*3, 1, THRESH_BINARY);
+  threshold(gr_m, gr_m, 215, 1, THRESH_BINARY);
   dilate(gr_m, gr_m, ellipticKernel(23));
   erode(gr_m, gr_m, ellipticKernel(45));
 
@@ -150,9 +153,10 @@ int main (int argc, char** argv) {
 // this mask watches for flow against accumulated bg
   Mat fl_m;
 // flow mask
-  absdiff(img_256, acbg, fl_m);
+  absdiff(img_256, iee, fl_m);
+//  absdiff(img_256, acbg, fl_m);
   cvtColor(fl_m, fl_m, CV_BGR2GRAY);
-  fl_m = acbg_m.mul(fl_m);
+//  fl_m = acbg_m.mul(fl_m);
   threshold(fl_m, fl_m, tracker3*3, 1, THRESH_BINARY);
   int t1 = tracker1+1 - (tracker1%2);
   int t2 = tracker2+1 - (tracker2%2);
