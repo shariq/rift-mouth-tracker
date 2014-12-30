@@ -221,7 +221,7 @@ int main (int argc, char** argv) {
 
   gray_haar = gray_haar.mul(haar_m);
 
-  mouth_cascade.detectMultiScale(thingy, mouth_rects, 1.1, 0, CV_HAAR_SCALE_IMAGE);
+  mouth_cascade.detectMultiScale(gray_haar, mouth_rects, 1.1, 0, CV_HAAR_SCALE_IMAGE);
   Mat fg(height, width, CV_8UC1, Scalar(0));
 
   for (size_t i=0; i<mouth_rects.size(); i++) {
