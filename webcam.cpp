@@ -239,7 +239,7 @@ int main (int argc, char** argv) {
 // if nothing moved in some place over the past frame,
 // and nothing was detected last frame, whatever is
 // detected now is more likely to be bogus
-  acfg = acfg*0.25 + fg;
+  acfg = acfg*0.5 + fg;
 
   double min_val, max_val;
   minMaxLoc(fg, &min_val, &max_val);
@@ -265,5 +265,6 @@ int main (int argc, char** argv) {
 
  return 0;
 }
+
 
 
