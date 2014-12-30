@@ -90,6 +90,11 @@ int main (int argc, char** argv) {
  Mat acfg_t(256, 256, CV_8UC3, Scalar(0));
 // accumulated foreground threshold
 
+ Mat img_256_p(256, 256, CV_8UC3, Scalar(0,0,0));
+// previous image
+ Mat haar_t_p(256, 256, CV_8UC1, Scalar(1));
+// previous possible locations for mouth
+
 /*****
  end filter setup
 *****/
@@ -181,7 +186,13 @@ int main (int argc, char** argv) {
 
 //  imshow("bg mask", gray_256.mul(1-bg_m));
 
- // do some stuff with foreground and so on here
+  Mat df_m;
+// delta flow mask
+  absdiff(img_256, img_256_p, df_m);
+  cvtColor(df_m, df_m, CV_BGR2GRAY);
+  threshold(df_m, df_m, tracker3*3, 1, THRESH_BINARY);
+  imshow("delta flow mask", df_m*255);
+  img_256_p = img_256.clone();
 
   Mat haar_m;
 // bitwise_and(1 - bg_m, fg_m, haar_m);
