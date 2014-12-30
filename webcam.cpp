@@ -202,14 +202,14 @@ int main (int argc, char** argv) {
  Mat rect_image(height, width, CV_8UC1, Scalar(0));
 
  for (size_t i=0; i<mouth_rects.size(); i++) {
-  Rect scaled(mouths[i].x*scale, mouths[i].y*scale, mouths[i].width*scale,mouths[i].height*scale);
+  Rect scaled(mouth_rects[i].x*scale, mouth_rects[i].y*scale, mouth_rects[i].width*scale,mouth_rects[i].height*scale);
   Mat new_rect(height, width, CV_8UC1, Scalar(0));
   rectangle(new_rect, scaled, Scalar(1), CV_FILLED);
   rect_image += new_rect;
  }
 
  double min_val, max_val;
- minMaxLoc(rectImage, &min_val, &max_val);
+ minMaxLoc(rect_image, &min_val, &max_val);
 
 // or maybe equalize? this whole thing needs to be rewritten
 // with the new fg and temporal coherence ideas
@@ -233,3 +233,4 @@ int main (int argc, char** argv) {
 
  return 0;
 }
+
