@@ -156,8 +156,11 @@ int main (int argc, char** argv) {
   absdiff(img_256, acbg, fl_m);
 // add some morphological operator? but acbg_m!
   cvtColor(fl_m, fl_m, CV_BGR2GRAY);
-  threshold(fl_m, fl_m, tracker1*3, 1, THRESH_BINARY);
-// 80, THRESH_BINARY probably needs tweaking!
+  threshold(fl_m, fl_m, 150, 1, THRESH_BINARY);
+  int t1 = tracker1 + 1 - (tracker1%2);
+  if (t1<3) t1 = 3;
+  if (t1>90) t1 = 91;
+  dilate(fl_m, fl_m, ellipticKernel(t1));
 // add some other morphological operators? but what about
 // acbg_m?
 
