@@ -153,10 +153,9 @@ int main (int argc, char** argv) {
 // this mask watches for flow against accumulated bg
   Mat fl_m;
 // flow mask
-/*
   absdiff(img_256, acbg, fl_m);
 // add some morphological operator? but acbg_m!
-
+/*
   threshold(fl_m, fl_m, 80, 1, THRESH_BINARY);
 // 80, THRESH_BINARY probably needs tweaking!
 // add some other morphological operators? but what about
