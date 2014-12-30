@@ -92,7 +92,7 @@ int main (int argc, char** argv) {
  Mat defacbg(256, 256, CV_8UC3, Scalar(0,0,0));
  Mat iee(cvQueryFrame(capture));
  resize(iee, defacbg, Size(256,256));
- imshow("iee", iee);
+ imshow("iee", defacbg);
 /*****
  end filter setup
 *****/
@@ -153,7 +153,7 @@ int main (int argc, char** argv) {
 // this mask watches for flow against accumulated bg
   Mat fl_m;
 // flow mask
-  absdiff(img_256, iee, fl_m);
+  absdiff(img_256, defacbg, fl_m);
 //  absdiff(img_256, acbg, fl_m);
   cvtColor(fl_m, fl_m, CV_BGR2GRAY);
 //  fl_m = acbg_m.mul(fl_m);
