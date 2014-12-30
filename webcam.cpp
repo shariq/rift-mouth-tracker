@@ -169,13 +169,26 @@ int main (int argc, char** argv) {
 // maybe do some morphological operations on bg_m?
 // previously combined bg_m with its opening
 
+
+// ugly way to compute:
+// acbg = [acbg'.(1-bg_m)]+[((acbg'+img_256)/2).bg_m]
+// find a nicer way later
+// problem is masks are 1 channel while images are 3 channel
+
+  Mat bg_m3;
+  Mat tmp0[3];
+  tmp0[0] = tmp0[1] = tmp0[2] = bg_m;
+  merge(tmp0, 3, bg_m3);
+
   Mat tmp1, tmp2;
-  bitwise_and(acbg, 1-bg_m, tmp1);
-  bitwise_and((acbg + img_256)/2, bg_m, tmp2);
+  bitwise_and(acbg, 1-bg_m3, tmp1);
+  bitwise_and((acbg + img_256)/2, bg_m3, tmp2);
   acbg = tmp1 + tmp2;
   imshow("acbg", acbg);
 
+
   imshow("bg mask", gray_256.mul(1-bg_m));
+
 /*
  // do some stuff with foreground and so on here
 
