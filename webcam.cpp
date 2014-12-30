@@ -257,17 +257,16 @@ int main (int argc, char** argv) {
 
   Mat rect_thresh;
   threshold(acfg, rect_thresh, max_val*0.9, 1, THRESH_BINARY);
-  imshow("mouth", rect_thresh.mul(gray));
+//  imshow("mouth", rect_thresh.mul(gray));
 
   resize(acfg, haar_t_p, Size(256, 256));
   if (max_val < 10) max_val = 10;
   threshold(haar_t_p, haar_t_p, max_val*0.1, 1, THRESH_BINARY);
 
-/*
   Moments m = moments(rect_thresh, 1);
   circle(image, Point(m.m10/m.m00,m.m01/m.m00),20,Scalar(128),30);
   imshow("centroid", image);
-*/
+
 
   keep_going = (waitKey(1)<0);
 
