@@ -157,15 +157,8 @@ int main (int argc, char** argv) {
 //  absdiff(img_256, acbg, fl_m);
   cvtColor(fl_m, fl_m, CV_BGR2GRAY);
 //  fl_m = acbg_m.mul(fl_m);
-  threshold(fl_m, fl_m, tracker3*3, 1, THRESH_BINARY_INV);
-  int t1 = tracker1+1 - (tracker1%2);
-  int t2 = tracker2+1 - (tracker2%2);
-  if (t1<3) t1 = 3;
-  if (t1>90) t1 = 91;
-  if (t2<3) t2 = 3;
-  if (t2>90) t2 = 91;
-  dilate(fl_m, fl_m, ellipticKernel(t1));
-  erode(fl_m, fl_m, ellipticKernel(t2));
+  threshold(fl_m, fl_m, 45, 1, THRESH_BINARY_INV);
+  erode(fl_m, fl_m, ellipticKernel(51));
   imshow("flow mask", fl_m*255);
 
   Mat bg_m;
