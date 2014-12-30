@@ -200,7 +200,7 @@ int main (int argc, char** argv) {
   blur(df_m, df_m, Size(30, 30));
   threshold(df_m, df_m, tracker3, 1, THRESH_BINARY);
 
-//  erode(df_m, df_m, ellipticKernel(t1, t2));
+  erode(df_m, df_m, ellipticKernel(t1, t2));
 //for (int j=0; j<tracker3; j++) {
 //  dilate(df_m, df_m, ellipticKernel(t1, t2));
 //  erode(df_m, df_m, ellipticKernel(t1, t2));
