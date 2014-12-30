@@ -200,8 +200,8 @@ int main (int argc, char** argv) {
   if (t2>90) t2=91;
 
 for (int j=0; j<tracker3; j++) {
-  erode(df_m, df_m, ellipticKernel(t1, t2));
   dilate(df_m, df_m, ellipticKernel(t1, t2));
+  erode(df_m, df_m, ellipticKernel(t1, t2));
 }
 
   imshow("delta flow mask", df_m*255);
