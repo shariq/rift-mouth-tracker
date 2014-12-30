@@ -197,11 +197,10 @@ int main (int argc, char** argv) {
   t2 = tracker2+1-(tracker2%2);
   if (t2<3) t2=3;
   if (t2>90) t2=91;
-  blur(df_m, df_m, Size(40, 40));
-  imshow("blurred dfm", df_m);
+  blur(df_m, df_m, Size(30, 30));
   threshold(df_m, df_m, tracker3, 1, THRESH_BINARY);
 
-  erode(df_m, df_m, ellipticKernel(t1, t2));
+//  erode(df_m, df_m, ellipticKernel(t1, t2));
 //for (int j=0; j<tracker3; j++) {
 //  dilate(df_m, df_m, ellipticKernel(t1, t2));
 //  erode(df_m, df_m, ellipticKernel(t1, t2));
