@@ -90,8 +90,6 @@ int main (int argc, char** argv) {
  Mat acfg_t(256, 256, CV_8UC3, Scalar(0));
 // accumulated foreground threshold
 
- Mat temp;
-
 /*****
  end filter setup
 *****/
@@ -148,12 +146,11 @@ int main (int argc, char** argv) {
   imshow("gray mask", gray_256.mul(gr_m));
 
 
-  bitwise_or(acbg_m, gr_m, temp);
-  acbg_m = temp;
-/*
+  bitwise_or(acbg_m, gr_m, acbg_m);
+
   imshow("accumulated bg mask", gray_256.mul(acbg_m));
 
-/*
+
 // this mask watches for flow against accumulated bg
   Mat fl_m;
 // flow mask
