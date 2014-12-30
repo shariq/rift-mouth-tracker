@@ -147,17 +147,17 @@ int main (int argc, char** argv) {
   imshow("gray mask", gray_256.mul(gr_m));
 
 
- bitwise_or(acbg_m, gr_m, acbg_m);
-
+  bitwise_or(acbg_m, gr_m, acbg_m);
+/*
   imshow("accumulated bg mask", gray_256.mul(acbg_m));
 
 /*
 // this mask watches for flow against accumulated bg
- Mat fl_m;
+  Mat fl_m;
 // flow mask
- absdiff(img_256, acbg, fl_m);
+  absdiff(img_256, acbg, fl_m);
 // add some morphological operator? but acbg_m!
- threshold(fl_m, fl_m, 80, 1, THRESH_BINARY);
+  threshold(fl_m, fl_m, 80, 1, THRESH_BINARY);
 // 80, THRESH_BINARY probably needs tweaking!
 // add some other morphological operators? but what about
 // acbg_m?
@@ -165,9 +165,9 @@ int main (int argc, char** argv) {
   imshow("flow mask", gray_256.mul(fl_m));
 
 
- Mat bg_m;
- bitwise_and(acbg_m, fl_m, bg_m);
- bitwise_or(gr_m, bg_m, bg_m);
+  Mat bg_m;
+  bitwise_and(acbg_m, fl_m, bg_m);
+  bitwise_or(gr_m, bg_m, bg_m);
 // maybe do some morphological operations on bg_m?
 // previously combined bg_m with its opening
 
@@ -175,47 +175,47 @@ int main (int argc, char** argv) {
 /*
  // do some stuff with foreground and so on here
 
- Mat haar_m;
+  Mat haar_m;
 // bitwise_and(1 - bg_m, fg_m, haar_m);
- haar_m = 1 - bg_m;
+  haar_m = 1 - bg_m;
 
 // run haar classifier
- int scale = width/300;
- if (scale < 1)
-  scale = 1;
+  int scale = width/300;
+  if (scale < 1)
+   scale = 1;
 // can't use 256x256 since haar isn't stretch invariant
 
- Mat thingy;
- resize(gray, thingy, Size(width/scale, height/scale));
- equalizeHist(thingy, thingy);
+  Mat thingy;
+  resize(gray, thingy, Size(width/scale, height/scale));
+  equalizeHist(thingy, thingy);
 ///////////////////
 // need to change this after foreground stuff gets written
 
- vector<Rect> mouth_rects;
- resize(haar_m, haar_m, Size(width/scale, height/scale));
+  vector<Rect> mouth_rects;
+  resize(haar_m, haar_m, Size(width/scale, height/scale));
 
- bitwise_and(haar_m, thingy, thingy);
+  bitwise_and(haar_m, thingy, thingy);
 /////////////////
 
- mouth_cascade.detectMultiScale(thingy, mouth_rects, 1.1, 0, CV_HAAR_SCALE_IMAGE);
- Mat rect_image(height, width, CV_8UC1, Scalar(0));
+  mouth_cascade.detectMultiScale(thingy, mouth_rects, 1.1, 0, CV_HAAR_SCALE_IMAGE);
+  Mat rect_image(height, width, CV_8UC1, Scalar(0));
 
- for (size_t i=0; i<mouth_rects.size(); i++) {
-  Rect scaled(mouth_rects[i].x*scale, mouth_rects[i].y*scale, mouth_rects[i].width*scale,mouth_rects[i].height*scale);
-  Mat new_rect(height, width, CV_8UC1, Scalar(0));
-  rectangle(new_rect, scaled, Scalar(1), CV_FILLED);
-  rect_image += new_rect;
- }
+  for (size_t i=0; i<mouth_rects.size(); i++) {
+   Rect scaled(mouth_rects[i].x*scale, mouth_rects[i].y*scale, mouth_rects[i].width*scale,mouth_rects[i].height*scale);
+   Mat new_rect(height, width, CV_8UC1, Scalar(0));
+   rectangle(new_rect, scaled, Scalar(1), CV_FILLED);
+   rect_image += new_rect;
+  }
 
- double min_val, max_val;
- minMaxLoc(rect_image, &min_val, &max_val);
+  double min_val, max_val;
+  minMaxLoc(rect_image, &min_val, &max_val);
 
 // or maybe equalize? this whole thing needs to be rewritten
 // with the new fg and temporal coherence ideas
 
- Mat rect_thresh;
- threshold(rect_image, rect_thresh, max_val*0.9, 1, THRESH_BINARY);
- imshow("mouth", rect_thresh.mul(gray));
+  Mat rect_thresh;
+  threshold(rect_image, rect_thresh, max_val*0.9, 1, THRESH_BINARY);
+  imshow("mouth", rect_thresh.mul(gray));
 
 
 /*
