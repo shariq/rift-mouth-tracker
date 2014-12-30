@@ -131,6 +131,7 @@ int main (int argc, char** argv) {
   times[1] = getMilliseconds() - timenow;
   timenow = getMilliseconds();
 
+
 // this mask filters out areas which have not changed much
 // this is horrible with new background; redo it
 // the way it works with dk2 is very different from without
@@ -191,6 +192,7 @@ int main (int argc, char** argv) {
   }
   double minVal, maxVal;//ignore minVal, it'll be 0
   minMaxLoc(rectImage, &minVal, &maxVal);
+  
   Mat recThresh, recBinary;
   threshold(rectImage, recThresh, maxVal*0.9, 1, THRESH_BINARY);
   threshold(rectImage, recBinary, 1, 1, THRESH_BINARY);
