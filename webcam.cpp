@@ -143,12 +143,11 @@ int main (int argc, char** argv) {
   gr_m = 1 - gr_m;
 // change code later so we don't have to do this
 
-  imshow("gray mask", gray_256.mul(1-gr_m));
-
+//  imshow("gray mask", gray_256.mul(1-gr_m));
 
   bitwise_or(acbg_m, gr_m, acbg_m);
 
-  imshow("accumulated bg mask", gray_256.mul(1-acbg_m));
+//  imshow("accumulated bg mask", gray_256.mul(1-acbg_m));
 
 // this mask watches for flow against accumulated bg
   Mat fl_m;
@@ -166,6 +165,7 @@ int main (int argc, char** argv) {
 
   Mat bg_m;
   bitwise_and(acbg_m, fl_m, bg_m);
+// maybe just use fl_m? it's surprisingly good!
   bitwise_or(gr_m, bg_m, bg_m);
 // maybe do some morphological operations on bg_m?
 // previously combined bg_m with its opening
