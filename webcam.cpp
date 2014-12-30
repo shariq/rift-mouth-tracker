@@ -190,7 +190,17 @@ int main (int argc, char** argv) {
 // delta flow mask
   absdiff(img_256, img_256_p, df_m);
   cvtColor(df_m, df_m, CV_BGR2GRAY);
-  threshold(df_m, df_m, tracker3*3, 1, THRESH_BINARY);
+  threshold(df_m, df_m, 10, 1, THRESH_BINARY);
+  int t1,t2;
+  t1 = tracker1+1-(tracker1%2);
+  if (t1<3) t1=3;
+  if (t1>90) t1=91;
+  t2 = tracker2+1-(tracker2%2);
+  if (t2<3) t2=3;
+  if (t2>90) t2=91;
+  
+
+  erode(df_m, df_m, ellipticKernel(t1, t2));
   imshow("delta flow mask", df_m*255);
   img_256_p = img_256.clone();
 
