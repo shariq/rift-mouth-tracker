@@ -138,19 +138,20 @@ int main (int argc, char** argv) {
   Mat gr_m;
 // gray mask
   equalizeHist(gray_256, gr_m);
-  threshold(gr_m, gr_m, 100, 1, THRESH_BINARY_INV);
-  dilate(gr_m, gr_m, ellipticKernel(43));
+  threshold(gr_m, gr_m, tracker3*3, 1, THRESH_BINARY);
   int t1 = tracker1 + 1 - (tracker1%2);
   if (t1<3) t1 = 3;
   if (t1>90) t1 = 91;
-  erode(gr_m, gr_m, ellipticKernel(t1));
-  gr_m = 1 - gr_m;
+  dilate(gr_m, gr_m, ellipticKernel(t1));
+  int t2 = tracker2 + 1 - (tracker2%2);
+  if (t2<3) t2 = 3;
+  if (t2>90) t2 = 91;
+  erode(gr_m, gr_m, ellipticKernel(t2));
 // change code later so we don't have to do this
 
   imshow("gray mask", gray_256.mul(1-gr_m));
 
   bitwise_or(acbg_m, gr_m, acbg_m);
-  imshow("acbgm", acbg_m*255);
 //  imshow("accumulated bg mask", gray_256.mul(1-acbg_m));
 
 // this mask watches for flow against accumulated bg
@@ -163,14 +164,13 @@ int main (int argc, char** argv) {
   threshold(fl_m, fl_m, 150, 1, THRESH_BINARY);
 //  dilate(fl_m, fl_m, ellipticKernel(35));
 //  erode(fl_m, fl_m, ellipticKernel(51));
+//  imshow("flow mask", fl_m*255);
 
-  imshow("flow mask", fl_m*255);
   Mat bg_m;
   bitwise_and(acbg_m, fl_m, bg_m);
   bitwise_or(gr_m, bg_m, bg_m);
 // maybe do some morphological operations on bg_m?
 // previously combined bg_m with its opening
-
 
 // ugly way to compute:
 // acbg = [acbg'.(1-bg_m)]+[((acbg'+img_256)/2).bg_m]
@@ -181,12 +181,12 @@ int main (int argc, char** argv) {
   Mat tmp0[3];
   tmp0[0] = tmp0[1] = tmp0[2] = bg_m;
   merge(tmp0, 3, bg_m3);
-  imshow("bg_m3", bg_m3*255);
+//  imshow("bg_m3", bg_m3*255);
   acbg = acbg.mul(Scalar(1,1,1)-bg_m3) + (acbg/2+img_256/2).mul(bg_m3);
-  imshow("acbg", acbg);
+//  imshow("acbg", acbg);
 
 
-  imshow("bg mask", gray_256.mul(1-bg_m));
+//  imshow("bg mask", gray_256.mul(1-bg_m));
 
 /*
  // do some stuff with foreground and so on here
