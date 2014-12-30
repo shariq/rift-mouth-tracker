@@ -95,10 +95,11 @@ int main (int argc, char** argv) {
 
  Mat img_256_p(256, 256, CV_8UC3, Scalar(0,0,0));
 // previous image
- Mat delta_flows[3];
+ Mat delta_flows[4];
  delta_flows[0] = Mat(256, 256, CV_8UC1, Scalar(1));
  delta_flows[1] = Mat(256, 256, CV_8UC1, Scalar(1));
  delta_flows[2] = Mat(256, 256, CV_8UC1, Scalar(1));
+ delta_flows[3] = Mat(256, 256, CV_8UC1, Scalar(1));
 // delta of past 3 frames
  Mat haar_t_p(256, 256, CV_8UC1, Scalar(1));
 // previous possible locations for mouth
@@ -206,9 +207,11 @@ int main (int argc, char** argv) {
   erode(df_m, df_m, ellipticKernel(25, 25));
 
   img_256_p = img_256.clone();
+  delta_flows[3] = delta_flows[2];
   delta_flows[2] = delta_flows[1];
   delta_flows[1] = delta_flows[0];
   delta_flows[0] = df_m.clone();
+  bitwise_or(df_m, delta_flows[3], df_m);
   bitwise_or(df_m, delta_flows[2], df_m);
   bitwise_or(df_m, delta_flows[1], df_m);
 
