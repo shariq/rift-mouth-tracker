@@ -145,25 +145,26 @@ int main (int argc, char** argv) {
   dilate(gr_m, gr_m, ellipticKernel(23));
   erode(gr_m, gr_m, ellipticKernel(45));
 
-  imshow("gray mask", gray_256.mul(1-gr_m));
+//  imshow("gray mask", gray_256.mul(1-gr_m));
 
   bitwise_or(acbg_m, gr_m, acbg_m);
-  imshow("accumulated bg mask", gray_256.mul(1-acbg_m));
+//  imshow("accumulated bg mask", gray_256.mul(1-acbg_m));
 
 // this mask watches for flow against accumulated bg
   Mat fl_m;
 // flow mask
-  absdiff(img_256, defacbg, fl_m);
-//  absdiff(img_256, acbg, fl_m);
+  absdiff(img_256, acbg, fl_m);
   cvtColor(fl_m, fl_m, CV_BGR2GRAY);
-//  fl_m = acbg_m.mul(fl_m);
+  fl_m = acbg_m.mul(fl_m);
   threshold(fl_m, fl_m, 45, 1, THRESH_BINARY_INV);
   erode(fl_m, fl_m, ellipticKernel(51));
-  imshow("flow mask", fl_m*255);
+//  imshow("flow mask", fl_m*255);
 
   Mat bg_m;
   bitwise_and(acbg_m, fl_m, bg_m);
   bitwise_or(gr_m, bg_m, bg_m);
+  imshow("bgm", bg_m*255);
+
 // maybe do some morphological operations on bg_m?
 // previously combined bg_m with its opening
 
