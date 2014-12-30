@@ -246,10 +246,11 @@ int main (int argc, char** argv) {
 // or maybe equalize? this whole thing needs to be rewritten
 // with the new fg and temporal coherence ideas
 
-// very interesting idea:
+// another interesting idea:
 // if nothing moved in some place over the past frame,
 // and nothing was detected last frame, whatever is
 // detected now is more likely to be bogus
+
   acfg = acfg*0.2 + fg;
 
   double min_val, max_val;
@@ -257,15 +258,15 @@ int main (int argc, char** argv) {
 
   Mat rect_thresh;
   threshold(acfg, rect_thresh, max_val*0.9, 1, THRESH_BINARY);
-//  imshow("mouth", rect_thresh.mul(gray));
+  imshow("mouth", rect_thresh.mul(gray));
 
   resize(acfg, haar_t_p, Size(256, 256));
   if (max_val < 10) max_val = 10;
   threshold(haar_t_p, haar_t_p, max_val*0.1, 1, THRESH_BINARY);
 
-  Moments m = moments(rect_thresh, 1);
-  circle(image, Point(m.m10/m.m00,m.m01/m.m00),20,Scalar(128),30);
-  imshow("centroid", image);
+//  Moments m = moments(rect_thresh, 1);
+//  circle(image, Point(m.m10/m.m00,m.m01/m.m00),20,Scalar(128),30);
+//  imshow("centroid", image);
 
 
   keep_going = (waitKey(1)<0);
