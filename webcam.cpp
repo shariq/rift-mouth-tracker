@@ -198,7 +198,7 @@ int main (int argc, char** argv) {
   t2 = tracker2+1-(tracker2%2);
   if (t2<3) t2=3;
   if (t2>90) t2=91;
-  blur(df_m, df_m, Size(30, 30));
+  blur(df_m, df_m, Size(10, 10));
   threshold(df_m, df_m, tracker3, 1, THRESH_BINARY);
 
 for (int j=0; j<tracker4; j++) {
