@@ -214,7 +214,7 @@ int main (int argc, char** argv) {
 // run haar classifier
 
   Mat gray_haar;
-  resize(gray, gray_haar, Size(width/scale, height/scale));
+  resize(gray, gray_haar, Size(width/haar_scale, height/haar_scale));
   equalizeHist(gray_haar, gray_haar);
 
   vector<Rect> mouth_rects;
