@@ -181,8 +181,8 @@ int main (int argc, char** argv) {
   Mat tmp0[3];
   tmp0[0] = tmp0[1] = tmp0[2] = bg_m;
   merge(tmp0, 3, bg_m3);
-  imshow("bg_m3", bg_m3);
-  acbg = acbg.mul(1-bg_m3) + ((acbg+img_256)/2).mul(bg_m3);
+  imshow("bg_m3", bg_m3*255);
+  acbg = acbg.mul(1-bg_m3) + (acbg/2+img_256/2).mul(bg_m3);
   imshow("acbg", acbg);
 
 
