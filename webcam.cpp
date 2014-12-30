@@ -1,4 +1,3 @@
-// working; filter issues; pre-refactor
 #include "webcam.hpp"
 #include <chrono>
 
@@ -173,7 +172,7 @@ int main (int argc, char** argv) {
 // previously combined bg_m with its opening
 
   imshow("bg mask", gray_256.mul(bg_m));
-
+/*
  // do some stuff with foreground and so on here
 
  Mat haar_m;
