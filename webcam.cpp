@@ -150,7 +150,7 @@ int main (int argc, char** argv) {
 
   imshow("accumulated bg mask", gray_256.mul(acbg_m));
 
-
+/*
 // this mask watches for flow against accumulated bg
   Mat fl_m;
 // flow mask
