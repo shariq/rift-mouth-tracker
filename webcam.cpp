@@ -107,11 +107,12 @@ int main (int argc, char** argv) {
  for (int i=0; i<100; i++)
   times[i] = 0;
 
- int tracker1, tracker2, tracker3;
- namedWindow("s",1);
- createTrackbar("1","s",&tracker1,100);
- createTrackbar("2","s",&tracker2,100);
- createTrackbar("3","s",&tracker3,100);
+ int tracker1, tracker2, tracker3, tracker4;
+ namedWindow("settings",1);
+ createTrackbar("1","settings",&tracker1,100);
+ createTrackbar("2","settings",&tracker2,100);
+ createTrackbar("3","settings",&tracker3,100);
+ createTrackbar("4","settings",&tracker4,100);
 
  unsigned long long timenow = getMilliseconds();
 
@@ -200,11 +201,10 @@ int main (int argc, char** argv) {
   blur(df_m, df_m, Size(30, 30));
   threshold(df_m, df_m, tracker3, 1, THRESH_BINARY);
 
+for (int j=0; j<tracker4; j++) {
+  dilate(df_m, df_m, ellipticKernel(t1, t2));
   erode(df_m, df_m, ellipticKernel(t1, t2));
-//for (int j=0; j<tracker3; j++) {
-//  dilate(df_m, df_m, ellipticKernel(t1, t2));
-//  erode(df_m, df_m, ellipticKernel(t1, t2));
-//}
+}
 
   imshow("delta flow mask", df_m*255);
   img_256_p = img_256.clone();
