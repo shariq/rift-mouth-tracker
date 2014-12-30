@@ -85,7 +85,7 @@ int main (int argc, char** argv) {
  Mat acbg_m(256, 256, CV_8UC1, Scalar(0));
 // accumulated background mask
 
- Mat acfg(256, 256, CV_8UC3, Scalar(0,0,0));
+ Mat acfg(256, 256, CV_8UC1, Scalar(0));
 // accumulated foreground
 
  Mat img_256_p(256, 256, CV_8UC3, Scalar(0,0,0));
