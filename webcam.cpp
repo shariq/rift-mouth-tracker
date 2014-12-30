@@ -190,7 +190,7 @@ int main (int argc, char** argv) {
 // delta flow mask
   absdiff(img_256, img_256_p, df_m);
   cvtColor(df_m, df_m, CV_BGR2GRAY);
-  threshold(df_m, df_m, 30, 1, THRESH_BINARY);
+  threshold(df_m, df_m, 5, 1, THRESH_BINARY);
   int t1,t2;
   t1 = tracker1+1-(tracker1%2);
   if (t1<3) t1=3;
