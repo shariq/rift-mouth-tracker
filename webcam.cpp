@@ -162,7 +162,7 @@ int main (int argc, char** argv) {
   erode(fl_m, fl_m, ellipticKernel(51));
 
   imshow("flow mask", gray_256.mul(1-fl_m));
-
+  imshow("lol", acbg);
   Mat bg_m;
   bitwise_and(acbg_m, fl_m, bg_m);
 // maybe just use fl_m? it's surprisingly good!
