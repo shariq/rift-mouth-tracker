@@ -199,8 +199,11 @@ int main (int argc, char** argv) {
   if (t2<3) t2=3;
   if (t2>90) t2=91;
 
+for (int j=0; j<tracker1; j++) {
   erode(df_m, df_m, ellipticKernel(5, 5));
-  dilate(df_m, df_m, ellipticKernel(t1, t2));
+  dilate(df_m, df_m, ellipticKernel(5, 5));
+}
+
   imshow("delta flow mask", df_m*255);
   img_256_p = img_256.clone();
 
