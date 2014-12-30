@@ -138,7 +138,7 @@ int main (int argc, char** argv) {
   Mat gr_m;
 // gray mask
   equalizeHist(gray_256, gr_m);
-  threshold(gr_m, gr_m, 210, 1, THRESH_BINARY);
+  threshold(gr_m, gr_m, tracker3*3, 1, THRESH_BINARY);
   dilate(gr_m, gr_m, ellipticKernel(23));
   erode(gr_m, gr_m, ellipticKernel(45));
 
@@ -154,12 +154,12 @@ int main (int argc, char** argv) {
   cvtColor(fl_m, fl_m, CV_BGR2GRAY);
   fl_m = acbg_m.mul(fl_m);
   threshold(fl_m, fl_m, tracker3*3, 1, THRESH_BINARY);
-  int t1=tracker1+1-(tracker1%2);
+  int t1 = tracker1+1 - (tracker1%2);
   int t2 = tracker2+1 - (tracker2%2);
-  if (t1<3) t1=3;
-  if (t1>90) t1=91;
+  if (t1<3) t1 = 3;
+  if (t1>90) t1 = 91;
   if (t2<3) t2 = 3;
-  if (t2>90) t2=91;
+  if (t2>90) t2 = 91;
   dilate(fl_m, fl_m, ellipticKernel(t1));
   erode(fl_m, fl_m, ellipticKernel(t2));
   imshow("flow mask", fl_m*255);
