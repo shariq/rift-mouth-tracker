@@ -199,6 +199,7 @@ int main (int argc, char** argv) {
   if (t2<3) t2=3;
   if (t2>90) t2=91;
 
+  erode(df_m, df_m, ellipticKernel(t1, t2));
 for (int j=0; j<tracker3; j++) {
   dilate(df_m, df_m, ellipticKernel(t1, t2));
   erode(df_m, df_m, ellipticKernel(t1, t2));
