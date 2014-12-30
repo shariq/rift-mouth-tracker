@@ -163,7 +163,7 @@ int main (int argc, char** argv) {
 
   imshow("flow mask", gray_256.mul(fl_m));
 
-
+/*
   Mat bg_m;
   bitwise_and(acbg_m, fl_m, bg_m);
   bitwise_or(gr_m, bg_m, bg_m);
