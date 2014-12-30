@@ -87,8 +87,6 @@ int main (int argc, char** argv) {
 
  Mat acfg(256, 256, CV_8UC3, Scalar(0,0,0));
 // accumulated foreground
- Mat acfg_t(256, 256, CV_8UC3, Scalar(0));
-// accumulated foreground threshold
 
  Mat img_256_p(256, 256, CV_8UC3, Scalar(0,0,0));
 // previous image
@@ -191,27 +189,22 @@ int main (int argc, char** argv) {
 // delta flow mask
   absdiff(img_256, img_256_p, df_m);
   cvtColor(df_m, df_m, CV_BGR2GRAY);
-  int t1,t2;
-  t1 = tracker1+1-(tracker1%2);
-  if (t1<3) t1=3;
-  if (t1>90) t1=91;
-  t2 = tracker2+1-(tracker2%2);
-  if (t2<3) t2=3;
-  if (t2>90) t2=91;
   blur(df_m, df_m, Size(10, 10));
-  threshold(df_m, df_m, tracker3, 1, THRESH_BINARY);
+  threshold(df_m, df_m, 5, 1, THRESH_BINARY);
 
-for (int j=0; j<tracker4; j++) {
-  dilate(df_m, df_m, ellipticKernel(t1, t2));
-  erode(df_m, df_m, ellipticKernel(t1, t2));
-}
+  dilate(df_m, df_m, ellipticKernel(25, 25));
+  erode(df_m, df_m, ellipticKernel(25, 25));
 
   imshow("delta flow mask", df_m*255);
   img_256_p = img_256.clone();
 
+
+  Mat fg_m;
+  bitwise_or(haar_t_p, df_m, fg_m);
+
+
   Mat haar_m;
-// bitwise_and(1 - bg_m, fg_m, haar_m);
-  haar_m = 1 - bg_m;
+  bitwise_and(1 - bg_m, fg_m, haar_m);
 
 // run haar classifier
   int scale = width/300;
@@ -219,38 +212,43 @@ for (int j=0; j<tracker4; j++) {
    scale = 1;
 // can't use 256x256 since haar isn't stretch invariant
 
-  Mat thingy;
-  resize(gray, thingy, Size(width/scale, height/scale));
-  equalizeHist(thingy, thingy);
-///////////////////
-// need to change this after foreground stuff gets written
+  Mat gray_haar;
+  resize(gray, gray_haar, Size(width/scale, height/scale));
+  equalizeHist(gray_haar, gray_haar);
 
   vector<Rect> mouth_rects;
   resize(haar_m, haar_m, Size(width/scale, height/scale));
 
-  thingy = thingy.mul(haar_m);
-/////////////////
+  gray_haar = gray_haar.mul(haar_m);
 
   mouth_cascade.detectMultiScale(thingy, mouth_rects, 1.1, 0, CV_HAAR_SCALE_IMAGE);
-  Mat rect_image(height, width, CV_8UC1, Scalar(0));
+  Mat fg(height, width, CV_8UC1, Scalar(0));
 
   for (size_t i=0; i<mouth_rects.size(); i++) {
    Rect scaled(mouth_rects[i].x*scale, mouth_rects[i].y*scale, mouth_rects[i].width*scale,mouth_rects[i].height*scale);
    Mat new_rect(height, width, CV_8UC1, Scalar(0));
    rectangle(new_rect, scaled, Scalar(1), CV_FILLED);
-   rect_image += new_rect;
+   fg += new_rect;
   }
-
-  double min_val, max_val;
-  minMaxLoc(rect_image, &min_val, &max_val);
 
 // or maybe equalize? this whole thing needs to be rewritten
 // with the new fg and temporal coherence ideas
 
+// very interesting idea:
+// if nothing moved in some place over the past frame,
+// and nothing was detected last frame, whatever is
+// detected now is more likely to be bogus
+
+  acfg = acfg*0.25 + fg;
+
+  double min_val, max_val;
+  minMaxLoc(fg, &min_val, &max_val);
+
   Mat rect_thresh;
-  threshold(rect_image, rect_thresh, max_val*0.9, 1, THRESH_BINARY);
+  threshold(acfg, rect_thresh, max_val*0.9, 1, THRESH_BINARY);
   imshow("mouth", rect_thresh.mul(gray));
 
+  threshold(acfg, haar_t_p, max_val*0.5, 1, THRESH_BINARY);
 
 /*
   Moments m = moments(rect_thresh, 1);
