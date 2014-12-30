@@ -249,7 +249,8 @@ int main (int argc, char** argv) {
   imshow("mouth", rect_thresh.mul(gray));
 
   resize(acfg, haar_t_p, Size(256, 256));
-  threshold(haar_t_p, haar_t_p, max_val*0.5, 1, THRESH_BINARY);
+  if (max_val < 10) max_val = 10;
+  threshold(haar_t_p, haar_t_p, max_val*0.1, 1, THRESH_BINARY);
 
 /*
   Moments m = moments(rect_thresh, 1);
