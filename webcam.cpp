@@ -85,7 +85,12 @@ int main (int argc, char** argv) {
  Mat acbg_m(256, 256, CV_8UC1, Scalar(0));
 // accumulated background mask
 
- Mat acfg(256, 256, CV_8UC1, Scalar(0));
+ int haar_scale = width/300;
+ if (haar_scale < 1)
+  haar_scale = 1;
+// can't use 256x256 since haar isn't stretch invariant
+
+ Mat acfg(height/haar_scale, width/haar_scale, CV_8UC1, Scalar(0));
 // accumulated foreground
 
  Mat img_256_p(256, 256, CV_8UC3, Scalar(0,0,0));
@@ -207,17 +212,13 @@ int main (int argc, char** argv) {
   bitwise_and(1 - bg_m, fg_m, haar_m);
 
 // run haar classifier
-  int scale = width/300;
-  if (scale < 1)
-   scale = 1;
-// can't use 256x256 since haar isn't stretch invariant
 
   Mat gray_haar;
   resize(gray, gray_haar, Size(width/scale, height/scale));
   equalizeHist(gray_haar, gray_haar);
 
   vector<Rect> mouth_rects;
-  resize(haar_m, haar_m, Size(width/scale, height/scale));
+  resize(haar_m, haar_m, Size(width/haar_scale, height/haar_scale));
 
   gray_haar = gray_haar.mul(haar_m);
 
@@ -225,7 +226,7 @@ int main (int argc, char** argv) {
   Mat fg(height, width, CV_8UC1, Scalar(0));
 
   for (size_t i=0; i<mouth_rects.size(); i++) {
-   Rect scaled(mouth_rects[i].x*scale, mouth_rects[i].y*scale, mouth_rects[i].width*scale,mouth_rects[i].height*scale);
+   Rect scaled(mouth_rects[i].x*haar_scale, mouth_rects[i].y*scale, mouth_rects[i].width*scale,mouth_rects[i].height*haar_scale);
    Mat new_rect(height, width, CV_8UC1, Scalar(0));
    rectangle(new_rect, scaled, Scalar(1), CV_FILLED);
    fg += new_rect;
@@ -241,7 +242,7 @@ int main (int argc, char** argv) {
 
   acfg = acfg*0.25 + fg;
 
-  double min_val, max_val;
+/*  double min_val, max_val;
   minMaxLoc(fg, &min_val, &max_val);
 
   Mat rect_thresh;
@@ -264,4 +265,5 @@ int main (int argc, char** argv) {
 
  return 0;
 }
+
 
