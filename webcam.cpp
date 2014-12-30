@@ -161,7 +161,7 @@ int main (int argc, char** argv) {
 // acbg_m?
 
   imshow("flow mask", img_256.mul(fl_m));
-
+/*
   Mat bg_m;
   bitwise_and(acbg_m, fl_m, bg_m);
   bitwise_or(gr_m, bg_m, bg_m);
