@@ -89,10 +89,7 @@ int main (int argc, char** argv) {
 // accumulated foreground
  Mat acfg_t(256, 256, CV_8UC3, Scalar(0));
 // accumulated foreground threshold
- Mat defacbg(256, 256, CV_8UC3, Scalar(0,0,0));
- Mat iee(cvQueryFrame(capture));
- resize(iee, defacbg, Size(256,256));
- imshow("iee", defacbg);
+
 /*****
  end filter setup
 *****/
@@ -163,7 +160,7 @@ int main (int argc, char** argv) {
   Mat bg_m;
   bitwise_and(acbg_m, fl_m, bg_m);
   bitwise_or(gr_m, bg_m, bg_m);
-  imshow("bgm", bg_m*255);
+//  imshow("bgm", bg_m*255);
 
 // maybe do some morphological operations on bg_m?
 // previously combined bg_m with its opening
@@ -184,7 +181,6 @@ int main (int argc, char** argv) {
 
 //  imshow("bg mask", gray_256.mul(1-bg_m));
 
-/*
  // do some stuff with foreground and so on here
 
   Mat haar_m;
@@ -206,7 +202,7 @@ int main (int argc, char** argv) {
   vector<Rect> mouth_rects;
   resize(haar_m, haar_m, Size(width/scale, height/scale));
 
-  bitwise_and(haar_m, thingy, thingy);
+  thingy = thingy.mul(haar_m);
 /////////////////
 
   mouth_cascade.detectMultiScale(thingy, mouth_rects, 1.1, 0, CV_HAAR_SCALE_IMAGE);
