@@ -164,7 +164,7 @@ int main (int argc, char** argv) {
 //  dilate(fl_m, fl_m, ellipticKernel(35));
 //  erode(fl_m, fl_m, ellipticKernel(51));
 
-  imshow("flow mask", gray_256.mul(1-fl_m));
+  imshow("flow mask", fl_m*255);
   Mat bg_m;
   bitwise_and(acbg_m, fl_m, bg_m);
   bitwise_or(gr_m, bg_m, bg_m);
