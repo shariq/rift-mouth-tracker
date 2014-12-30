@@ -90,7 +90,7 @@ int main (int argc, char** argv) {
   haar_scale = 1;
 // can't use 256x256 since haar isn't stretch invariant
 
- Mat acfg(height/haar_scale, width/haar_scale, CV_8UC1, Scalar(0));
+ Mat acfg(height, width, CV_8UC1, Scalar(0));
 // accumulated foreground
 
  Mat img_256_p(256, 256, CV_8UC3, Scalar(0,0,0));
