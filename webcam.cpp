@@ -145,7 +145,7 @@ int main (int argc, char** argv) {
 // change code later so we don't have to do this
 
   imshow("gray mask", gray_256.mul(gr_m));
-/*
+
 
  bitwise_or(acbg_m, gr_m, acbg_m);
 
