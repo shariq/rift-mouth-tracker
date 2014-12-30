@@ -17,34 +17,14 @@ unsigned long long getMilliseconds() {
  return chrono::system_clock::now().time_since_epoch()/chrono::milliseconds(1);
 }
 
-void morphFast(Mat inout, int smallsize = 100, int factor = 25, int eq = 1, int diler = 0) {
- int width, height;
- width = inout.size().width;
- height = inout.size().height;
- Mat downsample;
- resize(inout, downsample, Size(smallsize,smallsize));
- Mat kernel = ellipticKernel(factor);
- if (diler) {
-  erode(downsample, downsample, kernel);
- } else {
-  dilate(downsample, downsample, kernel);
- }
- if (eq) {
-  equalizeHist(downsample, downsample);
- }
- resize(downsample, inout, Size(width, height));
-}
-
 int main (int argc, char** argv) {
 
- int tracker1, tracker2, tracker3;
- namedWindow("s",1);
- createTrackbar("1","s",&tracker1,100);
- createTrackbar("2","s",&tracker2,100);
- createTrackbar("3","s",&tracker3,100);
+/*****
+ begin camera setup
+*****/
 
  CvCapture* capture = 0;
- int width, height, fps;
+ int width, height;
 
  capture = cvCaptureFromCAM(0);
 
@@ -53,25 +33,20 @@ int main (int argc, char** argv) {
   return -1;
  }
 
- unsigned long long times[100];
- int f = 0;
- for (int i=0; i<100; i++)
-  times[i] = 0;
+ ifstream config_file (".config");
 
- ifstream configFile (".config");
+ if (config_file.is_open()) {
+// does not support corrupted .config
 
- if (configFile.is_open()) {
-
-  //probably want to support corrupted .config
   string line;
-  getline(configFile, line);
+  getline(config_file, line);
   istringstream(line)>>width;
-  getline(configFile, line);
+  getline(config_file, line);
   istringstream(line)>>height;
   cvSetCaptureProperty(capture, CV_CAP_PROP_FRAME_WIDTH, width);
   cvSetCaptureProperty(capture, CV_CAP_PROP_FRAME_HEIGHT, height);
 
-  configFile.close();
+  config_file.close();
 
  } else {
 
@@ -85,159 +60,172 @@ int main (int argc, char** argv) {
   width = cvGetCaptureProperty(capture, CV_CAP_PROP_FRAME_WIDTH);
   height = cvGetCaptureProperty(capture, CV_CAP_PROP_FRAME_HEIGHT);
 
-  ofstream configFileOut(".config");
-  configFileOut << width;
-  configFileOut << "\n";
-  configFileOut << height;
-  configFileOut << "\n";
-  configFileOut.close();
+  ofstream config_file_out(".config");
+  config_file_out << width;
+  config_file_out << "\n";
+  config_file_out << height;
+  config_file_out << "\n";
+  config_file_out.close();
  }
-
- bool keepGoing = true;
-
-// srand(890);//not interested in good randomness
 
  for (int i = 0; i < 30; i++) {
   // capture some frames so exposure correction takes place
   cvQueryFrame(capture);
  }
 
- Mat background = cvQueryFrame(capture);
- background = background.clone();
- blur(background, background, Size(50,50));
+/*****
+ end camera setup
+*****/
 
- Mat image;
- Mat channel[3];
+/*****
+ filter setup
+*****/
+
+ Mat acbg(256, 256, CV_8UC3, 0);
+// accumulated background
+ Mat acbg_m(256, 256, CV_8UC1, 0);
+// accumulated background mask
+
+ Mat acfg(256, 256, CV_8UC3, 0);
+// accumulated foreground
+ Mat acfg_t(256, 256, CV_8UC3, 0);
+// accumulated foreground threshold
+
+/*****
+ end filter setup
+*****/
+
+/*****
+ misc
+*****/
+
+ unsigned long long times[100];
+ for (int i=0; i<100; i++)
+  times[i] = 0;
+
+ int tracker1, tracker2, tracker3;
+ namedWindow("s",1);
+ createTrackbar("1","s",&tracker1,100);
+ createTrackbar("2","s",&tracker2,100);
+ createTrackbar("3","s",&tracker3,100);
+
  unsigned long long timenow = getMilliseconds();
+
+ bool keep_going = true;
 
  CascadeClassifier mouth_cascade;
  mouth_cascade.load("Mouth.xml");
 
- while (keepGoing) {
-  image = cvQueryFrame(capture);
-  times[0] = getMilliseconds() - timenow;
-  timenow = getMilliseconds();
+/*****
+ begin filter loop
+*****/
 
-// preprocess by rotating according to OVR roll
+ while (keep_going) {
+
+  Mat image(cvQueryFrame(capture));
 //  imshow("webcam", image);
+// at some point preprocess by rotating according to OVR roll
+// right now really annoying because of state variables
 
-// let's make multiple masks where 0=not mouth, 1=uncertain
 
-// then multiply them together and multiply that with image
-// and run haar classifier on image
-
-  Mat gray, blurred_img;
+  Mat gray, img_256, gray_256;
+  resize(image, img_256, Size(256, 256));
   cvtColor(image, gray, CV_RGB2GRAY);
-  blur(image, blurred_img, Size(50,50));
-  times[1] = getMilliseconds() - timenow;
-  timenow = getMilliseconds();
-
-
-// this mask filters out areas which have not changed much
-// this is horrible with new background; redo it
-// the way it works with dk2 is very different from without
-// since eyes are detected by mouth cascade but not dk2
-  Mat flow(height, width, CV_8UC1, 1);
-
-  absdiff(blurred_img, background, flow);
-  cvtColor(flow, flow, CV_RGB2GRAY);
-  threshold(flow, flow, 6, 1, THRESH_BINARY);
-  morphFast(flow, 100, 40, 0);//needs less without dk2
-  imshow("flow mask", gray.mul(flow));
-  times[2] = getMilliseconds() - timenow;
-  timenow = getMilliseconds();
-  flow = Mat(height, width, CV_8UC1, 1);
+  cvtColor(img_256, gray_256, CV_RGB2GRAY);
 
 
 // this mask gets anything kind of dark (DK2) and dilates
-// works *great*
-  Mat kindofdark(height, width, CV_8UC1, 1);
-  equalizeHist(gray, kindofdark);
-  threshold(kindofdark, kindofdark, 100, 1, THRESH_BINARY_INV);
-  morphFast(kindofdark, 100, 17, 0);
-//  imshow("dark mask", gray.mul(kindofdark));
-  times[3] = getMilliseconds() - timenow;
-  timenow = getMilliseconds();
+// should work *great*
+  Mat gr_m;
+// gray mask
+  equalizeHist(gray_256, gr_m);
+  threshold(gr_m, gr_m, 100, 1, THRESH_BINARY_INV);
+  dilate(gr_m, gr_m, ellipticKernel(43));
+// verify size of ellipticKernel!
+  gr_m = 1 - gr_m;
+// change code later so we don't have to do this
 
-// combine mask with its opening
-  Mat mask = flow.mul(kindofdark);
-  Mat smallMask0, smallMask1;
-  resize(mask, smallMask0, Size(width/5,height/5));
-  Mat smallKernel = ellipticKernel(69,79);
-  erode(smallMask0, smallMask1, smallKernel);
-  dilate(smallMask1, smallMask1, smallKernel);
-  bitwise_and(smallMask0, smallMask1, smallMask1);
-  resize(smallMask1, mask, Size(width, height));
-//  imshow("morph mask", gray.mul(mask));
-  times[4] = getMilliseconds() - timenow;
-  timenow = getMilliseconds();
+  imshow("gray mask", gray_256.mul(gr_m));
 
 
-// run haar classifier on nonflow parts of image
-  vector<Rect> mouths;
-  int scale = 3;
-  Mat classifyThis;
-  equalizeHist(gray, gray);
-  Mat dilatedMask;
-  dilate(smallMask1, dilatedMask, smallKernel);
-//  dilate(dilatedMask, dilatedMask, smallKernel);
-  resize(dilatedMask, dilatedMask, Size(width, height));
-  resize(gray.mul(dilatedMask), classifyThis, Size(width/scale,height/scale));
-  mouth_cascade.detectMultiScale(classifyThis, mouths, 1.1, 0, CV_HAAR_SCALE_IMAGE);
-  Mat rectImage(height, width, CV_8UC1, Scalar(0));
-  for (size_t i=0; i<mouths.size(); i++) {
-   Rect scaled(mouths[i].x*scale, mouths[i].y*scale, mouths[i].width*scale,mouths[i].height*scale);
-   Mat newRect(height, width, CV_8UC1, Scalar(0));
-   rectangle(newRect, scaled, Scalar(1), CV_FILLED);
-   rectImage += newRect;
-  }
-  double minVal, maxVal;//ignore minVal, it'll be 0
-  minMaxLoc(rectImage, &minVal, &maxVal);
-  
-  Mat recThresh, recBinary;
-  threshold(rectImage, recThresh, maxVal*0.9, 1, THRESH_BINARY);
-  threshold(rectImage, recBinary, 1, 1, THRESH_BINARY);
-  imshow("recbin", recBinary*255);
-  bitwise_and(recBinary, mask, mask);
-  times[5] = getMilliseconds() - timenow;
-  timenow = getMilliseconds();
-  imshow("mouth", recThresh.mul(gray));
+ bitwise_or(acbg_m, gr_m, acbg_m);
+
+  imshow("accumulated bg mask", gray_256.mul(acbg_m));
+
+
+// this mask watches for flow against accumulated bg
+ Mat fl_m;
+// flow mask
+ absdiff(img_256, acbg, fl_m);
+// add some morphological operator? but acbg_m!
+ threshold(fl_m, fl_m, 80, 1, THRESH_BINARY);
+// 80, THRESH_BINARY probably needs tweaking!
+// add some other morphological operators? but what about
+// acbg_m?
+
+  imshow("flow mask", gray_256.mul(fl_m));
+
+
+ Mat bg_m;
+ bitwise_and(acbg_m, fl_m, bg_m);
+ bitwise_or(gr_m, bg_m, bg_m);
+// maybe do some morphological operations on bg_m?
+// previously combined bg_m with its opening
+
+  imshow("bg mask", gray_256.mul(bg_m));
+
+ // do some stuff with foreground and so on here
+
+ Mat haar_m;
+// bitwise_and(1 - bg_m, fg_m, haar_m);
+ haar_m = 1 - bg_m;
+
+// run haar classifier
+ int scale = width/300;
+ if (scale < 1)
+  scale = 1;
+// can't use 256x256 since haar isn't stretch invariant
+
+ Mat thingy;
+ resize(gray, thingy, Size(width/scale, height/scale));
+ equalizeHist(thingy, thingy);
+///////////////////
+// need to change this after foreground stuff gets written
+
+ vector<Rect> mouth_rects;
+ resize(haar_m, haar_m, Size(width/scale, height/scale));
+
+ bitwise_and(haar_m, thingy, thingy);
+/////////////////
+
+ mouth_cascade.detectMultiScale(thingy, mouth_rects, 1.1, 0, CV_HAAR_SCALE_IMAGE);
+ Mat rect_image(height, width, CV_8UC1, Scalar(0));
+
+ for (size_t i=0; i<mouth_rects.size(); i++) {
+  Rect scaled(mouths[i].x*scale, mouths[i].y*scale, mouths[i].width*scale,mouths[i].height*scale);
+  Mat new_rect(height, width, CV_8UC1, Scalar(0));
+  rectangle(new_rect, scaled, Scalar(1), CV_FILLED);
+  rect_image += new_rect;
+ }
+
+ double min_val, max_val;
+ minMaxLoc(rectImage, &min_val, &max_val);
+
+// or maybe equalize? this whole thing needs to be rewritten
+// with the new fg and temporal coherence ideas
+
+ Mat rect_thresh;
+ threshold(rect_image, rect_thresh, max_val*0.9, 1, THRESH_BINARY);
+ imshow("mouth", rect_thresh.mul(gray));
 
 
 /*
-  Moments lol = moments(recThresh, 1);
-  circle(image, Point(lol.m10/lol.m00,lol.m01/lol.m00),20,Scalar(128),30);
-  imshow("leimage", image);
+  Moments m = moments(rect_thresh, 1);
+  circle(image, Point(m.m10/m.m00,m.m01/m.m00),20,Scalar(128),30);
+  imshow("centroid", image);
 */
 
-// update background with new morph mask
-
-  Mat mask_;
-  subtract(1, mask ,mask_);
-  Mat mask3, mask3_;
-  channel[0] = mask;
-  channel[1] = mask;
-  channel[2] = mask;
-  merge(channel, 3, mask3);
-  channel[0] = mask_;
-  channel[1] = mask_;
-  channel[2] = mask_;
-  merge(channel, 3, mask3_);
-
-  background = background.mul(mask3) +
-   (background.mul(mask3_)*0.75 + blurred_img.mul(mask3_)*0.25);
-  times[6] = getMilliseconds() - timenow;
-  timenow = getMilliseconds();
-
-  imshow("bg", background);
-
-  for (int i=0; i<7; i++) {
-   printf("%llu , ", times[i]);
-  }
-
-  printf("\n");
-
-  keepGoing = (waitKey(1)<0);
+  keep_going = (waitKey(1)<0);
 
  }
 
