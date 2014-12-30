@@ -160,7 +160,8 @@ int main (int argc, char** argv) {
   int t1 = tracker1 + 1 - (tracker1%2);
   if (t1<3) t1 = 3;
   if (t1>90) t1 = 91;
-  dilate(fl_m, fl_m, ellipticKernel(t1));
+  dilate(fl_m, fl_m, ellipticKernel(35));
+  erode(fl_m, fl_m, ellipticKernel(t1));
 // add some other morphological operators? but what about
 // acbg_m?
 
