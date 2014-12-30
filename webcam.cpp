@@ -143,12 +143,12 @@ int main (int argc, char** argv) {
   gr_m = 1 - gr_m;
 // change code later so we don't have to do this
 
-  imshow("gray mask", gray_256.mul(gr_m));
+  imshow("gray mask", gray_256.mul(1-gr_m));
 
 
   bitwise_or(acbg_m, gr_m, acbg_m);
 
-  imshow("accumulated bg mask", gray_256.mul(acbg_m));
+  imshow("accumulated bg mask", gray_256.mul(1-acbg_m));
 
 // this mask watches for flow against accumulated bg
   Mat fl_m;
@@ -156,12 +156,12 @@ int main (int argc, char** argv) {
   absdiff(img_256, acbg, fl_m);
 // add some morphological operator? but acbg_m!
   cvtColor(fl_m, fl_m, CV_BGR2GRAY);
-  threshold(fl_m, fl_m, tracker1, 1, THRESH_BINARY);
+  threshold(fl_m, fl_m, tracker1*3, 1, THRESH_BINARY);
 // 80, THRESH_BINARY probably needs tweaking!
 // add some other morphological operators? but what about
 // acbg_m?
 
-  imshow("flow mask", gray_256.mul(fl_m));
+  imshow("flow mask", gray_256.mul(1-fl_m));
 
 
   Mat bg_m;
@@ -170,7 +170,7 @@ int main (int argc, char** argv) {
 // maybe do some morphological operations on bg_m?
 // previously combined bg_m with its opening
 
-  imshow("bg mask", gray_256.mul(bg_m));
+  imshow("bg mask", gray_256.mul(1-bg_m));
 /*
  // do some stuff with foreground and so on here
 
