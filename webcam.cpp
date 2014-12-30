@@ -90,6 +90,8 @@ int main (int argc, char** argv) {
  Mat acfg_t(256, 256, CV_8UC3, 0);
 // accumulated foreground threshold
 
+ Mat temp;
+
 /*****
  end filter setup
 *****/
@@ -140,14 +142,14 @@ int main (int argc, char** argv) {
   equalizeHist(gray_256, gr_m);
   threshold(gr_m, gr_m, 100, 1, THRESH_BINARY_INV);
   dilate(gr_m, gr_m, ellipticKernel(43));
-// verify size of ellipticKernel!
   gr_m = 1 - gr_m;
 // change code later so we don't have to do this
 
   imshow("gray mask", gray_256.mul(gr_m));
 
 
-  bitwise_or(acbg_m, gr_m, acbg_m);
+  bitwise_or(acbg_m, gr_m, temp);
+  acbg_m = temp;
 /*
   imshow("accumulated bg mask", gray_256.mul(acbg_m));
 
