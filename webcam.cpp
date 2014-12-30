@@ -156,12 +156,11 @@ int main (int argc, char** argv) {
   absdiff(img_256, acbg, fl_m);
 // add some morphological operator? but acbg_m!
   threshold(fl_m, fl_m, 80, 1, THRESH_BINARY);
-/*
 // 80, THRESH_BINARY probably needs tweaking!
 // add some other morphological operators? but what about
 // acbg_m?
 
-  imshow("flow mask", gray_256.mul(fl_m));
+  imshow("flow mask", img_256.mul(fl_m));
 
 /*
   Mat bg_m;
