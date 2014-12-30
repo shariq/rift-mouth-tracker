@@ -162,13 +162,18 @@ int main (int argc, char** argv) {
   erode(fl_m, fl_m, ellipticKernel(51));
 
   imshow("flow mask", gray_256.mul(1-fl_m));
-  imshow("lol", acbg);
   Mat bg_m;
   bitwise_and(acbg_m, fl_m, bg_m);
 // maybe just use fl_m? it's surprisingly good!
   bitwise_or(gr_m, bg_m, bg_m);
 // maybe do some morphological operations on bg_m?
 // previously combined bg_m with its opening
+
+  Mat tmp1, tmp2;
+  bitwise_and(acbg, 1-bg_m, tmp1);
+  bitwise_and((acbg + img_256)/2, bg_m, tmp2);
+  acbg = tmp1 + tmp2;
+  imshow("acbg", acbg);
 
   imshow("bg mask", gray_256.mul(1-bg_m));
 /*
