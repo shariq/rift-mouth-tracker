@@ -138,32 +138,30 @@ int main (int argc, char** argv) {
   Mat gr_m;
 // gray mask
   equalizeHist(gray_256, gr_m);
-  threshold(gr_m, gr_m, tracker3*3, 1, THRESH_BINARY);
-  int t1 = tracker1 + 1 - (tracker1%2);
-  if (t1<3) t1 = 3;
-  if (t1>90) t1 = 91;
-  dilate(gr_m, gr_m, ellipticKernel(t1));
-  int t2 = tracker2 + 1 - (tracker2%2);
-  if (t2<3) t2 = 3;
-  if (t2>90) t2 = 91;
-  erode(gr_m, gr_m, ellipticKernel(t2));
-// change code later so we don't have to do this
+  threshold(gr_m, gr_m, 210, 1, THRESH_BINARY);
+  dilate(gr_m, gr_m, ellipticKernel(23));
+  erode(gr_m, gr_m, ellipticKernel(45));
 
   imshow("gray mask", gray_256.mul(1-gr_m));
 
   bitwise_or(acbg_m, gr_m, acbg_m);
-//  imshow("accumulated bg mask", gray_256.mul(1-acbg_m));
+  imshow("accumulated bg mask", gray_256.mul(1-acbg_m));
 
 // this mask watches for flow against accumulated bg
-// this completely doesn't work since acbg is wrong
   Mat fl_m;
 // flow mask
   absdiff(img_256, acbg, fl_m);
   cvtColor(fl_m, fl_m, CV_BGR2GRAY);
-  fl_m = fl_m.mul(acbg_m);
-  threshold(fl_m, fl_m, 150, 1, THRESH_BINARY);
-//  dilate(fl_m, fl_m, ellipticKernel(35));
-//  erode(fl_m, fl_m, ellipticKernel(51));
+  fl_m = acbg_m.mul(fl_m);
+  threshold(fl_m, fl_m, tracker3*3, 1, THRESH_BINARY);
+  int t1=tracker1+1-(tracker1%2);
+  int t2 = tracker2+1 - (tracker2%2);
+  if (t1<3) t1=3;
+  if (t1>90) t1=91;
+  if (t2<3) t2 = 3;
+  if (t2>90) t2=91;
+  dilate(fl_m, fl_m, ellipticKernel(t1));
+  erode(fl_m, fl_m, ellipticKernel(t2));
 //  imshow("flow mask", fl_m*255);
 
   Mat bg_m;
