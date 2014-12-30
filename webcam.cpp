@@ -162,7 +162,7 @@ int main (int argc, char** argv) {
   if (t2>90) t2=91;
   dilate(fl_m, fl_m, ellipticKernel(t1));
   erode(fl_m, fl_m, ellipticKernel(t2));
-//  imshow("flow mask", fl_m*255);
+  imshow("flow mask", fl_m*255);
 
   Mat bg_m;
   bitwise_and(acbg_m, fl_m, bg_m);
