@@ -132,7 +132,7 @@ int main (int argc, char** argv) {
   cvtColor(image, gray, CV_RGB2GRAY);
   cvtColor(img_256, gray_256, CV_RGB2GRAY);
 
-
+/*
 // this mask gets anything kind of dark (DK2) and dilates
 // should work *great*
   Mat gr_m;
