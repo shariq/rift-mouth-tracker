@@ -226,7 +226,7 @@ int main (int argc, char** argv) {
   Mat fg(height, width, CV_8UC1, Scalar(0));
 
   for (size_t i=0; i<mouth_rects.size(); i++) {
-   Rect scaled(mouth_rects[i].x*haar_scale, mouth_rects[i].y*scale, mouth_rects[i].width*scale,mouth_rects[i].height*haar_scale);
+   Rect scaled(mouth_rects[i].x*haar_scale, mouth_rects[i].y*haar_scale, mouth_rects[i].width*haar_scale,mouth_rects[i].height*haar_scale);
    Mat new_rect(height, width, CV_8UC1, Scalar(0));
    rectangle(new_rect, scaled, Scalar(1), CV_FILLED);
    fg += new_rect;
